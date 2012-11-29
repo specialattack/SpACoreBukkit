@@ -1,0 +1,5 @@
+name: SpACore
+version: 0.1.1-Dev
+description: This plugin adds core functions and features required by plugins on SpecialAttack.net SMP
+authors: [heldplayer, mbl111]
+main: net.specialattack.core.SpACore
