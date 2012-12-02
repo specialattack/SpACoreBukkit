@@ -4,7 +4,7 @@ package net.specialattack.core;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public class Cuboid {
+public final class Cuboid {
     private final Location start;
     private final Location end;
 
@@ -13,100 +13,100 @@ public class Cuboid {
             throw new UnsupportedOperationException("Cannot initialize cuboid in 2 different worlds");
         }
 
-        start = startPoint;
-        end = endPoint;
+        this.start = startPoint;
+        this.end = endPoint;
 
-        if (end.getX() < start.getX()) {
-            double x = start.getX();
-            start.setX(end.getX());
-            end.setX(x);
+        if (this.end.getX() < this.start.getX()) {
+            double x = this.start.getX();
+            this.start.setX(this.end.getX());
+            this.end.setX(x);
         }
 
-        if (end.getY() < start.getY()) {
-            double y = start.getY();
-            start.setY(end.getY());
-            end.setY(y);
+        if (this.end.getY() < this.start.getY()) {
+            double y = this.start.getY();
+            this.start.setY(this.end.getY());
+            this.end.setY(y);
         }
 
-        if (end.getZ() < start.getZ()) {
-            double z = start.getZ();
-            start.setZ(end.getZ());
-            end.setZ(z);
+        if (this.end.getZ() < this.start.getZ()) {
+            double z = this.start.getZ();
+            this.start.setZ(this.end.getZ());
+            this.end.setZ(z);
         }
     }
 
     public Cuboid(World world, int startX, int startY, int startZ, int endX, int endY, int endZ) {
-        start = new Location(world, startX, startY, startZ);
-        end = new Location(world, endX, endY, endZ);
+        this.start = new Location(world, startX, startY, startZ);
+        this.end = new Location(world, endX, endY, endZ);
 
-        if (end.getX() < start.getX()) {
-            double x = start.getX();
-            start.setX(end.getX());
-            end.setX(x);
+        if (this.end.getX() < this.start.getX()) {
+            double x = this.start.getX();
+            this.start.setX(this.end.getX());
+            this.end.setX(x);
         }
 
-        if (end.getY() < start.getY()) {
-            double y = start.getY();
-            start.setY(end.getY());
-            end.setY(y);
+        if (this.end.getY() < this.start.getY()) {
+            double y = this.start.getY();
+            this.start.setY(this.end.getY());
+            this.end.setY(y);
         }
 
-        if (end.getZ() < start.getZ()) {
-            double z = start.getZ();
-            start.setZ(end.getZ());
-            end.setZ(z);
+        if (this.end.getZ() < this.start.getZ()) {
+            double z = this.start.getZ();
+            this.start.setZ(this.end.getZ());
+            this.end.setZ(z);
         }
     }
 
     public World getWorld() {
-        return start.getWorld();
+        return this.start.getWorld();
     }
 
     public Location getStart() {
-        return start.clone();
+        return this.start.clone();
     }
 
     public Location getEnd() {
-        return end.clone();
+        return this.end.clone();
     }
 
     public int getStartX() {
-        return start.getBlockX();
+        return this.start.getBlockX();
     }
 
     public int getStartY() {
-        return start.getBlockY();
+        return this.start.getBlockY();
     }
 
     public int getStartZ() {
-        return start.getBlockZ();
+        return this.start.getBlockZ();
     }
 
     public int getEndX() {
-        return end.getBlockX();
+        return this.end.getBlockX();
     }
 
     public int getEndY() {
-        return end.getBlockY();
+        return this.end.getBlockY();
     }
 
     public int getEndZ() {
-        return end.getBlockZ();
+        return this.end.getBlockZ();
     }
 
     public int getSizeX() {
-        return end.getBlockX() - start.getBlockX();
+        return this.end.getBlockX() - this.start.getBlockX();
     }
 
     public int getSizeY() {
-        return end.getBlockY() - start.getBlockY();
+        return this.end.getBlockY() - this.start.getBlockY();
     }
 
     public int getSizeZ() {
-        return end.getBlockZ() - start.getBlockZ();
+        return this.end.getBlockZ() - this.start.getBlockZ();
     }
 
     public int getSize() {
-        return getSizeX() * getSizeY() * getSizeZ();
+        return this.getSizeX() * this.getSizeY() * this.getSizeZ();
     }
 }
