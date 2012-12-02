@@ -35,6 +35,29 @@ public class Cuboid {
         }
     }
 
+    public Cuboid(World world, int startX, int startY, int startZ, int endX, int endY, int endZ) {
+        start = new Location(world, startX, startY, startZ);
+        end = new Location(world, endX, endY, endZ);
+
+        if (end.getX() < start.getX()) {
+            double x = start.getX();
+            start.setX(end.getX());
+            end.setX(x);
+        }
+
+        if (end.getY() < start.getY()) {
+            double y = start.getY();
+            start.setY(end.getY());
+            end.setY(y);
+        }
+
+        if (end.getZ() < start.getZ()) {
+            double z = start.getZ();
+            start.setZ(end.getZ());
+            end.setZ(z);
+        }
+    }
+
     public World getWorld() {
         return start.getWorld();
     }
