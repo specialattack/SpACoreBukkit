@@ -14,11 +14,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpACore extends JavaPlugin {
     public static SpACore instance;
-    public static PluginState state = PluginState.Unloaded;
-    protected int lastId;
-    protected PluginDescriptionFile pdf;
+    private static PluginState state = PluginState.Unloaded;
+    private int lastId;
+    private PluginDescriptionFile pdf;
     private Logger logger;
-    protected HashMap<String, PlaygroundLoader> loaderList;
+    private HashMap<String, PlaygroundLoader> loaderList;
 
     public SpACore() {
         super();
@@ -47,6 +47,7 @@ public class SpACore extends JavaPlugin {
         this.pdf = this.getDescription();
 
         this.lastId = 0;
+        this.loaderList.clear();
 
         log(this.pdf.getFullName() + " is now enabled!");
 
@@ -62,12 +63,21 @@ public class SpACore extends JavaPlugin {
         state = PluginState.Disabled;
     }
 
+    public static PluginState getState() {
+        return state;
+    }
+
     public static int getNextAvailablePlaygroundId() {
         return instance.lastId++;
     }
 
     public static void registerPlaygroundType(String type, PlaygroundLoader loader) {
-        instance.loaderList.put(type, loader);
+        if (state == PluginState.Enabled) {
+            instance.loaderList.put(type, loader);
+        }
+        else {
+            throw new RuntimeException("SpACore is not ready to be enabled yet. A faulty plugin is causing this.");
+        }
     }
 
     public static Playground loadPlayground(String type, Cuboid cuboid) {
