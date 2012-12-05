@@ -25,19 +25,15 @@ import com.mojang.NBT.NBTTagList;
 
 public class PlayerStorage {
     public static void apply(SpACore main, Player player) throws IOException {
-        clearEverything(player);
-
         File backupFolder = new File(main.getDataFolder(), "players");
 
         File playerFile = new File(backupFolder, player.getName() + ".dat");
 
         if (!playerFile.exists()) {
-            main.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Warning, player '" + player.getName() + "' has no backup file");
-
             playerFile = new File(backupFolder, player.getName() + ".dat_old");
 
             if (!playerFile.exists()) {
-                main.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Warning, player '" + player.getName() + "' has no old backup file");
+                main.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Warning, player '" + player.getName() + "' has no backup file and no old backup file. This is a bug");
                 return;
             }
         }
@@ -45,6 +41,8 @@ public class PlayerStorage {
         FileInputStream FIS = new FileInputStream(playerFile);
 
         NBTTagCompound compound = CompressedStreamTools.readCompressed(FIS);
+
+        clearEverything(player);
 
         player.setHealth(compound.getShort("health"));
         player.setFoodLevel(compound.getInteger("foodlevel"));
@@ -87,6 +85,16 @@ public class PlayerStorage {
         loc.setYaw(((NBTTagFloat) rotation.tagAt(0)).data);
         loc.setPitch(((NBTTagFloat) rotation.tagAt(1)).data);
         player.teleport(loc);
+
+        File backupFile = new File(backupFolder, player.getName() + ".dat_old");
+
+        if (backupFile.exists()) {
+            backupFile.delete();
+        }
+
+        playerFile.renameTo(backupFile);
+
+        FIS.close();
     }
 
     public static void store(SpACore main, Player player) throws IOException, FileNotFoundException {
@@ -95,22 +103,19 @@ public class PlayerStorage {
         File playerFile = new File(backupFolder, player.getName() + ".dat");
 
         if (playerFile.exists()) {
-            main.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Warning, player '" + player.getName() + "' already has a backup file of their inventory, backing up the backup...");
-
             File backupFile = new File(backupFolder, player.getName() + ".dat_old");
 
             if (backupFile.exists()) {
-                main.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Warning, old backup file already exists, old backup deleted");
+                backupFile.delete();
             }
 
-            backupFile.delete();
-
             playerFile.renameTo(backupFile);
+
+            playerFile = new File(backupFolder, player.getName() + ".dat");
         }
 
-        playerFile = new File(backupFolder, player.getName() + ".dat");
-
         playerFile.createNewFile();
+
         FileOutputStream FOS = new FileOutputStream(playerFile);
 
         Location loc = player.getLocation();
@@ -184,6 +189,8 @@ public class PlayerStorage {
         CompressedStreamTools.writeCompressed(compound, FOS);
 
         clearEverything(player);
+
+        FOS.close();
     }
 
     private static void clearEverything(Player player) {
