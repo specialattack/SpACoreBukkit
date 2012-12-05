@@ -7,8 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
@@ -33,7 +33,7 @@ public class PlayerStorage {
             playerFile = new File(backupFolder, player.getName() + ".dat_old");
 
             if (!playerFile.exists()) {
-                main.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Warning, player '" + player.getName() + "' has no backup file and no old backup file. This is a bug");
+                SpACore.log(Level.WARNING, "Player '" + player.getName() + "' has no backup file and no old backup file. This is a bug");
                 return;
             }
         }
