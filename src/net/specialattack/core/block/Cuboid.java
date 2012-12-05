@@ -1,5 +1,5 @@
 
-package net.specialattack.core;
+package net.specialattack.core.block;
 
 import org.bukkit.Location;
 import org.bukkit.World;
