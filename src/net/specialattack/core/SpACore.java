@@ -1,4 +1,3 @@
-
 package net.specialattack.core;
 
 import java.util.logging.Level;
@@ -8,61 +7,65 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpACore extends JavaPlugin {
-    public static SpACore instance;
-    public static PluginState state = PluginState.Unloaded;
-    protected int lastId;
-    protected PluginDescriptionFile pdf;
-    private Logger logger;
+	public static SpACore instance;
+	public static PluginState state = PluginState.Unloaded;
+	protected int lastId;
+	protected PluginDescriptionFile pdf;
+	private Logger logger;
+	private String version;
 
-    public SpACore() {
-        super();
-        state = PluginState.Initializing;
+	public SpACore() {
+		super();
+		state = PluginState.Initializing;
 
-        instance = this;
+		instance = this;
 
-        logger = this.getLogger();
+		logger = this.getLogger();
 
-        state = PluginState.Initialized;
-    }
+		state = PluginState.Initialized;
+	}
 
-    @Override
-    public void onLoad() {
-        state = PluginState.Loading;
+	@Override
+	public void onLoad() {
+		state = PluginState.Loading;
 
-        state = PluginState.Loaded;
-    }
+		state = PluginState.Loaded;
+	}
 
-    @Override
-    public void onEnable() {
-        state = PluginState.Enabling;
+	@Override
+	public void onEnable() {
+		state = PluginState.Enabling;
 
-        this.pdf = this.getDescription();
+		this.pdf = this.getDescription();
+		version = this.pdf.getVersion();
 
-        this.lastId = 0;
+		this.lastId = 0;
 
-        state = PluginState.Enabled;
-    }
+		log("SpA Core - " + version + " is enabled!");
 
-    @Override
-    public void onDisable() {
-        state = PluginState.Disabling;
+		state = PluginState.Enabled;
+	}
 
-        state = PluginState.Disabled;
-    }
+	@Override
+	public void onDisable() {
+		state = PluginState.Disabling;
 
-    public static int getNextAvailablePlaygroundId() {
-        return instance.lastId++;
-    }
+		state = PluginState.Disabled;
+	}
 
-    public static void log(String message) {
-        instance.logger.log(Level.INFO, message);
-    }
+	public static int getNextAvailablePlaygroundId() {
+		return instance.lastId++;
+	}
 
-    public static void log(Level level, String message) {
-        instance.logger.log(level, message);
-    }
+	public static void log(String message) {
+		instance.logger.log(Level.INFO, message);
+	}
 
-    public static void log(Level level, String message, Throwable throwable) {
-        instance.logger.log(level, message, throwable);
-    }
+	public static void log(Level level, String message) {
+		instance.logger.log(level, message);
+	}
+
+	public static void log(Level level, String message, Throwable throwable) {
+		instance.logger.log(level, message, throwable);
+	}
 }
