@@ -1,71 +1,88 @@
+
 package net.specialattack.core;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.specialattack.core.block.Cuboid;
+import net.specialattack.core.games.Playground;
+import net.specialattack.core.games.PlaygroundLoader;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpACore extends JavaPlugin {
-	public static SpACore instance;
-	public static PluginState state = PluginState.Unloaded;
-	protected int lastId;
-	protected PluginDescriptionFile pdf;
-	private Logger logger;
-	private String version;
+    public static SpACore instance;
+    public static PluginState state = PluginState.Unloaded;
+    protected int lastId;
+    protected PluginDescriptionFile pdf;
+    private Logger logger;
+    protected HashMap<String, PlaygroundLoader> loaderList;
 
-	public SpACore() {
-		super();
-		state = PluginState.Initializing;
+    public SpACore() {
+        super();
+        state = PluginState.Initializing;
 
-		instance = this;
+        instance = this;
 
-		logger = this.getLogger();
+        logger = this.getLogger();
 
-		state = PluginState.Initialized;
-	}
+        loaderList = new HashMap<String, PlaygroundLoader>();
 
-	@Override
-	public void onLoad() {
-		state = PluginState.Loading;
+        state = PluginState.Initialized;
+    }
 
-		state = PluginState.Loaded;
-	}
+    @Override
+    public void onLoad() {
+        state = PluginState.Loading;
 
-	@Override
-	public void onEnable() {
-		state = PluginState.Enabling;
+        state = PluginState.Loaded;
+    }
 
-		this.pdf = this.getDescription();
-		version = this.pdf.getVersion();
+    @Override
+    public void onEnable() {
+        state = PluginState.Enabling;
 
-		this.lastId = 0;
+        this.pdf = this.getDescription();
 
-		log("SpA Core - " + version + " is enabled!");
+        this.lastId = 0;
 
-		state = PluginState.Enabled;
-	}
+        log(this.pdf.getFullName() + " is now enabled!");
 
-	@Override
-	public void onDisable() {
-		state = PluginState.Disabling;
+        state = PluginState.Enabled;
+    }
 
-		state = PluginState.Disabled;
-	}
+    @Override
+    public void onDisable() {
+        state = PluginState.Disabling;
 
-	public static int getNextAvailablePlaygroundId() {
-		return instance.lastId++;
-	}
+        log(this.pdf.getFullName() + " is now disabled!");
 
-	public static void log(String message) {
-		instance.logger.log(Level.INFO, message);
-	}
+        state = PluginState.Disabled;
+    }
 
-	public static void log(Level level, String message) {
-		instance.logger.log(level, message);
-	}
+    public static int getNextAvailablePlaygroundId() {
+        return instance.lastId++;
+    }
 
-	public static void log(Level level, String message, Throwable throwable) {
-		instance.logger.log(level, message, throwable);
-	}
+    public static void registerPlaygroundType(String type, PlaygroundLoader loader) {
+        instance.loaderList.put(type, loader);
+    }
+
+    public static Playground loadPlayground(String type, Cuboid cuboid) {
+        return instance.loaderList.get(type).createInstance(cuboid);
+    }
+
+    public static void log(String message) {
+        instance.logger.log(Level.INFO, message);
+    }
+
+    public static void log(Level level, String message) {
+        instance.logger.log(level, message);
+    }
+
+    public static void log(Level level, String message, Throwable throwable) {
+        instance.logger.log(level, message, throwable);
+    }
 }
