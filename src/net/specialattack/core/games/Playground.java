@@ -33,6 +33,8 @@ public abstract class Playground {
         return id;
     }
 
+    
+    //TODO Perhaps a method that saves the blocks in the playground? Ofc this would be optional but it would be nice to have in here so it would not have to be written every time.
     public NBTTagCompound savePlayground() {
         NBTTagCompound compound = new NBTTagCompound(getId() + "-" + getTypeName());
 
