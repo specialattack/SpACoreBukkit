@@ -12,9 +12,15 @@ public class Team {
 	public List<String> players = new ArrayList<String>();
 
 	private TeamColor color;
+	private int sizeLimit;
 
 	public Team(TeamColor color) {
+		this(color, -1);
+	}
+
+	public Team(TeamColor color, int sizeLimit) {
 		this.color = color;
+		this.sizeLimit = sizeLimit;
 	}
 
 	public void sendMessageToTeam(String name, String message, String... excluded) {
@@ -34,6 +40,10 @@ public class Team {
 			return n.equalsIgnoreCase(name);
 		}
 		return false;
+	}
+
+	public int getNumberOfPlayers() {
+		return players.size() + 1;
 	}
 
 	public void addPlayer(Player p) {
@@ -67,5 +77,15 @@ public class Team {
 	public TeamColor getColor() {
 		return color;
 	}
+	
+	public int getSizeLimit() {
+		return sizeLimit;
+	}
+	
+	public void setSizeLimit(int sizeLimit) {
+		this.sizeLimit = sizeLimit;
+	}
+	
+	
 
 }

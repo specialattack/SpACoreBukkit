@@ -11,6 +11,7 @@ public class TeamManager {
 	public HashMap<TeamColor, Team> teams = new HashMap<TeamColor, Team>();
 	private List<String> inChat = new ArrayList<String>();
 	private boolean canAddTeams = true;
+	private int sizeLimit = -1;
 
 	public void setInTeamChat(Player player, boolean inTeamChat) {
 		if (inTeamChat) {
@@ -36,7 +37,15 @@ public class TeamManager {
 
 	public void addTeam(TeamColor color) {
 		if (!teams.containsKey(color)) {
-			teams.put(color, new Team(color));
+			teams.put(color, new Team(color, sizeLimit));
 		}
+	}
+
+	public void setSizeLimit(int sizeLimit) {
+		this.sizeLimit = sizeLimit;
+	}
+
+	public int getSizeLimit() {
+		return sizeLimit;
 	}
 }
