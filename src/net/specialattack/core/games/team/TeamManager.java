@@ -28,8 +28,7 @@ public class TeamManager {
 		} else {
 			if (canAddTeams) {
 				addTeam(color);
-				teams.get(color).addPlayer(player);
-				return true;
+				return teams.get(color).addPlayer(player);
 			}
 		}
 		return false;

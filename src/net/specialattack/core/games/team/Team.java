@@ -46,12 +46,14 @@ public class Team {
 		return players.size() + 1;
 	}
 
-	public void addPlayer(Player p) {
-		players.add(p.getName());
+	public boolean addPlayer(Player p) {
+		return players.add(p.getName());
 	}
 
-	public void addPlayer(String p) {
+	public boolean addPlayer(String p) {
+		if (getNumberOfPlayers() >= sizeLimit) return false;
 		players.add(p);
+		return true;
 	}
 
 	public void removePlayer(Player p) {
@@ -77,15 +79,13 @@ public class Team {
 	public TeamColor getColor() {
 		return color;
 	}
-	
+
 	public int getSizeLimit() {
 		return sizeLimit;
 	}
-	
+
 	public void setSizeLimit(int sizeLimit) {
 		this.sizeLimit = sizeLimit;
 	}
-	
-	
 
 }
