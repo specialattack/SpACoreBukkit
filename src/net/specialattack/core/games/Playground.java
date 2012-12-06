@@ -1,8 +1,14 @@
 
 package net.specialattack.core.games;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import net.specialattack.core.PlayerStorage;
 import net.specialattack.core.SpACore;
 import net.specialattack.core.block.Cuboid;
+
+import org.bukkit.entity.Player;
 
 import com.mojang.NBT.NBTTagCompound;
 import com.mojang.NBT.NBTTagInt;
@@ -52,7 +58,15 @@ public abstract class Playground {
 
         return compound;
     }
-
+    
+    public void addPlayerAsIs(Player player){
+    	addPlayer(player, false);
+    }
+    
+    public void addPlayer(Player player, boolean saveAndClearPlayer){
+    	//TODO
+    }
+    
     public void loadPlayground(NBTTagCompound compound) {
         if (compound.hasKey("additional")) {
             loadPlaygroundAdditionalData(compound.getCompoundTag("additional"));
