@@ -1,3 +1,4 @@
+
 package net.specialattack.core;
 
 import java.util.HashMap;
@@ -7,104 +8,91 @@ import java.util.logging.Logger;
 import net.specialattack.core.block.Cuboid;
 import net.specialattack.core.games.Playground;
 import net.specialattack.core.games.PlaygroundLoader;
-import net.specialattack.core.profiler.Profiler;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpACore extends JavaPlugin {
-	public static SpACore instance;
-	private static PluginState state = PluginState.Unloaded;
-	private int lastId;
-	private PluginDescriptionFile pdf;
-	private Logger logger;
-	private HashMap<String, PlaygroundLoader> loaderList;
-	public Profiler profiler;
+    public static SpACore instance;
+    private static PluginState state = PluginState.Unloaded;
+    private int lastId;
+    private PluginDescriptionFile pdf;
+    private Logger logger;
+    private HashMap<String, PlaygroundLoader> loaderList;
 
-	public SpACore() {
-		super();
-		state = PluginState.Initializing;
+    public SpACore() {
+        super();
+        state = PluginState.Initializing;
 
-		instance = this;
+        instance = this;
 
-		logger = this.getLogger();
+        logger = this.getLogger();
 
-		profiler = new Profiler();
+        loaderList = new HashMap<String, PlaygroundLoader>();
 
-		loaderList = new HashMap<String, PlaygroundLoader>();
+        state = PluginState.Initialized;
+    }
 
-		state = PluginState.Initialized;
-	}
+    @Override
+    public void onLoad() {
+        state = PluginState.Loading;
 
-	@Override
-	public void onLoad() {
-		profiler.startSection("onLoad");
-		state = PluginState.Loading;
+        state = PluginState.Loaded;
+    }
 
-		state = PluginState.Loaded;
-		profiler.endSection();
-	}
+    @Override
+    public void onEnable() {
+        state = PluginState.Enabling;
 
-	@Override
-	public void onEnable() {
-		profiler.startSection("onEnable");
+        this.pdf = this.getDescription();
 
-		state = PluginState.Enabling;
+        this.lastId = 0;
+        this.loaderList.clear();
 
-		this.pdf = this.getDescription();
+        log(this.pdf.getFullName() + " is now enabled!");
 
-		this.lastId = 0;
-		this.loaderList.clear();
+        state = PluginState.Enabled;
+    }
 
-		log(this.pdf.getFullName() + " is now enabled!");
+    @Override
+    public void onDisable() {
+        state = PluginState.Disabling;
 
-		state = PluginState.Enabled;
+        log(this.pdf.getFullName() + " is now disabled!");
 
-		profiler.endSection();
-	}
+        state = PluginState.Disabled;
+    }
 
-	@Override
-	public void onDisable() {
-		profiler.startSection("onDisable");
+    public static PluginState getState() {
+        return state;
+    }
 
-		state = PluginState.Disabling;
+    public static int getNextAvailablePlaygroundId() {
+        return instance.lastId++;
+    }
 
-		log(this.pdf.getFullName() + " is now disabled!");
+    public static void registerPlaygroundType(String type, PlaygroundLoader loader) {
+        if (state == PluginState.Enabled) {
+            instance.loaderList.put(type, loader);
+        }
+        else {
+            throw new RuntimeException("SpACore is not ready to be enabled yet. A faulty plugin is causing this.");
+        }
+    }
 
-		state = PluginState.Disabled;
+    public static Playground loadPlayground(String type, Cuboid cuboid) {
+        return instance.loaderList.get(type).createInstance(cuboid);
+    }
 
-		profiler.endSection();
-	}
+    public static void log(String message) {
+        instance.logger.log(Level.INFO, message);
+    }
 
-	public static PluginState getState() {
-		return state;
-	}
+    public static void log(Level level, String message) {
+        instance.logger.log(level, message);
+    }
 
-	public static int getNextAvailablePlaygroundId() {
-		return instance.lastId++;
-	}
-
-	public static void registerPlaygroundType(String type, PlaygroundLoader loader) {
-		if (state == PluginState.Enabled) {
-			instance.loaderList.put(type, loader);
-		} else {
-			throw new RuntimeException("SpACore is not ready to be enabled yet. A faulty plugin is causing this.");
-		}
-	}
-
-	public static Playground loadPlayground(String type, Cuboid cuboid) {
-		return instance.loaderList.get(type).createInstance(cuboid);
-	}
-
-	public static void log(String message) {
-		instance.logger.log(Level.INFO, message);
-	}
-
-	public static void log(Level level, String message) {
-		instance.logger.log(level, message);
-	}
-
-	public static void log(Level level, String message, Throwable throwable) {
-		instance.logger.log(level, message, throwable);
-	}
+    public static void log(Level level, String message, Throwable throwable) {
+        instance.logger.log(level, message, throwable);
+    }
 }

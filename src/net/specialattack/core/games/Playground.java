@@ -1,14 +1,8 @@
 
 package net.specialattack.core.games;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import net.specialattack.core.PlayerStorage;
 import net.specialattack.core.SpACore;
 import net.specialattack.core.block.Cuboid;
-
-import org.bukkit.entity.Player;
 
 import com.mojang.NBT.NBTTagCompound;
 import com.mojang.NBT.NBTTagInt;
@@ -33,8 +27,6 @@ public abstract class Playground {
         return id;
     }
 
-    
-    //TODO Perhaps a method that saves the blocks in the playground? Ofc this would be optional but it would be nice to have in here so it would not have to be written every time.
     public NBTTagCompound savePlayground() {
         NBTTagCompound compound = new NBTTagCompound(getId() + "-" + getTypeName());
 
@@ -60,15 +52,7 @@ public abstract class Playground {
 
         return compound;
     }
-    
-    public void addPlayerAsIs(Player player){
-    	addPlayer(player, false);
-    }
-    
-    public void addPlayer(Player player, boolean saveAndClearPlayer){
-    	//TODO
-    }
-    
+
     public void loadPlayground(NBTTagCompound compound) {
         if (compound.hasKey("additional")) {
             loadPlaygroundAdditionalData(compound.getCompoundTag("additional"));
