@@ -1,5 +1,5 @@
 
-package net.specialattack.core.games;
+package net.specialattack.core.games.team;
 
 import java.util.HashMap;
 
