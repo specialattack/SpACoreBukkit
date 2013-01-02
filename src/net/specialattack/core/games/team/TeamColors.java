@@ -30,15 +30,15 @@ public enum TeamColors {
     }
 
     public int getBlockData() {
-        return blockData;
+        return this.blockData;
     }
 
     public ChatColor getChatColor() {
-        return chatColor;
+        return this.chatColor;
     }
 
     public int getArmorColor() {
-        return armorColor;
+        return this.armorColor;
     }
 
 }

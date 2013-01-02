@@ -132,6 +132,7 @@ public abstract class NBTBase {
 
     public abstract NBTBase copy();
 
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof NBTBase)) {
             return false;
@@ -142,6 +143,7 @@ public abstract class NBTBase {
         }
     }
 
+    @Override
     public int hashCode() {
         return this.name.hashCode() ^ this.getId();
     }

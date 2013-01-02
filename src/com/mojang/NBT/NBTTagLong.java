@@ -17,26 +17,32 @@ public class NBTTagLong extends NBTBase {
         this.data = data;
     }
 
+    @Override
     void write(DataOutput output) throws IOException {
         output.writeLong(this.data);
     }
 
+    @Override
     void load(DataInput input) throws IOException {
         this.data = input.readLong();
     }
 
+    @Override
     public byte getId() {
         return (byte) 4;
     }
 
+    @Override
     public String toString() {
         return "" + this.data;
     }
 
+    @Override
     public NBTBase copy() {
         return new NBTTagLong(this.getName(), this.data);
     }
 
+    @Override
     public boolean equals(Object object) {
         if (super.equals(object)) {
             NBTTagLong tag = (NBTTagLong) object;
@@ -47,6 +53,7 @@ public class NBTTagLong extends NBTBase {
         }
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode() ^ (int) (this.data ^ this.data >>> 32);
     }

@@ -18,6 +18,7 @@ public class NBTTagIntArray extends NBTBase {
         this.intArray = data;
     }
 
+    @Override
     void write(DataOutput output) throws IOException {
         output.writeInt(this.intArray.length);
 
@@ -26,6 +27,7 @@ public class NBTTagIntArray extends NBTBase {
         }
     }
 
+    @Override
     void load(DataInput input) throws IOException {
         int length = input.readInt();
         this.intArray = new int[length];
@@ -35,20 +37,24 @@ public class NBTTagIntArray extends NBTBase {
         }
     }
 
+    @Override
     public byte getId() {
         return (byte) 11;
     }
 
+    @Override
     public String toString() {
         return "[" + this.intArray.length + " bytes]";
     }
 
+    @Override
     public NBTBase copy() {
         int[] data = new int[this.intArray.length];
         System.arraycopy(this.intArray, 0, data, 0, this.intArray.length);
         return new NBTTagIntArray(this.getName(), data);
     }
 
+    @Override
     public boolean equals(Object object) {
         if (super.equals(object)) {
             NBTTagIntArray tag = (NBTTagIntArray) object;
@@ -59,6 +65,7 @@ public class NBTTagIntArray extends NBTBase {
         }
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode() ^ Arrays.hashCode(this.intArray);
     }

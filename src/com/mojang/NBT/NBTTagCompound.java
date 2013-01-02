@@ -20,6 +20,7 @@ public class NBTTagCompound extends NBTBase {
         super(name);
     }
 
+    @Override
     void write(DataOutput output) throws IOException {
         Iterator<NBTBase> iterator = this.tagMap.values().iterator();
 
@@ -31,6 +32,7 @@ public class NBTTagCompound extends NBTBase {
         output.writeByte(0);
     }
 
+    @Override
     void load(DataInput input) throws IOException {
         this.tagMap.clear();
         NBTBase tag;
@@ -44,6 +46,7 @@ public class NBTTagCompound extends NBTBase {
         return this.tagMap.values();
     }
 
+    @Override
     public byte getId() {
         return (byte) 10;
     }
@@ -222,6 +225,7 @@ public class NBTTagCompound extends NBTBase {
         this.tagMap.remove(name);
     }
 
+    @Override
     public String toString() {
         return "" + this.tagMap.size() + " entries";
     }
@@ -230,6 +234,7 @@ public class NBTTagCompound extends NBTBase {
         return this.tagMap.isEmpty();
     }
 
+    @Override
     public NBTBase copy() {
         NBTTagCompound compound = new NBTTagCompound(this.getName());
         Iterator<String> iterator = this.tagMap.keySet().iterator();
@@ -242,6 +247,7 @@ public class NBTTagCompound extends NBTBase {
         return compound;
     }
 
+    @Override
     public boolean equals(Object object) {
         if (super.equals(object)) {
             NBTTagCompound tag = (NBTTagCompound) object;
@@ -252,6 +258,7 @@ public class NBTTagCompound extends NBTBase {
         }
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode() ^ this.tagMap.hashCode();
     }

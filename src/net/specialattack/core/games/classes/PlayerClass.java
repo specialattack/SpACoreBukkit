@@ -18,11 +18,11 @@ public class PlayerClass {
     }
 
     public void addEquiptmentToLoadout(ItemStack equiptment) {
-        loadout.add(equiptment);
+        this.loadout.add(equiptment);
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -30,13 +30,13 @@ public class PlayerClass {
     }
 
     public List<ItemStack> getLoadout() {
-        return loadout;
+        return this.loadout;
     }
 
     public void loadoutPlayer(Player player) {
         PlayerInventory i = player.getInventory();
         i.clear();
-        for (ItemStack is : loadout) {
+        for (ItemStack is : this.loadout) {
             i.addItem(is);
         }
     }

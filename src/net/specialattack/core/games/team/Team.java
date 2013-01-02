@@ -25,11 +25,11 @@ public class Team {
     }
 
     public void sendMessageToTeam(String name, String message, String... excluded) {
-        int size = players.size();
+        int size = this.players.size();
         for (int i = 0; i < size; i++) {
-            Player p = Bukkit.getPlayer(players.get(i));
+            Player p = Bukkit.getPlayer(this.players.get(i));
             if (p != null) {
-                if (!isInArray(excluded, p.getName())) {
+                if (!this.isInArray(excluded, p.getName())) {
                     p.sendMessage(message);
                 }
             }
@@ -44,52 +44,53 @@ public class Team {
     }
 
     public boolean addPlayer(Player p) {
-        return addPlayer(p.getName());
+        return this.addPlayer(p.getName());
     }
 
     public boolean addPlayer(String p) {
-        if (maxTeamSize >= 0) {
-            if (getSize() >= maxTeamSize)
+        if (this.maxTeamSize >= 0) {
+            if (this.getSize() >= this.maxTeamSize) {
                 return false;
+            }
         }
-        players.add(p);
+        this.players.add(p);
         return true;
     }
 
     private int getSize() {
-        return players.size();
+        return this.players.size();
     }
 
     public void removePlayer(Player p) {
-        players.remove(p.getName());
+        this.players.remove(p.getName());
     }
 
     public void removePlayer(String p) {
-        players.remove(p);
+        this.players.remove(p);
     }
 
     public void clearTeam() {
-        players.clear();
+        this.players.clear();
     }
 
     public boolean contains(Player player) {
-        return players.contains(player.getName());
+        return this.players.contains(player.getName());
     }
 
     public boolean contains(String name) {
-        return players.contains(name);
+        return this.players.contains(name);
     }
 
     public TeamColors getTeamColor() {
-        return teamColor;
+        return this.teamColor;
     }
 
     public ChatColor getChatColor() {
-        return teamColor.getChatColor();
+        return this.teamColor.getChatColor();
     }
 
     public int getWoolColor() {
-        return teamColor.getBlockData();
+        return this.teamColor.getBlockData();
     }
 
     public void setMaxTeamSize(int size) {

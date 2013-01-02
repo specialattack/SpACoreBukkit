@@ -17,26 +17,32 @@ public class NBTTagDouble extends NBTBase {
         this.data = data;
     }
 
+    @Override
     void write(DataOutput output) throws IOException {
         output.writeDouble(this.data);
     }
 
+    @Override
     void load(DataInput input) throws IOException {
         this.data = input.readDouble();
     }
 
+    @Override
     public byte getId() {
         return (byte) 6;
     }
 
+    @Override
     public String toString() {
         return "" + this.data;
     }
 
+    @Override
     public NBTBase copy() {
         return new NBTTagDouble(this.getName(), this.data);
     }
 
+    @Override
     public boolean equals(Object object) {
         if (super.equals(object)) {
             NBTTagDouble tag = (NBTTagDouble) object;
@@ -47,6 +53,7 @@ public class NBTTagDouble extends NBTBase {
         }
     }
 
+    @Override
     public int hashCode() {
         long bytes = Double.doubleToLongBits(this.data);
         return super.hashCode() ^ (int) (bytes ^ bytes >>> 32);

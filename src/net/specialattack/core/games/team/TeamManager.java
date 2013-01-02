@@ -13,32 +13,34 @@ public class TeamManager {
 
     public TeamManager() {
         //Heh, Perhaps we need to tell it the playground it is a part of... Not too sure atm... 
-        allowTeamsToBeAdded = true;
+        this.allowTeamsToBeAdded = true;
     }
 
     public boolean addTeam(TeamColors color) {
-        if (!allowTeamsToBeAdded)
+        if (!this.allowTeamsToBeAdded) {
             return false;
-        if (teams.containsKey(color))
+        }
+        if (this.teams.containsKey(color)) {
             return false;
-        teams.put(color, new Team(color, maxTeamSize));
+        }
+        this.teams.put(color, new Team(color, this.maxTeamSize));
         return true;
     }
 
     public boolean addPlayer(Player p, TeamColors color) {
-        if (teams.containsKey(color)) {
-            teams.get(color).addPlayer(p);
+        if (this.teams.containsKey(color)) {
+            this.teams.get(color).addPlayer(p);
         }
         else {
-            if (addTeam(color)) {
-                teams.get(color).addPlayer(p);
+            if (this.addTeam(color)) {
+                this.teams.get(color).addPlayer(p);
             }
         }
         return false;
     }
 
     public void removePlayer(Player p) {
-        Team t = getTeamForPlayer(p);
+        Team t = this.getTeamForPlayer(p);
         if (t != null) {
             t.removePlayer(p);
         }
@@ -50,19 +52,19 @@ public class TeamManager {
 
     public void setTeamSizeMax(int size) {
         this.maxTeamSize = size;
-        for (Team t : teams.values()) {
+        for (Team t : this.teams.values()) {
             t.setMaxTeamSize(size);
         }
     }
 
     public int getMaxTeamSize() {
-        return maxTeamSize;
+        return this.maxTeamSize;
     }
 
     public Team getTeamForPlayer(Player player) {
         for (int i = 0; i < 15; i++) {
-            if (teams.containsKey(i)) {
-                Team t = teams.get(i);
+            if (this.teams.containsKey(i)) {
+                Team t = this.teams.get(i);
                 if (t.contains(player)) {
                     return t;
                 }
@@ -73,8 +75,8 @@ public class TeamManager {
 
     public Team getTeamForName(String name) {
         for (int i = 0; i < 15; i++) {
-            if (teams.containsKey(i)) {
-                Team t = teams.get(i);
+            if (this.teams.containsKey(i)) {
+                Team t = this.teams.get(i);
                 if (t.contains(name)) {
                     return t;
                 }
@@ -84,8 +86,8 @@ public class TeamManager {
     }
 
     public Team getTeam(int data) {
-        if (teams.containsKey(data)) {
-            return teams.get(data);
+        if (this.teams.containsKey(data)) {
+            return this.teams.get(data);
         }
         return null;
     }

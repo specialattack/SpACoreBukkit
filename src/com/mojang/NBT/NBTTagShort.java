@@ -17,26 +17,32 @@ public class NBTTagShort extends NBTBase {
         this.data = value;
     }
 
+    @Override
     void write(DataOutput output) throws IOException {
         output.writeShort(this.data);
     }
 
+    @Override
     void load(DataInput input) throws IOException {
         this.data = input.readShort();
     }
 
+    @Override
     public byte getId() {
         return (byte) 2;
     }
 
+    @Override
     public String toString() {
         return "" + this.data;
     }
 
+    @Override
     public NBTBase copy() {
         return new NBTTagShort(this.getName(), this.data);
     }
 
+    @Override
     public boolean equals(Object object) {
         if (super.equals(object)) {
             NBTTagShort tag = (NBTTagShort) object;
@@ -47,6 +53,7 @@ public class NBTTagShort extends NBTBase {
         }
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode() ^ this.data;
     }

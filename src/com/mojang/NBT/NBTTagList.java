@@ -21,6 +21,7 @@ public class NBTTagList extends NBTBase {
         super(name);
     }
 
+    @Override
     void write(DataOutput output) throws IOException {
         if (!this.tagList.isEmpty()) {
             this.tagType = ((NBTBase) this.tagList.get(0)).getId();
@@ -37,6 +38,7 @@ public class NBTTagList extends NBTBase {
         }
     }
 
+    @Override
     void load(DataInput input) throws IOException {
         this.tagType = input.readByte();
         int length = input.readInt();
@@ -49,10 +51,12 @@ public class NBTTagList extends NBTBase {
         }
     }
 
+    @Override
     public byte getId() {
         return (byte) 9;
     }
 
+    @Override
     public String toString() {
         return "" + this.tagList.size() + " entries of type " + NBTBase.getTagName(this.tagType);
     }
@@ -74,6 +78,7 @@ public class NBTTagList extends NBTBase {
         return this.tagList.size();
     }
 
+    @Override
     public NBTBase copy() {
         NBTTagList tag = new NBTTagList(this.getName());
         tag.tagType = this.tagType;
@@ -88,6 +93,7 @@ public class NBTTagList extends NBTBase {
         return tag;
     }
 
+    @Override
     public boolean equals(Object object) {
         if (super.equals(object)) {
             NBTTagList tag = (NBTTagList) object;
@@ -100,6 +106,7 @@ public class NBTTagList extends NBTBase {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode() ^ this.tagList.hashCode();
     }

@@ -26,9 +26,9 @@ public class SpACore extends JavaPlugin {
 
         instance = this;
 
-        logger = this.getLogger();
+        this.logger = this.getLogger();
 
-        loaderList = new HashMap<String, PlaygroundLoader>();
+        this.loaderList = new HashMap<String, PlaygroundLoader>();
 
         state = PluginState.Initialized;
     }

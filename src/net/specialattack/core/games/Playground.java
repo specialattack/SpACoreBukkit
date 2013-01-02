@@ -24,27 +24,27 @@ public abstract class Playground {
     public abstract String getTypeName();
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public NBTTagCompound savePlayground() {
-        NBTTagCompound compound = new NBTTagCompound(getId() + "-" + getTypeName());
+        NBTTagCompound compound = new NBTTagCompound(this.getId() + "-" + this.getTypeName());
 
-        compound.setString("world", cuboid.getWorld().getName());
+        compound.setString("world", this.cuboid.getWorld().getName());
 
         NBTTagList start = new NBTTagList("start");
-        start.appendTag(new NBTTagInt("x", cuboid.getStartX()));
-        start.appendTag(new NBTTagInt("y", cuboid.getStartY()));
-        start.appendTag(new NBTTagInt("z", cuboid.getStartZ()));
+        start.appendTag(new NBTTagInt("x", this.cuboid.getStartX()));
+        start.appendTag(new NBTTagInt("y", this.cuboid.getStartY()));
+        start.appendTag(new NBTTagInt("z", this.cuboid.getStartZ()));
         compound.setTag("start", start);
 
         NBTTagList end = new NBTTagList("end");
-        end.appendTag(new NBTTagInt("x", cuboid.getEndX()));
-        end.appendTag(new NBTTagInt("y", cuboid.getEndY()));
-        end.appendTag(new NBTTagInt("z", cuboid.getEndZ()));
+        end.appendTag(new NBTTagInt("x", this.cuboid.getEndX()));
+        end.appendTag(new NBTTagInt("y", this.cuboid.getEndY()));
+        end.appendTag(new NBTTagInt("z", this.cuboid.getEndZ()));
         compound.setTag("end", end);
 
-        NBTTagCompound data = savePlaygroundAdditionalData();
+        NBTTagCompound data = this.savePlaygroundAdditionalData();
 
         if (data != null) {
             compound.setCompoundTag("additional", data);
@@ -55,7 +55,7 @@ public abstract class Playground {
 
     public void loadPlayground(NBTTagCompound compound) {
         if (compound.hasKey("additional")) {
-            loadPlaygroundAdditionalData(compound.getCompoundTag("additional"));
+            this.loadPlaygroundAdditionalData(compound.getCompoundTag("additional"));
         }
     }
 }
