@@ -5,6 +5,11 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
+/**
+ * 
+ * @author mbl111
+ *
+ */
 public class TeamManager {
 
     public HashMap<TeamColors, Team> teams = new HashMap<TeamColors, Team>();

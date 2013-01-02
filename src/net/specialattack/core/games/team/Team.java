@@ -10,6 +10,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+/**
+ * 
+ * @author mbl111
+ *
+ */
 public class Team {
 
     //Gonna store the users name rather than their actual player object to save memory

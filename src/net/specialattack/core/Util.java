@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 /**
  * Utility class for a bunch of random things.
  * 
- * @author Mitchel
+ * @author heldplayer
  * 
  */
 public class Util {

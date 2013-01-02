@@ -12,6 +12,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * 
+ * @author mbl111
+ * 
+ */
 public abstract class AbstractPlayer {
 
     public final String name;

@@ -22,6 +22,10 @@ public abstract class Playground {
         this.id = SpACore.getNextAvailablePlaygroundId();
     }
 
+    protected Playground() {
+        this.id = SpACore.getNextAvailablePlaygroundId();
+    }
+
     protected abstract NBTTagCompound savePlaygroundAdditionalData();
 
     protected abstract void loadPlaygroundAdditionalData(NBTTagCompound compound);
