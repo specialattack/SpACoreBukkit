@@ -50,7 +50,10 @@ public class SpACore extends JavaPlugin {
         this.lastId = 0;
         this.loaderList.clear();
 
-        this.getCommand("spacore").setExecutor(new SpACoreCommand());
+        SpACoreCommand command = new SpACoreCommand();
+
+        this.getCommand("spacore").setExecutor(command);
+        this.getCommand("spacore").setTabCompleter(command);
 
         log(this.pdf.getFullName() + " is now enabled!");
 
