@@ -6,8 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.specialattack.core.block.Cuboid;
-import net.specialattack.core.games.Playground;
+import net.specialattack.core.command.SpACoreCommand;
 import net.specialattack.core.games.IPlaygroundLoader;
+import net.specialattack.core.games.Playground;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,8 +27,6 @@ public class SpACore extends JavaPlugin {
 
         instance = this;
 
-        this.logger = this.getLogger();
-
         this.loaderList = new HashMap<String, IPlaygroundLoader>();
 
         state = PluginState.Initialized;
@@ -36,6 +35,8 @@ public class SpACore extends JavaPlugin {
     @Override
     public void onLoad() {
         state = PluginState.Loading;
+
+        this.logger = this.getLogger();
 
         state = PluginState.Loaded;
     }
@@ -48,6 +49,8 @@ public class SpACore extends JavaPlugin {
 
         this.lastId = 0;
         this.loaderList.clear();
+
+        this.getCommand("spacore").setExecutor(new SpACoreCommand());
 
         log(this.pdf.getFullName() + " is now enabled!");
 
