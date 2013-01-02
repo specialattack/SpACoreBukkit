@@ -23,9 +23,24 @@ import com.mojang.NBT.NBTTagDouble;
 import com.mojang.NBT.NBTTagFloat;
 import com.mojang.NBT.NBTTagList;
 
+/**
+ * Utility class for storing and restoring player states.
+ * 
+ * @author heldplayer
+ * 
+ */
 public class PlayerStorage {
-    public static void apply(SpACore main, Player player) throws IOException {
-        File backupFolder = new File(main.getDataFolder(), "players");
+
+    /**
+     * Function to restore a player to a previous state.
+     * 
+     * @param player
+     *        The player to be restored.
+     * @throws IOException
+     *         Thrown if something goes wrong, why would it do that though?
+     */
+    public static void apply(Player player) throws IOException {
+        File backupFolder = new File(SpACore.instance.getDataFolder(), "players");
 
         File playerFile = new File(backupFolder, player.getName() + ".dat");
 
@@ -42,7 +57,7 @@ public class PlayerStorage {
 
         NBTTagCompound compound = CompressedStreamTools.readCompressed(FIS);
 
-        clearEverything(player);
+        Util.clearEverything(player);
 
         player.setHealth(compound.getShort("health"));
         player.setFoodLevel(compound.getInteger("foodlevel"));
@@ -80,7 +95,7 @@ public class PlayerStorage {
         player.setVelocity(new Vector(((NBTTagDouble) motion.tagAt(0)).data, ((NBTTagDouble) motion.tagAt(1)).data, ((NBTTagDouble) motion.tagAt(2)).data));
 
         NBTTagList pos = compound.getTagList("Pos");
-        Location loc = new Location(main.getServer().getWorld(compound.getString("world")), ((NBTTagDouble) pos.tagAt(0)).data, ((NBTTagDouble) pos.tagAt(1)).data, ((NBTTagDouble) pos.tagAt(2)).data);
+        Location loc = new Location(SpACore.instance.getServer().getWorld(compound.getString("world")), ((NBTTagDouble) pos.tagAt(0)).data, ((NBTTagDouble) pos.tagAt(1)).data, ((NBTTagDouble) pos.tagAt(2)).data);
         NBTTagList rotation = compound.getTagList("Rotation");
         loc.setYaw(((NBTTagFloat) rotation.tagAt(0)).data);
         loc.setPitch(((NBTTagFloat) rotation.tagAt(1)).data);
@@ -97,8 +112,19 @@ public class PlayerStorage {
         FIS.close();
     }
 
-    public static void store(SpACore main, Player player) throws IOException, FileNotFoundException {
-        File backupFolder = new File(main.getDataFolder(), "players");
+    /**
+     * Function to save a player state. Can only store up to 2 states (latest
+     * one is used when calling {@link #apply(SpACore, Player)})
+     * 
+     * @param player
+     *        The player to save.
+     * @throws IOException
+     *         Thrown if something goes wrong, why would it do that though?
+     * @throws FileNotFoundException
+     *         Shouldn't ever be thrown.
+     */
+    public static void store(Player player) throws IOException, FileNotFoundException {
+        File backupFolder = new File(SpACore.instance.getDataFolder(), "players");
 
         File playerFile = new File(backupFolder, player.getName() + ".dat");
 
@@ -188,21 +214,9 @@ public class PlayerStorage {
 
         CompressedStreamTools.writeCompressed(compound, FOS);
 
-        clearEverything(player);
+        Util.clearEverything(player);
 
         FOS.close();
     }
 
-    private static void clearEverything(Player player) {
-        player.setHealth(20);
-        player.setFoodLevel(20);
-        player.setGameMode(GameMode.SURVIVAL);
-        player.setLevel(0);
-        player.setTotalExperience(0);
-        player.setExhaustion(0.0F);
-        player.setSaturation(20.0F);
-        player.setExp(0.0F);
-        player.getInventory().clear();
-        player.setVelocity(new Vector(0, 0, 0));
-    }
 }

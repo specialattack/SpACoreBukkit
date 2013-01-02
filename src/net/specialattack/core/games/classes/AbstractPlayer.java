@@ -33,7 +33,7 @@ public abstract class AbstractPlayer {
         Player player = this.tryGetPlayer();
 
         try {
-            PlayerStorage.store(SpACore.instance, player);
+            PlayerStorage.store(player);
             this.doLoadout();
         }
         catch (Exception e) {
