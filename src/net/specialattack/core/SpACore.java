@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import net.specialattack.core.block.Cuboid;
 import net.specialattack.core.games.Playground;
-import net.specialattack.core.games.PlaygroundLoader;
+import net.specialattack.core.games.IPlaygroundLoader;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +18,7 @@ public class SpACore extends JavaPlugin {
     private int lastId;
     private PluginDescriptionFile pdf;
     private Logger logger;
-    private HashMap<String, PlaygroundLoader> loaderList;
+    private HashMap<String, IPlaygroundLoader> loaderList;
 
     public SpACore() {
         super();
@@ -28,7 +28,7 @@ public class SpACore extends JavaPlugin {
 
         this.logger = this.getLogger();
 
-        this.loaderList = new HashMap<String, PlaygroundLoader>();
+        this.loaderList = new HashMap<String, IPlaygroundLoader>();
 
         state = PluginState.Initialized;
     }
@@ -71,7 +71,7 @@ public class SpACore extends JavaPlugin {
         return instance.lastId++;
     }
 
-    public static void registerPlaygroundType(String type, PlaygroundLoader loader) {
+    public static void registerPlaygroundType(String type, IPlaygroundLoader loader) {
         if (state == PluginState.Enabled) {
             instance.loaderList.put(type, loader);
         }
