@@ -4,6 +4,8 @@ package net.specialattack.core.games.team;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.specialattack.core.Util;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Player;
 public class Team {
 
     //Gonna store the users name rather than their actual player object to save memory
+    // And because storing the playername instead of the play object is smarter ;)
     public List<String> players = new ArrayList<String>();
     private TeamColors teamColor;
     private int maxTeamSize;
@@ -29,31 +32,24 @@ public class Team {
         for (int i = 0; i < size; i++) {
             Player p = Bukkit.getPlayer(this.players.get(i));
             if (p != null) {
-                if (!this.isInArray(excluded, p.getName())) {
+                if (!Util.isInArray(excluded, p.getName())) {
                     p.sendMessage(message);
                 }
             }
         }
     }
 
-    private boolean isInArray(String[] array, String name) {
-        for (String n : array) {
-            return n.equalsIgnoreCase(name);
-        }
-        return false;
+    public boolean addPlayer(Player player) {
+        return this.addPlayer(player.getName());
     }
 
-    public boolean addPlayer(Player p) {
-        return this.addPlayer(p.getName());
-    }
-
-    public boolean addPlayer(String p) {
+    public boolean addPlayer(String player) {
         if (this.maxTeamSize >= 0) {
             if (this.getSize() >= this.maxTeamSize) {
                 return false;
             }
         }
-        this.players.add(p);
+        this.players.add(player.toLowerCase());
         return true;
     }
 
@@ -61,12 +57,12 @@ public class Team {
         return this.players.size();
     }
 
-    public void removePlayer(Player p) {
-        this.players.remove(p.getName());
+    public void removePlayer(Player player) {
+        this.players.remove(player.getName().toLowerCase());
     }
 
-    public void removePlayer(String p) {
-        this.players.remove(p);
+    public void removePlayer(String player) {
+        this.players.remove(player.toLowerCase());
     }
 
     public void clearTeam() {
@@ -74,11 +70,11 @@ public class Team {
     }
 
     public boolean contains(Player player) {
-        return this.players.contains(player.getName());
+        return this.players.contains(player.getName().toLowerCase());
     }
 
     public boolean contains(String name) {
-        return this.players.contains(name);
+        return this.players.contains(name.toLowerCase());
     }
 
     public TeamColors getTeamColor() {
@@ -93,7 +89,27 @@ public class Team {
         return this.teamColor.getBlockData();
     }
 
-    public void setMaxTeamSize(int size) {
+    public int getArmorColor() {
+        return this.teamColor.getArmorColor();
+    }
+
+    public String[] setMaxTeamSize(int size) {
         this.maxTeamSize = size;
+
+        ArrayList<String> removedPlayers = new ArrayList<String>();
+
+        while (this.players.size() > this.maxTeamSize) {
+            String name = this.players.remove(this.players.size() - 1);
+
+            removedPlayers.add(name);
+        }
+
+        String[] names = new String[removedPlayers.size()];
+
+        for (int i = 0; i < names.length; i++) {
+            names[i] = removedPlayers.get(i);
+        }
+
+        return names;
     }
 }
