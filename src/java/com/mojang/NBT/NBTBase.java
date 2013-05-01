@@ -4,6 +4,9 @@ package com.mojang.NBT;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.logging.Level;
+
+import net.specialattack.core.SpACore;
 
 public abstract class NBTBase {
     private String name;
@@ -53,7 +56,7 @@ public abstract class NBTBase {
                 return tag;
             }
             catch (IOException ex) {
-                ex.printStackTrace();
+                SpACore.log(Level.WARNING, "Failed reading named NBT Tag", ex);
                 return null;
             }
         }

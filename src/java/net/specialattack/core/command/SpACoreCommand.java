@@ -31,6 +31,7 @@ public class SpACoreCommand implements CommandExecutor, TabCompleter {
      */
     public SpACoreCommand() {
         new VersionCommand("version", "spacore.command.version", "about", "v");
+        new InventoryCommand("inventory", "spacore.command.inventory", "inv", "i");
     }
 
     @Override
@@ -52,14 +53,17 @@ public class SpACoreCommand implements CommandExecutor, TabCompleter {
 
             if (subCommand == null) {
                 sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
+                return true;
             }
 
             if (!subCommand.canUseCommand(sender)) {
                 sender.sendMessage(ChatColor.RED + "You cannot use this command.");
+                return true;
             }
 
             if (!subCommand.hasPermission(sender)) {
                 sender.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
+                return true;
             }
 
             String[] newArgs = new String[args.length - 1];

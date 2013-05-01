@@ -14,8 +14,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import net.specialattack.core.SpACore;
 
 public class CompressedStreamTools {
 
@@ -81,7 +84,7 @@ public class CompressedStreamTools {
             throw new IOException("Root tag must be a named compound tag");
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            SpACore.log(Level.WARNING, "Failed reading NBT save file", ex);
             return null;
         }
     }

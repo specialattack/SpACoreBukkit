@@ -103,7 +103,7 @@ public class PlayerStorage {
 
         File backupFile = new File(backupFolder, player.getName() + ".dat_old");
 
-        if (backupFile.exists()) {
+        if (backupFile.exists() && !backupFile.equals(playerFile)) {
             backupFile.delete();
         }
 
@@ -138,9 +138,14 @@ public class PlayerStorage {
             playerFile.renameTo(backupFile);
 
             playerFile = new File(backupFolder, player.getName() + ".dat");
-        }
 
-        playerFile.createNewFile();
+            playerFile.createNewFile();
+        }
+        else {
+            backupFolder.mkdirs();
+
+            playerFile.createNewFile();
+        }
 
         FileOutputStream FOS = new FileOutputStream(playerFile);
 
@@ -168,7 +173,7 @@ public class PlayerStorage {
 
                 stackComp.setByte("Count", (byte) stack.getAmount());
                 stackComp.setByte("Slot", (byte) slot);
-                stackComp.setInteger("Damage", stack.getDurability());
+                stackComp.setShort("Damage", stack.getDurability());
                 stackComp.setShort("id", (short) stack.getTypeId());
 
                 Map<Enchantment, Integer> enchants = stack.getEnchantments();
