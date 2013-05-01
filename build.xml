@@ -4,6 +4,7 @@
 		<echo>${basedir}\src\java</echo>
 		<eclipse.convertPath resourcepath="SpACore" property="eclipse.workspace.home" />
 		<echo>${eclipse.workspace.home}</echo>
-		<jar destfile="${basedir}\output\SpACore.jar" basedir="${eclipse.workspace.home}\bin"></jar>
+		<jar destfile="${basedir}\output\SpACore.jar" basedir="${eclipse.workspace.home}\bin">
+		</jar>
 	</target>
 </project>
