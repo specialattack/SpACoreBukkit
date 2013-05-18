@@ -104,11 +104,9 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
             ArrayList<String> result = new ArrayList<String>();
 
-            if (possibles != null) {
-                for (String possible : possibles) {
-                    if (possible.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                        result.add(possible);
-                    }
+            for (String possible : possibles) {
+                if (possible.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                    result.add(possible);
                 }
             }
 
@@ -147,6 +145,9 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
                         result.add(possible);
                     }
                 }
+            }
+            else {
+                return null;
             }
 
             return result;
