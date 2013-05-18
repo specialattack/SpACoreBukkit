@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.logging.Level;
 
 import net.specialattack.core.PlayerStorage;
@@ -24,8 +23,13 @@ import org.bukkit.entity.Player;
  */
 public class InventoryCommand extends AbstractSubCommand {
 
+    private final List<String> possibles;
+
     public InventoryCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
+        this.possibles = new ArrayList<String>();
+        this.possibles.add("load");
+        this.possibles.add("save");
     }
 
     @Override
@@ -100,18 +104,6 @@ public class InventoryCommand extends AbstractSubCommand {
             return emptyTabResult;
         }
 
-        ArrayList<String> result = new ArrayList<String>();
-
-        TreeSet<String> possibles = new TreeSet<String>();
-        possibles.add("save");
-        possibles.add("load");
-
-        for (String possible : possibles) {
-            if (possible.startsWith(args[0])) {
-                result.add(possible);
-            }
-        }
-
-        return result;
+        return this.possibles;
     }
 }
