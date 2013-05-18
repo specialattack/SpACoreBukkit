@@ -81,7 +81,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            ArrayList<String> complements = new ArrayList<String>();
+            List<String> possibles = new ArrayList<String>();
 
             Set<Entry<String, AbstractSubCommand>> commandSet = commands.entrySet();
 
@@ -95,16 +95,22 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
                     continue;
                 }
 
-                if (subCommand.name.toLowerCase().startsWith(args[0].toLowerCase()))
-                    complements.add(subCommand.name);
+                possibles.add(subCommand.name);
 
                 for (String commandAlias : subCommand.aliases) {
-                    if (commandAlias.toLowerCase().startsWith(args[0].toLowerCase()))
-                        complements.add(commandAlias);
+                    possibles.add(commandAlias);
                 }
             }
 
-            return complements;
+            ArrayList<String> result = new ArrayList<String>();
+
+            for (String possible : possibles) {
+                if (possible.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                    result.add(possible);
+                }
+            }
+
+            return result;
         }
         else {
             AbstractSubCommand subCommand = commands.get(args[0]);
@@ -129,7 +135,17 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
             System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
-            return subCommand.getTabCompleteResults(sender, alias, newArgs);
+            List<String> possibles = subCommand.getTabCompleteResults(sender, alias, newArgs);
+
+            ArrayList<String> result = new ArrayList<String>();
+
+            for (String possible : possibles) {
+                if (possible.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                    result.add(possible);
+                }
+            }
+
+            return result;
         }
     }
 
