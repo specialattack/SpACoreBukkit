@@ -96,6 +96,9 @@ public class InventoryCommand extends AbstractSubCommand {
         if (args.length == 2) {
             return null;
         }
+        else if (args.length > 2) {
+            return emptyTabResult;
+        }
 
         ArrayList<String> result = new ArrayList<String>();
 

@@ -3,6 +3,8 @@ package net.specialattack.core.command;
 
 import java.util.List;
 
+import net.specialattack.core.EmptyList;
+
 import org.bukkit.command.CommandSender;
 
 /**
@@ -13,6 +15,9 @@ import org.bukkit.command.CommandSender;
  * 
  */
 public abstract class AbstractSubCommand {
+
+    public static final List<String> emptyTabResult = new EmptyList<String>();
+
     private String permission;
     protected final String name;
     protected final String[] aliases;
@@ -79,4 +84,5 @@ public abstract class AbstractSubCommand {
     public abstract boolean canUseCommand(CommandSender sender);
 
     public abstract List<String> getTabCompleteResults(CommandSender sender, String alias, String... args);
+
 }

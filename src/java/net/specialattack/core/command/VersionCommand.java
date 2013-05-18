@@ -33,7 +33,7 @@ public class VersionCommand extends AbstractSubCommand {
 
     @Override
     public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
-        return null;
+        return emptyTabResult;
     }
 
 }
