@@ -22,10 +22,10 @@ import org.bukkit.entity.Player;
  * @author heldplayer
  * 
  */
-public class InventoryCommand extends SpACoreSubCommand {
+public class InventoryCommand extends AbstractSubCommand {
 
-    public InventoryCommand(String name, String permissions, String... aliases) {
-        super(name, permissions, aliases);
+    public InventoryCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
+        super(command, name, permissions, aliases);
     }
 
     @Override

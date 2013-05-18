@@ -14,10 +14,10 @@ import org.bukkit.command.CommandSender;
  * @author heldplayer
  * 
  */
-public class VersionCommand extends SpACoreSubCommand {
+public class VersionCommand extends AbstractSubCommand {
 
-    public VersionCommand(String name, String permissions, String... aliases) {
-        super(name, permissions, aliases);
+    public VersionCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
+        super(command, name, permissions, aliases);
     }
 
     @Override

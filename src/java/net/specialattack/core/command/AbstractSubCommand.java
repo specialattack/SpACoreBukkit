@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender;
  * @author Mitchel
  * 
  */
-public abstract class SpACoreSubCommand {
+public abstract class AbstractSubCommand {
     private String permission;
     protected final String name;
     protected final String[] aliases;
@@ -28,15 +28,15 @@ public abstract class SpACoreSubCommand {
      * @param aliases
      *        Aliases for this sub command.
      */
-    public SpACoreSubCommand(String name, String permission, String... aliases) {
+    public AbstractSubCommand(AbstractMultiCommand command, String name, String permission, String... aliases) {
         this.permission = permission;
         this.name = name;
         this.aliases = aliases;
 
-        SpACoreCommand.commands.put(name, this);
+        command.commands.put(name, this);
 
         for (String alias : aliases) {
-            SpACoreCommand.aliases.put(alias, this);
+            command.aliases.put(alias, this);
         }
     }
 
