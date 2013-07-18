@@ -14,9 +14,9 @@ import org.bukkit.command.CommandSender;
  * @author heldplayer
  * 
  */
-public class VersionCommand extends AbstractSubCommand {
+public class VersionSubCommand extends AbstractSubCommand {
 
-    public VersionCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
+    public VersionSubCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
     }
 
@@ -34,6 +34,11 @@ public class VersionCommand extends AbstractSubCommand {
     @Override
     public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
         return emptyTabResult;
+    }
+
+    @Override
+    public String[] getHelpMessage() {
+        return new String[] { this.name };
     }
 
 }

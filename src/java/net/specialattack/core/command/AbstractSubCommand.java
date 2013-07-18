@@ -21,6 +21,7 @@ public abstract class AbstractSubCommand {
     private String permission;
     protected final String name;
     protected final String[] aliases;
+    public final AbstractMultiCommand owner;
 
     /**
      * Constructor of the base sub command.
@@ -37,6 +38,7 @@ public abstract class AbstractSubCommand {
         this.permission = permission;
         this.name = name;
         this.aliases = aliases;
+        this.owner = command;
 
         command.commands.put(name, this);
 
@@ -58,6 +60,10 @@ public abstract class AbstractSubCommand {
         }
 
         return sender.hasPermission(permission);
+    }
+
+    public boolean hasPermission(CommandSender sender, String permission) {
+        return sender.hasPermission(this.permission + "." + permission);
     }
 
     /**
@@ -84,5 +90,7 @@ public abstract class AbstractSubCommand {
     public abstract boolean canUseCommand(CommandSender sender);
 
     public abstract List<String> getTabCompleteResults(CommandSender sender, String alias, String... args);
+
+    public abstract String[] getHelpMessage();
 
 }

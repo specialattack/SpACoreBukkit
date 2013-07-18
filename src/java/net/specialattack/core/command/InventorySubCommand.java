@@ -21,11 +21,11 @@ import org.bukkit.entity.Player;
  * @author heldplayer
  * 
  */
-public class InventoryCommand extends AbstractSubCommand {
+public class InventorySubCommand extends AbstractSubCommand {
 
     private final List<String> possibles;
 
-    public InventoryCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
+    public InventorySubCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
         this.possibles = new ArrayList<String>();
         this.possibles.add("load");
@@ -106,4 +106,10 @@ public class InventoryCommand extends AbstractSubCommand {
 
         return this.possibles;
     }
+
+    @Override
+    public String[] getHelpMessage() {
+        return new String[] { this.name + " load/save [player]" };
+    }
+
 }

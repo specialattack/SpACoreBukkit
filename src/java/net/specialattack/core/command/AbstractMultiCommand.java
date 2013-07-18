@@ -26,6 +26,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
     public final Map<String, AbstractSubCommand> commands;
     public final Map<String, AbstractSubCommand> aliases;
+    public String lastAlias;
 
     /**
      * Constructor, adds default commands to the list.
@@ -43,6 +44,8 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
             // We don't work with command blocks
             return false;
         }
+
+        lastAlias = alias;
 
         if (args.length == 0) {
             commands.get(getDefaultCommand()).runCommand(sender, "version");
@@ -97,8 +100,10 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
                 possibles.add(subCommand.name);
 
-                for (String commandAlias : subCommand.aliases) {
-                    possibles.add(commandAlias);
+                if (args[0].length() > 0) {
+                    for (String commandAlias : subCommand.aliases) {
+                        possibles.add(commandAlias);
+                    }
                 }
             }
 
