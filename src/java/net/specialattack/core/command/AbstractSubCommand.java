@@ -59,7 +59,7 @@ public abstract class AbstractSubCommand {
             return true;
         }
 
-        return sender.hasPermission(permission);
+        return sender.hasPermission(this.permission);
     }
 
     public boolean hasPermission(CommandSender sender, String permission) {

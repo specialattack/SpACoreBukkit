@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 /**
  * 
  * @author mbl111
- *
+ * 
  */
 public enum TeamColors {
 

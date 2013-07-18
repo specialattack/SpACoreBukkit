@@ -45,16 +45,16 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
             return false;
         }
 
-        lastAlias = alias;
+        this.lastAlias = alias;
 
         if (args.length == 0) {
-            commands.get(getDefaultCommand()).runCommand(sender, "version");
+            this.commands.get(this.getDefaultCommand()).runCommand(sender, "version");
         }
         else {
-            AbstractSubCommand subCommand = commands.get(args[0]);
+            AbstractSubCommand subCommand = this.commands.get(args[0]);
 
             if (subCommand == null) {
-                subCommand = aliases.get(args[0]);
+                subCommand = this.aliases.get(args[0]);
             }
 
             if (subCommand == null) {
@@ -86,7 +86,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
         if (args.length == 1) {
             List<String> possibles = new ArrayList<String>();
 
-            Set<Entry<String, AbstractSubCommand>> commandSet = commands.entrySet();
+            Set<Entry<String, AbstractSubCommand>> commandSet = this.commands.entrySet();
 
             for (Entry<String, AbstractSubCommand> entry : commandSet) {
                 AbstractSubCommand subCommand = entry.getValue();
@@ -118,10 +118,10 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
             return result;
         }
         else {
-            AbstractSubCommand subCommand = commands.get(args[0]);
+            AbstractSubCommand subCommand = this.commands.get(args[0]);
 
             if (subCommand == null) {
-                subCommand = aliases.get(args[0]);
+                subCommand = this.aliases.get(args[0]);
             }
 
             if (subCommand == null) {

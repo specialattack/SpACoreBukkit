@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 /**
  * 
  * @author mbl111
- *
+ * 
  */
 public class Team {
 
