@@ -29,6 +29,7 @@ import com.mojang.NBT.NBTTagList;
  * @author heldplayer
  * 
  */
+@SuppressWarnings("deprecation")
 public class PlayerStorage {
 
     /**
