@@ -1,9 +1,9 @@
 
 package net.specialattack.core.command;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import net.specialattack.core.EmptyList;
 
 import org.bukkit.command.CommandSender;
 
@@ -16,7 +16,8 @@ import org.bukkit.command.CommandSender;
  */
 public abstract class AbstractSubCommand {
 
-    public static final List<String> emptyTabResult = new EmptyList<String>();
+    public static final List<String> emptyTabResult = Collections.emptyList();
+    public static final List<String> trueFalseResult = Collections.unmodifiableList(Arrays.asList("true", "false"));
 
     private String permission;
     protected final String name;
