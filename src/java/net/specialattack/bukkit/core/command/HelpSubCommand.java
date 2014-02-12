@@ -1,5 +1,5 @@
 
-package net.specialattack.core.command;
+package net.specialattack.bukkit.core.command;
 
 import java.util.List;
 import java.util.Map.Entry;

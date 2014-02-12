@@ -1,5 +1,5 @@
 
-package net.specialattack.core;
+package net.specialattack.bukkit.core;
 
 import java.io.File;
 import java.io.FileInputStream;

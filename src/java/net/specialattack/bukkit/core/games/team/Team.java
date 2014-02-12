@@ -1,10 +1,10 @@
 
-package net.specialattack.core.games.team;
+package net.specialattack.bukkit.core.games.team;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.specialattack.core.Util;
+import net.specialattack.bukkit.core.Util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

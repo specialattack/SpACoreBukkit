@@ -1,5 +1,5 @@
 
-package net.specialattack.core.command;
+package net.specialattack.bukkit.core.command;
 
 /**
  * Main command class, sub commands can be registered here to decrease the

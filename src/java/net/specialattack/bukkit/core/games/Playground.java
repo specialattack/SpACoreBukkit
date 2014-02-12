@@ -1,8 +1,8 @@
 
-package net.specialattack.core.games;
+package net.specialattack.bukkit.core.games;
 
-import net.specialattack.core.SpACore;
-import net.specialattack.core.block.Cuboid;
+import net.specialattack.bukkit.core.SpACore;
+import net.specialattack.bukkit.core.block.Cuboid;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

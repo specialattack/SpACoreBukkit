@@ -1,11 +1,11 @@
 
-package net.specialattack.core.games.classes;
+package net.specialattack.bukkit.core.games.classes;
 
 import java.util.List;
 import java.util.logging.Level;
 
-import net.specialattack.core.PlayerStorage;
-import net.specialattack.core.SpACore;
+import net.specialattack.bukkit.core.PlayerStorage;
+import net.specialattack.bukkit.core.SpACore;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

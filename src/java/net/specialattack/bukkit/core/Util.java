@@ -1,5 +1,5 @@
 
-package net.specialattack.core;
+package net.specialattack.bukkit.core;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

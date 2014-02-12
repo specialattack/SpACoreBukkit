@@ -1,14 +1,14 @@
 
-package net.specialattack.core;
+package net.specialattack.bukkit.core;
 
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.specialattack.core.block.Cuboid;
-import net.specialattack.core.command.SpACoreCommand;
-import net.specialattack.core.games.IPlaygroundLoader;
-import net.specialattack.core.games.Playground;
+import net.specialattack.bukkit.core.block.Cuboid;
+import net.specialattack.bukkit.core.command.SpACoreCommand;
+import net.specialattack.bukkit.core.games.IPlaygroundLoader;
+import net.specialattack.bukkit.core.games.Playground;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;

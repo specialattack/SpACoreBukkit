@@ -6,7 +6,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import net.specialattack.core.SpACore;
+import net.specialattack.bukkit.core.SpACore;
 
 public abstract class NBTBase {
     private String name;

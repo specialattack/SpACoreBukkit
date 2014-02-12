@@ -1,8 +1,8 @@
-name: SpACore
+name: SpACoreBukkit
 version: 0.1.1-Dev
-description: This plugin adds core functions and features required by plugins on SpecialAttack.net SMP
+description: Core features for plugins by the SpecialAttack team
 authors: [heldplayer, mbl111]
-main: net.specialattack.core.SpACore
+main: net.specialattack.bukkit.core.SpACore
 commands:
   spa:
     description: SpACore command

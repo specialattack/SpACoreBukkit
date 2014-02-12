@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import net.specialattack.core.SpACore;
+import net.specialattack.bukkit.core.SpACore;
 
 public class CompressedStreamTools {
 

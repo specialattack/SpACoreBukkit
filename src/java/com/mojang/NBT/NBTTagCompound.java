@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
-import net.specialattack.core.SpACore;
+import net.specialattack.bukkit.core.SpACore;
 
 public class NBTTagCompound extends NBTBase {
     private Map<String, NBTBase> tagMap = new HashMap<String, NBTBase>();

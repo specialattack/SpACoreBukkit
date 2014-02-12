@@ -1,5 +1,5 @@
 
-package net.specialattack.core;
+package net.specialattack.bukkit.core;
 
 /**
  * Utility class for plugins to state in what state they are.

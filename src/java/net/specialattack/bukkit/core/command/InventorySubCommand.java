@@ -1,5 +1,5 @@
 
-package net.specialattack.core.command;
+package net.specialattack.bukkit.core.command;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.specialattack.core.PlayerStorage;
-import net.specialattack.core.SpACore;
+import net.specialattack.bukkit.core.PlayerStorage;
+import net.specialattack.bukkit.core.SpACore;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

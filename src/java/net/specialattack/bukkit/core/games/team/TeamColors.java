@@ -1,5 +1,5 @@
 
-package net.specialattack.core.games.team;
+package net.specialattack.bukkit.core.games.team;
 
 import org.bukkit.ChatColor;
 

@@ -1,9 +1,9 @@
 
-package net.specialattack.core.command;
+package net.specialattack.bukkit.core.command;
 
 import java.util.List;
 
-import net.specialattack.core.SpACore;
+import net.specialattack.bukkit.core.SpACore;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
