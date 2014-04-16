@@ -1,0 +1,3 @@
+[submodule "accounts"]
+	path = accounts
+	url = https://github.com/specialattack/AccountsClient.git
