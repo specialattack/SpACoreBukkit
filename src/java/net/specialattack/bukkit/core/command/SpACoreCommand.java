@@ -18,6 +18,7 @@ public class SpACoreCommand extends AbstractMultiCommand {
         new VersionSubCommand(this, "version", "spacore.command.version", "about", "v");
         new InventorySubCommand(this, "inventory", "spacore.command.inventory", "inv", "i");
         new HelpSubCommand(this, "help", "spacore.command.help", "?");
+        new UUIDSubCommand(this, "uuid", "spacore.command.uuid", "id");
     }
 
     @Override

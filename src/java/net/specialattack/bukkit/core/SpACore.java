@@ -13,7 +13,10 @@ import net.specialattack.bukkit.core.games.Playground;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.mojang.api.profiles.HttpProfileRepository;
+
 public class SpACore extends JavaPlugin {
+
     public static SpACore instance;
     private static PluginState state = PluginState.Unloaded;
     private int lastId;
@@ -69,6 +72,15 @@ public class SpACore extends JavaPlugin {
         state = PluginState.Disabled;
     }
 
+    private static HttpProfileRepository repository;
+
+    public static HttpProfileRepository getProfileRepository() {
+        if (repository == null) {
+            repository = new HttpProfileRepository("minecraft");
+        }
+        return repository;
+    }
+
     public static PluginState getState() {
         return state;
     }
@@ -101,4 +113,5 @@ public class SpACore extends JavaPlugin {
     public static void log(Level level, String message, Throwable throwable) {
         instance.logger.log(level, message, throwable);
     }
+
 }
