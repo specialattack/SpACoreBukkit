@@ -2,6 +2,7 @@
 package net.specialattack.bukkit.core;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,10 +11,13 @@ import net.specialattack.bukkit.core.command.SpACoreCommand;
 import net.specialattack.bukkit.core.games.IPlaygroundLoader;
 import net.specialattack.bukkit.core.games.Playground;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mojang.api.profiles.HttpProfileRepository;
+import com.mojang.api.profiles.Profile;
 
 public class SpACore extends JavaPlugin {
 
@@ -79,6 +83,49 @@ public class SpACore extends JavaPlugin {
             repository = new HttpProfileRepository("minecraft");
         }
         return repository;
+    }
+
+    private static boolean uuidMethodExists = true;
+    private static HashMap<String, String> uuidMap = new HashMap<String, String>();
+
+    // Bridge method
+    @Deprecated
+    public static Player getPlayer(UUID uuid) {
+        if (uuidMethodExists) {
+            try {
+                return Bukkit.getPlayer(uuid);
+            }
+            catch (NoSuchMethodError e) {
+                uuidMethodExists = false;
+            }
+        }
+
+        // Check the hashmat first
+        String replaced = uuid.toString().replaceAll("-", "");
+        String name = uuidMap.get(replaced);
+        if (name != null) {
+            // That was easy
+            return Bukkit.getPlayer(name);
+        }
+
+        // Try a little harder
+        Player[] players = Bukkit.getOnlinePlayers();
+        for (Player player : players) {
+            if (player.getUniqueId().equals(uuid)) {
+                uuidMap.put(replaced, player.getName());
+                return player;
+            }
+        }
+
+        // Gotta try really hard now
+        Profile profile = repository.findProfileByUUID(replaced);
+        if (profile == null) {
+            // We failed
+            return null;
+        }
+        uuidMap.put(replaced, profile.getName());
+        // This should be it
+        return Bukkit.getPlayer(profile.getName());
     }
 
     public static PluginState getState() {
