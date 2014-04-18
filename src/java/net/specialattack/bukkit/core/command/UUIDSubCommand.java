@@ -7,6 +7,10 @@ import net.specialattack.bukkit.core.SpACore;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.mojang.api.profiles.HttpProfileRepository;
+import com.mojang.api.profiles.Profile;
 
 /**
  * Command that finds the UUID of a player
@@ -22,8 +26,27 @@ public class UUIDSubCommand extends AbstractSubCommand {
 
     @Override
     public void runCommand(CommandSender sender, String alias, String... args) {
-        sender.sendMessage(ChatColor.GRAY + "========== " + ChatColor.GREEN + SpACore.instance.getDescription().getFullName() + ChatColor.GRAY + " ==========");
-        sender.sendMessage(ChatColor.YELLOW + "Authors: " + ChatColor.GRAY + "mbl111, heldplayer");
+        String[] names = args;
+        if (args.length == 0) {
+            if (sender instanceof Player) {
+                names = new String[] { sender.getName() };
+            }
+            else {
+                sender.sendMessage(ChatColor.RED + "Please supply a player name as an argument");
+                return;
+            }
+        }
+
+        HttpProfileRepository repository = SpACore.getProfileRepository();
+        Profile[] profiles = repository.findProfilesByNames(names);
+
+        if (profiles.length == 0) {
+            sender.sendMessage("Found 0 results");
+        }
+
+        for (Profile profile : profiles) {
+            sender.sendMessage(String.format("'%s' = '%s'", profile.getUUID(), profile.getName()));
+        }
     }
 
     @Override
@@ -33,12 +56,12 @@ public class UUIDSubCommand extends AbstractSubCommand {
 
     @Override
     public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
-        return emptyTabResult;
+        return null;
     }
 
     @Override
     public String[] getHelpMessage() {
-        return new String[] { this.name };
+        return new String[] { this.name + " [player1 [player2 [...]]]" };
     }
 
 }

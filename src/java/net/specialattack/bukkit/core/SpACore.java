@@ -100,7 +100,7 @@ public class SpACore extends JavaPlugin {
             }
         }
 
-        // Check the hashmat first
+        // Check the hashmap first
         String replaced = uuid.toString().replaceAll("-", "");
         String name = uuidMap.get(replaced);
         if (name != null) {
@@ -118,6 +118,7 @@ public class SpACore extends JavaPlugin {
         }
 
         // Gotta try really hard now
+        HttpProfileRepository repository = getProfileRepository();
         Profile profile = repository.findProfileByUUID(replaced);
         if (profile == null) {
             // We failed

@@ -47,36 +47,43 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
         this.lastAlias = alias;
 
-        if (args.length == 0) {
-            this.commands.get(this.getDefaultCommand()).runCommand(sender, "version");
+        try {
+            if (args.length == 0) {
+                this.commands.get(this.getDefaultCommand()).runCommand(sender, "version");
+            }
+            else {
+                AbstractSubCommand subCommand = this.commands.get(args[0]);
+
+                if (subCommand == null) {
+                    subCommand = this.aliases.get(args[0]);
+                }
+
+                if (subCommand == null) {
+                    sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
+                    return true;
+                }
+
+                if (!subCommand.canUseCommand(sender)) {
+                    sender.sendMessage(ChatColor.RED + "You cannot use this command.");
+                    return true;
+                }
+
+                if (!subCommand.hasPermission(sender)) {
+                    sender.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
+                    return true;
+                }
+
+                String[] newArgs = new String[args.length - 1];
+
+                System.arraycopy(args, 1, newArgs, 0, args.length - 1);
+
+                subCommand.runCommand(sender, args[0], newArgs);
+            }
         }
-        else {
-            AbstractSubCommand subCommand = this.commands.get(args[0]);
-
-            if (subCommand == null) {
-                subCommand = this.aliases.get(args[0]);
-            }
-
-            if (subCommand == null) {
-                sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
-                return true;
-            }
-
-            if (!subCommand.canUseCommand(sender)) {
-                sender.sendMessage(ChatColor.RED + "You cannot use this command.");
-                return true;
-            }
-
-            if (!subCommand.hasPermission(sender)) {
-                sender.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
-                return true;
-            }
-
-            String[] newArgs = new String[args.length - 1];
-
-            System.arraycopy(args, 1, newArgs, 0, args.length - 1);
-
-            subCommand.runCommand(sender, args[0], newArgs);
+        catch (Throwable e) {
+            sender.sendMessage(ChatColor.RED + "An error occoured while performing command");
+            sender.sendMessage(e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
         }
         return true;
     }
