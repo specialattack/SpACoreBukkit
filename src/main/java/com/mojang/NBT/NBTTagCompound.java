@@ -1,4 +1,3 @@
-
 package com.mojang.NBT;
 
 import java.io.DataInput;
@@ -9,10 +8,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-
 import net.specialattack.bukkit.core.SpACore;
 
 public class NBTTagCompound extends NBTBase {
+
     private Map<String, NBTBase> tagMap = new HashMap<String, NBTBase>();
 
     public NBTTagCompound() {
@@ -113,8 +112,7 @@ public class NBTTagCompound extends NBTBase {
     public byte getByte(String name) {
         try {
             return !this.tagMap.containsKey(name) ? 0 : ((NBTTagByte) this.tagMap.get(name)).data;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting byte from NBTTagCompound", ex);
             return 0;
         }
@@ -123,8 +121,7 @@ public class NBTTagCompound extends NBTBase {
     public short getShort(String name) {
         try {
             return !this.tagMap.containsKey(name) ? 0 : ((NBTTagShort) this.tagMap.get(name)).data;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting short from NBTTagCompound", ex);
             return 0;
         }
@@ -133,8 +130,7 @@ public class NBTTagCompound extends NBTBase {
     public int getInteger(String name) {
         try {
             return !this.tagMap.containsKey(name) ? 0 : ((NBTTagInt) this.tagMap.get(name)).data;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting integer from NBTTagCompound", ex);
             return 0;
         }
@@ -143,8 +139,7 @@ public class NBTTagCompound extends NBTBase {
     public long getLong(String name) {
         try {
             return !this.tagMap.containsKey(name) ? 0L : ((NBTTagLong) this.tagMap.get(name)).data;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting long from NBTTagCompound", ex);
             return 0;
         }
@@ -153,8 +148,7 @@ public class NBTTagCompound extends NBTBase {
     public float getFloat(String name) {
         try {
             return !this.tagMap.containsKey(name) ? 0.0F : ((NBTTagFloat) this.tagMap.get(name)).data;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting float from NBTTagCompound", ex);
             return 0;
         }
@@ -163,8 +157,7 @@ public class NBTTagCompound extends NBTBase {
     public double getDouble(String name) {
         try {
             return !this.tagMap.containsKey(name) ? 0.0D : ((NBTTagDouble) this.tagMap.get(name)).data;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting double from NBTTagCompound", ex);
             return 0;
         }
@@ -173,8 +166,7 @@ public class NBTTagCompound extends NBTBase {
     public String getString(String name) {
         try {
             return !this.tagMap.containsKey(name) ? "" : ((NBTTagString) this.tagMap.get(name)).data;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting string from NBTTagCompound", ex);
             return null;
         }
@@ -183,8 +175,7 @@ public class NBTTagCompound extends NBTBase {
     public byte[] getByteArray(String name) {
         try {
             return !this.tagMap.containsKey(name) ? new byte[0] : ((NBTTagByteArray) this.tagMap.get(name)).byteArray;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting byte array from NBTTagCompound", ex);
             return null;
         }
@@ -193,8 +184,7 @@ public class NBTTagCompound extends NBTBase {
     public int[] getIntArray(String name) {
         try {
             return !this.tagMap.containsKey(name) ? new int[0] : ((NBTTagIntArray) this.tagMap.get(name)).intArray;
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting integer array from NBTTagCompound", ex);
             return null;
         }
@@ -203,8 +193,7 @@ public class NBTTagCompound extends NBTBase {
     public NBTTagCompound getCompoundTag(String name) {
         try {
             return !this.tagMap.containsKey(name) ? new NBTTagCompound(name) : (NBTTagCompound) this.tagMap.get(name);
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting tag compound from NBTTagCompound", ex);
             return null;
         }
@@ -213,8 +202,7 @@ public class NBTTagCompound extends NBTBase {
     public NBTTagList getTagList(String name) {
         try {
             return !this.tagMap.containsKey(name) ? new NBTTagList(name) : (NBTTagList) this.tagMap.get(name);
-        }
-        catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             SpACore.log(Level.WARNING, "Failed getting tag list from NBTTagCompound", ex);
             return null;
         }
@@ -255,8 +243,7 @@ public class NBTTagCompound extends NBTBase {
         if (super.equals(object)) {
             NBTTagCompound tag = (NBTTagCompound) object;
             return this.tagMap.entrySet().equals(tag.tagMap.entrySet());
-        }
-        else {
+        } else {
             return false;
         }
     }

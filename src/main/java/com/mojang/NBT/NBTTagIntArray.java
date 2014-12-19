@@ -1,4 +1,3 @@
-
 package com.mojang.NBT;
 
 import java.io.DataInput;
@@ -7,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class NBTTagIntArray extends NBTBase {
+
     public int[] intArray;
 
     public NBTTagIntArray(String name) {
@@ -59,8 +59,7 @@ public class NBTTagIntArray extends NBTBase {
         if (super.equals(object)) {
             NBTTagIntArray tag = (NBTTagIntArray) object;
             return this.intArray == null && tag.intArray == null || this.intArray != null && Arrays.equals(this.intArray, tag.intArray);
-        }
-        else {
+        } else {
             return false;
         }
     }

@@ -1,18 +1,14 @@
-
 package net.specialattack.bukkit.core.command;
 
 import java.util.List;
-
 import net.specialattack.bukkit.core.SpACore;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /**
  * Command that displays version info about SpACore etc...
- * 
+ *
  * @author heldplayer
- * 
  */
 public class VersionSubCommand extends AbstractSubCommand {
 

@@ -1,4 +1,3 @@
-
 package com.mojang.NBT;
 
 import java.io.DataInput;
@@ -9,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class NBTTagList extends NBTBase {
+
     private List<NBTBase> tagList = new ArrayList<NBTBase>();
 
     private byte tagType;
@@ -25,8 +25,7 @@ public class NBTTagList extends NBTBase {
     void write(DataOutput output) throws IOException {
         if (!this.tagList.isEmpty()) {
             this.tagType = ((NBTBase) this.tagList.get(0)).getId();
-        }
-        else {
+        } else {
             this.tagType = 1;
         }
 

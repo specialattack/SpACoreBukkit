@@ -1,22 +1,17 @@
-
 package net.specialattack.bukkit.core.command;
 
+import com.mojang.api.profiles.HttpProfileRepository;
+import com.mojang.api.profiles.Profile;
 import java.util.List;
-
 import net.specialattack.bukkit.core.SpACore;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mojang.api.profiles.HttpProfileRepository;
-import com.mojang.api.profiles.Profile;
-
 /**
  * Command that finds the UUID of a player
- * 
+ *
  * @author heldplayer
- * 
  */
 public class UUIDSubCommand extends AbstractSubCommand {
 
@@ -30,8 +25,7 @@ public class UUIDSubCommand extends AbstractSubCommand {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 names = new String[] { sender.getName() };
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.RED + "Please supply a player name as an argument");
                 return;
             }

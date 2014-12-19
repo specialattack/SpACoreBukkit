@@ -1,11 +1,9 @@
-
 package com.mojang.NBT;
 
 import java.io.*;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
 import net.specialattack.bukkit.core.SpACore;
 
 public class CompressedStreamTools {
@@ -16,8 +14,7 @@ public class CompressedStreamTools {
 
         try {
             compound = read(input);
-        }
-        finally {
+        } finally {
             input.close();
         }
 
@@ -29,8 +26,7 @@ public class CompressedStreamTools {
 
         try {
             write(compound, output);
-        }
-        finally {
+        } finally {
             output.close();
         }
     }
@@ -41,8 +37,7 @@ public class CompressedStreamTools {
 
         try {
             var2 = read(input);
-        }
-        finally {
+        } finally {
             input.close();
         }
 
@@ -55,8 +50,7 @@ public class CompressedStreamTools {
 
         try {
             write(compound, output);
-        }
-        finally {
+        } finally {
             output.close();
         }
 
@@ -70,8 +64,7 @@ public class CompressedStreamTools {
                 return (NBTTagCompound) Base;
             }
             throw new IOException("Root tag must be a named compound tag");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             SpACore.log(Level.WARNING, "Failed reading NBT save file", ex);
             return null;
         }
@@ -86,8 +79,7 @@ public class CompressedStreamTools {
 
         try {
             write(compound, output);
-        }
-        finally {
+        } finally {
             output.close();
         }
     }
@@ -95,15 +87,13 @@ public class CompressedStreamTools {
     public static NBTTagCompound read(File file) throws IOException {
         if (!file.exists()) {
             return null;
-        }
-        else {
+        } else {
             DataInputStream input = new DataInputStream(new FileInputStream(file));
             NBTTagCompound compound;
 
             try {
                 compound = read(input);
-            }
-            finally {
+            } finally {
                 input.close();
             }
 

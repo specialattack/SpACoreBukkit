@@ -1,4 +1,3 @@
-
 package com.mojang.NBT;
 
 import java.io.DataInput;
@@ -6,6 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class NBTTagString extends NBTBase {
+
     public String data;
 
     public NBTTagString(String name) {
@@ -51,8 +51,7 @@ public class NBTTagString extends NBTBase {
         if (super.equals(object)) {
             NBTTagString tag = (NBTTagString) object;
             return this.data == null && tag.data == null || this.data != null && this.data.equals(tag.data);
-        }
-        else {
+        } else {
             return false;
         }
     }

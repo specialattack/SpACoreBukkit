@@ -1,4 +1,3 @@
-
 package net.specialattack.bukkit.core.block;
 
 import org.bukkit.Location;
@@ -6,22 +5,23 @@ import org.bukkit.World;
 
 /**
  * Class to define a cubic area in the world.
- * 
+ *
  * @author heldplayer
- * 
  */
 public final class Cuboid {
+
     private final Location start;
     private final Location end;
 
     /**
      * Constructor that takes 2 locations that must be in the same world to
      * define a cubic area.
-     * 
+     *
      * @param startPoint
-     *        The starting point of the cuboid.
+     *         The starting point of the cuboid.
      * @param endPoint
-     *        The ending point of the cuboid.
+     *         The ending point of the cuboid.
+     *
      * @throws UnsupportedOperationException
      *         Thrown if the supplied locations are not in the same world.
      */
@@ -55,21 +55,21 @@ public final class Cuboid {
     /**
      * Constructor that takes raw coordinates and a world pointer to define a
      * cubid area.
-     * 
+     *
      * @param world
-     *        The world to define in.
+     *         The world to define in.
      * @param startX
-     *        The start X coordinate.
+     *         The start X coordinate.
      * @param startY
-     *        The start Y coordinate.
+     *         The start Y coordinate.
      * @param startZ
-     *        The start Z coordinate.
+     *         The start Z coordinate.
      * @param endX
-     *        The end X coordinate.
+     *         The end X coordinate.
      * @param endY
-     *        The end Y coordinate.
+     *         The end Y coordinate.
      * @param endZ
-     *        The end Z coordinate.
+     *         The end Z coordinate.
      */
     public Cuboid(World world, int startX, int startY, int startZ, int endX, int endY, int endZ) {
         this.start = new Location(world, startX, startY, startZ);
@@ -96,7 +96,7 @@ public final class Cuboid {
 
     /**
      * Gets the world this cuboid is defined in.
-     * 
+     *
      * @return The world in which the cuboid is in.
      */
     public World getWorld() {
@@ -105,7 +105,7 @@ public final class Cuboid {
 
     /**
      * Gets the starting position of the cuboid.
-     * 
+     *
      * @return The starting position of the cuboid.
      */
     public Location getStart() {
@@ -114,7 +114,7 @@ public final class Cuboid {
 
     /**
      * Gets the ending position of the cuboid.
-     * 
+     *
      * @return The ending position of the cuboid.
      */
     public Location getEnd() {
@@ -123,7 +123,7 @@ public final class Cuboid {
 
     /**
      * Gets the starting X position of the cuboid.
-     * 
+     *
      * @return The starting X position of the cuboid.
      */
     public int getStartX() {
@@ -132,7 +132,7 @@ public final class Cuboid {
 
     /**
      * Gets the starting Y position of the cuboid.
-     * 
+     *
      * @return The starting Y position of the cuboid.
      */
     public int getStartY() {
@@ -141,7 +141,7 @@ public final class Cuboid {
 
     /**
      * Gets the starting Z position of the cuboid.
-     * 
+     *
      * @return The starting Z position of the cuboid.
      */
     public int getStartZ() {
@@ -150,7 +150,7 @@ public final class Cuboid {
 
     /**
      * Gets the ending X position of the cuboid.
-     * 
+     *
      * @return The ending X position of the cuboid.
      */
     public int getEndX() {
@@ -159,7 +159,7 @@ public final class Cuboid {
 
     /**
      * Gets the ending Y position of the cuboid.
-     * 
+     *
      * @return The ending Y position of the cuboid.
      */
     public int getEndY() {
@@ -168,7 +168,7 @@ public final class Cuboid {
 
     /**
      * Gets the ending Z position of the cuboid.
-     * 
+     *
      * @return The ending Z position of the cuboid.
      */
     public int getEndZ() {
@@ -177,7 +177,7 @@ public final class Cuboid {
 
     /**
      * Gets the size of the cuboid in the X axis.
-     * 
+     *
      * @return The size of the cuboid in the X axis.
      */
     public int getSizeX() {
@@ -186,7 +186,7 @@ public final class Cuboid {
 
     /**
      * Gets the size of the cuboid in the Y axis.
-     * 
+     *
      * @return The size of the cuboid in the Y axis.
      */
     public int getSizeY() {
@@ -195,7 +195,7 @@ public final class Cuboid {
 
     /**
      * Gets the size of the cuboid in the Z axis.
-     * 
+     *
      * @return The size of the cuboid in the Z axis.
      */
     public int getSizeZ() {
@@ -204,7 +204,7 @@ public final class Cuboid {
 
     /**
      * Gets the total size of the cuboid.
-     * 
+     *
      * @return The total size of the cuboid.
      */
     public int getSize() {

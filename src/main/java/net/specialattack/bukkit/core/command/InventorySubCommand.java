@@ -1,4 +1,3 @@
-
 package net.specialattack.bukkit.core.command;
 
 import java.io.FileNotFoundException;
@@ -6,10 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
 import net.specialattack.bukkit.core.PlayerStorage;
 import net.specialattack.bukkit.core.SpACore;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -17,9 +14,8 @@ import org.bukkit.entity.Player;
 
 /**
  * Command that displays version info about SpACore etc...
- * 
+ *
  * @author heldplayer
- * 
  */
 public class InventorySubCommand extends AbstractSubCommand {
 
@@ -40,24 +36,19 @@ public class InventorySubCommand extends AbstractSubCommand {
             try {
                 if (args[0].equalsIgnoreCase("save")) {
                     PlayerStorage.store(player);
-                }
-                else if (args[0].equalsIgnoreCase("load")) {
+                } else if (args[0].equalsIgnoreCase("load")) {
                     PlayerStorage.apply(player);
-                }
-                else {
+                } else {
                     sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
                     sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [username]");
                 }
-            }
-            catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 sender.sendMessage(ChatColor.RED + "Error while proccessing command: " + e.getMessage());
                 SpACore.log(Level.WARNING, "Error while proccessing command", e);
             }
-        }
-        else if (args.length == 2) {
+        } else if (args.length == 2) {
             try {
                 player = Bukkit.getPlayer(args[1]);
                 if (player == null) {
@@ -67,24 +58,19 @@ public class InventorySubCommand extends AbstractSubCommand {
 
                 if (args[0].equalsIgnoreCase("save")) {
                     PlayerStorage.store(player);
-                }
-                else if (args[0].equalsIgnoreCase("load")) {
+                } else if (args[0].equalsIgnoreCase("load")) {
                     PlayerStorage.apply(player);
-                }
-                else {
+                } else {
                     sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
                     sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [username]");
                 }
-            }
-            catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 sender.sendMessage(ChatColor.RED + "Error while proccessing command: " + e.getMessage());
                 SpACore.log(Level.WARNING, "Error while proccessing command", e);
             }
-        }
-        else {
+        } else {
             sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
             sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [username]");
         }
@@ -99,8 +85,7 @@ public class InventorySubCommand extends AbstractSubCommand {
     public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
         if (args.length == 2) {
             return null;
-        }
-        else if (args.length > 2) {
+        } else if (args.length > 2) {
             return emptyTabResult;
         }
 

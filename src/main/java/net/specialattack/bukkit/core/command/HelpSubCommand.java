@@ -1,10 +1,8 @@
-
 package net.specialattack.bukkit.core.command;
 
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

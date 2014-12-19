@@ -1,19 +1,15 @@
-
 package net.specialattack.bukkit.core;
 
+import com.mojang.api.profiles.HttpProfileRepository;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import net.specialattack.bukkit.core.block.Cuboid;
 import net.specialattack.bukkit.core.command.SpACoreCommand;
 import net.specialattack.bukkit.core.games.IPlaygroundLoader;
 import net.specialattack.bukkit.core.games.Playground;
-
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.mojang.api.profiles.HttpProfileRepository;
 
 public class SpACore extends JavaPlugin {
 
@@ -92,8 +88,7 @@ public class SpACore extends JavaPlugin {
     public static void registerPlaygroundType(String type, IPlaygroundLoader loader) {
         if (state == PluginState.Enabled) {
             instance.loaderList.put(type, loader);
-        }
-        else {
+        } else {
             throw new RuntimeException("SpACore is not ready to be enabled yet. A faulty plugin is causing this.");
         }
     }

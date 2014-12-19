@@ -1,4 +1,3 @@
-
 package com.mojang.NBT;
 
 import java.io.DataInput;
@@ -7,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class NBTTagByteArray extends NBTBase {
+
     public byte[] byteArray;
 
     public NBTTagByteArray(String name) {

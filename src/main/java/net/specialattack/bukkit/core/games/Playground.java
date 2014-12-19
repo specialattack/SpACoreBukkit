@@ -1,17 +1,15 @@
-
 package net.specialattack.bukkit.core.games;
-
-import net.specialattack.bukkit.core.SpACore;
-import net.specialattack.bukkit.core.block.Cuboid;
-
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 
 import com.mojang.NBT.NBTTagCompound;
 import com.mojang.NBT.NBTTagInt;
 import com.mojang.NBT.NBTTagList;
+import net.specialattack.bukkit.core.SpACore;
+import net.specialattack.bukkit.core.block.Cuboid;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 public abstract class Playground {
+
     protected Cuboid cuboid;
     private final int id;
     public boolean errored = false; // Use me to check if the playground has had any errors. If true then the playground should attempt to finish its current game and refuse to start a new one

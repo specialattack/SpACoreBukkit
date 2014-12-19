@@ -8,3 +8,26 @@ commands:
     description: SpACore command
     usage: /<command>
     aliases: [ spacore, sc ]
+permissions:
+  spacore.*:
+    children:
+      spacore.command.*: true
+    default: op
+    description: Gives full access to SpACore
+  spacore.command.*:
+    description: Allows players to use all /spacore subcommands
+    children:
+      spacore.command.version: true
+      spacore.command.help: true
+      spacore.command.inventory: true
+      spacore.command.uuid: true
+  spacore.command.version:
+    description: Allows players to use the /spacore version command
+    default: true
+  spacore.command.help:
+    description: Allows players to use the /spacore help command
+    default: true
+  spacore.command.inventory:
+    description: Allows players to use the /spacore inventory command
+  spacore.command.uuid:
+    description: Allows players to use the /spacore uuid command

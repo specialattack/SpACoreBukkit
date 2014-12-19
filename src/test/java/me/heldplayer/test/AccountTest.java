@@ -1,10 +1,8 @@
-
 package me.heldplayer.test;
-
-import java.util.UUID;
 
 import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
+import java.util.UUID;
 
 public class AccountTest {
 
@@ -23,8 +21,7 @@ public class AccountTest {
 
             if (other != null) {
                 System.out.println(String.format("%s = %s", other.getId(), other.getName()));
-            }
-            else {
+            } else {
                 System.out.println("Reverse lookup failed");
             }
         }

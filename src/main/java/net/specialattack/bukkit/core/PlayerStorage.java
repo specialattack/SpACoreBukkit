@@ -1,14 +1,9 @@
-
 package net.specialattack.bukkit.core;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.mojang.NBT.*;
+import java.io.*;
 import java.util.Map;
 import java.util.logging.Level;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
@@ -17,26 +12,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.Vector;
 
-import com.mojang.NBT.CompressedStreamTools;
-import com.mojang.NBT.NBTTagCompound;
-import com.mojang.NBT.NBTTagDouble;
-import com.mojang.NBT.NBTTagFloat;
-import com.mojang.NBT.NBTTagList;
-
 /**
  * Utility class for storing and restoring player states.
- * 
+ *
  * @author heldplayer
- * 
  */
 @SuppressWarnings("deprecation")
 public class PlayerStorage {
 
     /**
      * Function to restore a player to a previous state.
-     * 
+     *
      * @param player
-     *        The player to be restored.
+     *         The player to be restored.
+     *
      * @throws IOException
      *         Thrown if something goes wrong, why would it do that though?
      */
@@ -115,10 +104,11 @@ public class PlayerStorage {
 
     /**
      * Function to save a player state. Can only store up to 2 states (latest
-     * one is used when calling {@link #apply(SpACore, Player)})
-     * 
+     * one is used when calling {@link net.specialattack.bukkit.core.PlayerStorage#apply(org.bukkit.entity.Player)})
+     *
      * @param player
-     *        The player to save.
+     *         The player to save.
+     *
      * @throws IOException
      *         Thrown if something goes wrong, why would it do that though?
      * @throws FileNotFoundException
@@ -141,8 +131,7 @@ public class PlayerStorage {
             playerFile = new File(backupFolder, player.getName() + ".dat");
 
             playerFile.createNewFile();
-        }
-        else {
+        } else {
             backupFolder.mkdirs();
 
             playerFile.createNewFile();

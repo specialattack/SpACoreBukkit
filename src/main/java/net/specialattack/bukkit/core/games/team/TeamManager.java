@@ -1,14 +1,10 @@
-
 package net.specialattack.bukkit.core.games.team;
 
 import java.util.HashMap;
-
 import org.bukkit.entity.Player;
 
 /**
- * 
  * @author mbl111
- * 
  */
 public class TeamManager {
 
@@ -35,8 +31,7 @@ public class TeamManager {
     public boolean addPlayer(Player p, TeamColors color) {
         if (this.teams.containsKey(color)) {
             this.teams.get(color).addPlayer(p);
-        }
-        else {
+        } else {
             if (this.addTeam(color)) {
                 this.teams.get(color).addPlayer(p);
             }

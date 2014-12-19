@@ -1,11 +1,9 @@
-
 package net.specialattack.bukkit.core;
 
 /**
  * Utility class for plugins to state in what state they are.
- * 
+ *
  * @author heldplayer
- * 
  */
 public enum PluginState {
 

@@ -1,26 +1,15 @@
-
 package net.specialattack.bukkit.core.command;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import org.bukkit.ChatColor;
-import org.bukkit.command.BlockCommandSender;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 
 /**
  * Main command class, sub commands can be registered here to decrease the
  * amount of commands.
- * 
+ *
  * @author heldplayer
- * 
  */
 public abstract class AbstractMultiCommand implements CommandExecutor, TabCompleter {
 
@@ -50,8 +39,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
         try {
             if (args.length == 0) {
                 this.commands.get(this.getDefaultCommand()).runCommand(sender, "version");
-            }
-            else {
+            } else {
                 AbstractSubCommand subCommand = this.commands.get(args[0]);
 
                 if (subCommand == null) {
@@ -79,8 +67,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
                 subCommand.runCommand(sender, args[0], newArgs);
             }
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             sender.sendMessage(ChatColor.RED + "An error occoured while performing command");
             sender.sendMessage(e.getClass().getName() + ": " + e.getMessage());
             e.printStackTrace();
@@ -123,8 +110,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
             }
 
             return result;
-        }
-        else {
+        } else {
             AbstractSubCommand subCommand = this.commands.get(args[0]);
 
             if (subCommand == null) {
@@ -157,8 +143,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
                         result.add(possible);
                     }
                 }
-            }
-            else {
+            } else {
                 return null;
             }
 
