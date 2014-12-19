@@ -24,7 +24,7 @@ public class NBTTagList extends NBTBase {
     @Override
     void write(DataOutput output) throws IOException {
         if (!this.tagList.isEmpty()) {
-            this.tagType = ((NBTBase) this.tagList.get(0)).getId();
+            this.tagType = this.tagList.get(0).getId();
         } else {
             this.tagType = 1;
         }
@@ -33,7 +33,7 @@ public class NBTTagList extends NBTBase {
         output.writeInt(this.tagList.size());
 
         for (int i = 0; i < this.tagList.size(); i++) {
-            ((NBTBase) this.tagList.get(i)).write(output);
+            this.tagList.get(i).write(output);
         }
     }
 
@@ -44,7 +44,7 @@ public class NBTTagList extends NBTBase {
         this.tagList = new ArrayList<NBTBase>();
 
         for (int i = 0; i < length; i++) {
-            NBTBase tag = NBTBase.newTag(this.tagType, (String) null);
+            NBTBase tag = NBTBase.newTag(this.tagType, null);
             tag.load(input);
             this.tagList.add(tag);
         }
@@ -66,11 +66,11 @@ public class NBTTagList extends NBTBase {
     }
 
     public NBTBase removeTag(int index) {
-        return (NBTBase) this.tagList.remove(index);
+        return this.tagList.remove(index);
     }
 
     public NBTBase tagAt(int index) {
-        return (NBTBase) this.tagList.get(index);
+        return this.tagList.get(index);
     }
 
     public int tagCount() {
@@ -84,7 +84,7 @@ public class NBTTagList extends NBTBase {
         Iterator<NBTBase> iterator = this.tagList.iterator();
 
         while (iterator.hasNext()) {
-            NBTBase original = (NBTBase) iterator.next();
+            NBTBase original = iterator.next();
             NBTBase copy = original.copy();
             tag.tagList.add(copy);
         }

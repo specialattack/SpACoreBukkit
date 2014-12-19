@@ -54,11 +54,7 @@ public abstract class AbstractSubCommand {
      * @return True if the CommandSender has permission, false otherwise.
      */
     public boolean hasPermission(CommandSender sender) {
-        if (sender.hasPermission("spacore.command.*")) {
-            return true;
-        }
-
-        return sender.hasPermission(this.permission);
+        return sender.hasPermission("spacore.command.*") || sender.hasPermission(this.permission);
     }
 
     public boolean hasPermission(CommandSender sender, String permission) {

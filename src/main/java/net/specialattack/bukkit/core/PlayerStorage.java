@@ -114,7 +114,7 @@ public class PlayerStorage {
      * @throws FileNotFoundException
      *         Shouldn't ever be thrown.
      */
-    public static void store(Player player) throws IOException, FileNotFoundException {
+    public static void store(Player player) throws IOException {
         File backupFolder = new File(SpACore.instance.getDataFolder(), "players");
 
         File playerFile = new File(backupFolder, player.getName() + ".dat");
@@ -176,7 +176,7 @@ public class PlayerStorage {
                         NBTTagCompound enchComp = new NBTTagCompound();
 
                         enchComp.setShort("id", (short) enchantment.getId());
-                        enchComp.setShort("lvl", ((Integer) enchants.get(enchantment)).shortValue());
+                        enchComp.setShort("lvl", enchants.get(enchantment).shortValue());
 
                         ench.appendTag(enchComp);
                     }

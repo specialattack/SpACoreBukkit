@@ -50,7 +50,7 @@ public class NBTTagByteArray extends NBTBase {
 
     @Override
     public boolean equals(Object object) {
-        return super.equals(object) ? Arrays.equals(this.byteArray, ((NBTTagByteArray) object).byteArray) : false;
+        return super.equals(object) && Arrays.equals(this.byteArray, ((NBTTagByteArray) object).byteArray);
     }
 
     @Override

@@ -136,7 +136,7 @@ public abstract class NBTBase {
             return false;
         } else {
             NBTBase tag = (NBTBase) object;
-            return this.getId() != tag.getId() ? false : ((this.name != null || tag.name == null) && (this.name == null || tag.name != null) ? this.name == null || this.name.equals(tag.name) : false);
+            return this.getId() == tag.getId() && ((this.name != null || tag.name == null) && (this.name == null || tag.name != null) && (this.name == null || this.name.equals(tag.name)));
         }
     }
 

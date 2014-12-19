@@ -7,7 +7,7 @@ import java.io.IOException;
 public class NBTTagEnd extends NBTBase {
 
     public NBTTagEnd() {
-        super((String) null);
+        super(null);
     }
 
     @Override

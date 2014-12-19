@@ -102,7 +102,7 @@ public class NBTTagCompound extends NBTBase {
     }
 
     public NBTBase getTag(String name) {
-        return (NBTBase) this.tagMap.get(name);
+        return this.tagMap.get(name);
     }
 
     public boolean hasKey(String name) {
@@ -232,7 +232,7 @@ public class NBTTagCompound extends NBTBase {
 
         while (iterator.hasNext()) {
             String name = iterator.next();
-            compound.setTag(name, ((NBTBase) this.tagMap.get(name)).copy());
+            compound.setTag(name, this.tagMap.get(name).copy());
         }
 
         return compound;

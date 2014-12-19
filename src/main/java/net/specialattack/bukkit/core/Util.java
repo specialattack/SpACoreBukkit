@@ -25,7 +25,9 @@ public class Util {
      */
     public static boolean isInArray(String[] array, String toCheck) {
         for (String value : array) {
-            return value.equalsIgnoreCase(toCheck);
+            if (value.equalsIgnoreCase(toCheck)) {
+                return true;
+            }
         }
         return false;
     }
@@ -42,7 +44,9 @@ public class Util {
      */
     public static <E> boolean isInArray(E[] array, E toCheck) {
         for (E value : array) {
-            return value.equals(toCheck);
+            if (value.equals(toCheck)) {
+                return true;
+            }
         }
         return false;
     }
