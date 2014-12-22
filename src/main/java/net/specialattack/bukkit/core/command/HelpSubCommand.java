@@ -8,13 +8,13 @@ import org.bukkit.command.CommandSender;
 
 public class HelpSubCommand extends AbstractSubCommand {
 
-    public HelpSubCommand(AbstractMultiCommand command, String name, String permission, String... aliases) {
+    public HelpSubCommand(ISubCommandHolder command, String name, String permission, String... aliases) {
         super(command, name, permission, aliases);
     }
 
     @Override
     public void runCommand(CommandSender sender, String alias, String... args) {
-        Set<Entry<String, AbstractSubCommand>> commandSet = this.owner.commands.entrySet();
+        Set<Entry<String, AbstractSubCommand>> commandSet = this.owner.getCommands().entrySet();
 
         for (Entry<String, AbstractSubCommand> entry : commandSet) {
             AbstractSubCommand subCommand = entry.getValue();
@@ -26,19 +26,14 @@ public class HelpSubCommand extends AbstractSubCommand {
                 continue;
             }
 
-            String[] usages = subCommand.getHelpMessage();
+            String[] usages = subCommand.getHelpMessage(sender);
 
             for (int i = 0; i < usages.length; i++) {
-                usages[i] = ChatColor.DARK_GRAY + "/" + this.owner.lastAlias + " " + ChatColor.GRAY + usages[i];
+                usages[i] = ChatColor.DARK_GRAY + "/" + this.owner.getLastUsedAlias() + " " + ChatColor.GRAY + usages[i];
             }
 
             sender.sendMessage(usages);
         }
-    }
-
-    @Override
-    public boolean canUseCommand(CommandSender sender) {
-        return true;
     }
 
     @Override
@@ -47,7 +42,7 @@ public class HelpSubCommand extends AbstractSubCommand {
     }
 
     @Override
-    public String[] getHelpMessage() {
+    public String[] getHelpMessage(CommandSender sender) {
         return new String[] { this.name };
     }
 

@@ -70,4 +70,18 @@ public class Util {
         player.setVelocity(new Vector(0, 0, 0));
     }
 
+    public static String join(Iterable<String> strings) {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for (String str : strings) {
+            if (!first) {
+                result.append(", ");
+            } else {
+                first = false;
+            }
+            result.append(str);
+        }
+        return result.toString();
+    }
+
 }

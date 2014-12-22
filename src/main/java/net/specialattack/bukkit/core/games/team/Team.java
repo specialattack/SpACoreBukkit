@@ -28,9 +28,8 @@ public class Team {
     }
 
     public void sendMessageToTeam(String name, String message, String... excluded) {
-        int size = this.players.size();
-        for (int i = 0; i < size; i++) {
-            Player p = Bukkit.getPlayer(this.players.get(i));
+        for (String player : this.players) {
+            Player p = Bukkit.getPlayer(player);
             if (p != null) {
                 if (!Util.isInArray(excluded, p.getName())) {
                     p.sendMessage(message);

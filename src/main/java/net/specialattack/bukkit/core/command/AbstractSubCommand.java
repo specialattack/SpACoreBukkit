@@ -19,7 +19,7 @@ public abstract class AbstractSubCommand {
     private String permission;
     protected final String name;
     protected final String[] aliases;
-    public final AbstractMultiCommand owner;
+    public final ISubCommandHolder owner;
 
     /**
      * Constructor of the base sub command.
@@ -32,16 +32,16 @@ public abstract class AbstractSubCommand {
      * @param aliases
      *         Aliases for this sub command.
      */
-    public AbstractSubCommand(AbstractMultiCommand command, String name, String permission, String... aliases) {
+    public AbstractSubCommand(ISubCommandHolder command, String name, String permission, String... aliases) {
         this.permission = permission;
         this.name = name;
         this.aliases = aliases;
         this.owner = command;
 
-        command.commands.put(name, this);
+        command.addSubCommand(name, this);
 
         for (String alias : aliases) {
-            command.aliases.put(alias, this);
+            command.addAlias(alias, this);
         }
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractSubCommand {
      * @return True if the CommandSender has permission, false otherwise.
      */
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("spacore.command.*") || sender.hasPermission(this.permission);
+        return sender.hasPermission(this.permission);
     }
 
     public boolean hasPermission(CommandSender sender, String permission) {
@@ -83,10 +83,12 @@ public abstract class AbstractSubCommand {
      * @return True if the CommandSender can use this sub command. False
      * otherwise.
      */
-    public abstract boolean canUseCommand(CommandSender sender);
+    public boolean canUseCommand(CommandSender sender) {
+        return true;
+    }
 
     public abstract List<String> getTabCompleteResults(CommandSender sender, String alias, String... args);
 
-    public abstract String[] getHelpMessage();
+    public abstract String[] getHelpMessage(CommandSender sender);
 
 }

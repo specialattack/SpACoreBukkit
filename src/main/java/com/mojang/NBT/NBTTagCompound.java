@@ -5,7 +5,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import net.specialattack.bukkit.core.SpACore;
@@ -24,10 +23,7 @@ public class NBTTagCompound extends NBTBase {
 
     @Override
     void write(DataOutput output) throws IOException {
-        Iterator<NBTBase> iterator = this.tagMap.values().iterator();
-
-        while (iterator.hasNext()) {
-            NBTBase tag = iterator.next();
+        for (NBTBase tag : this.tagMap.values()) {
             NBTBase.writeNamedTag(tag, output);
         }
 
@@ -228,10 +224,8 @@ public class NBTTagCompound extends NBTBase {
     @Override
     public NBTBase copy() {
         NBTTagCompound compound = new NBTTagCompound(this.getName());
-        Iterator<String> iterator = this.tagMap.keySet().iterator();
 
-        while (iterator.hasNext()) {
-            String name = iterator.next();
+        for (String name : this.tagMap.keySet()) {
             compound.setTag(name, this.tagMap.get(name).copy());
         }
 

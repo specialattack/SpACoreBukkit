@@ -21,7 +21,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 
     private final List<String> possibles;
 
-    public InventorySubCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
+    public InventorySubCommand(ISubCommandHolder command, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
         this.possibles = new ArrayList<String>();
         this.possibles.add("load");
@@ -93,7 +93,7 @@ public class InventorySubCommand extends AbstractSubCommand {
     }
 
     @Override
-    public String[] getHelpMessage() {
+    public String[] getHelpMessage(CommandSender sender) {
         return new String[] { this.name + " load/save [player]" };
     }
 

@@ -4,7 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class NBTTagList extends NBTBase {
@@ -32,8 +31,8 @@ public class NBTTagList extends NBTBase {
         output.writeByte(this.tagType);
         output.writeInt(this.tagList.size());
 
-        for (int i = 0; i < this.tagList.size(); i++) {
-            this.tagList.get(i).write(output);
+        for (NBTBase aTagList : this.tagList) {
+            aTagList.write(output);
         }
     }
 
@@ -81,10 +80,8 @@ public class NBTTagList extends NBTBase {
     public NBTBase copy() {
         NBTTagList tag = new NBTTagList(this.getName());
         tag.tagType = this.tagType;
-        Iterator<NBTBase> iterator = this.tagList.iterator();
 
-        while (iterator.hasNext()) {
-            NBTBase original = iterator.next();
+        for (NBTBase original : this.tagList) {
             NBTBase copy = original.copy();
             tag.tagList.add(copy);
         }

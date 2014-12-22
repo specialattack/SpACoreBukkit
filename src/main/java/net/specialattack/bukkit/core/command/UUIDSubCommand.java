@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  */
 public class UUIDSubCommand extends AbstractSubCommand {
 
-    public UUIDSubCommand(AbstractMultiCommand command, String name, String permissions, String... aliases) {
+    public UUIDSubCommand(ISubCommandHolder command, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
     }
 
@@ -44,17 +44,12 @@ public class UUIDSubCommand extends AbstractSubCommand {
     }
 
     @Override
-    public boolean canUseCommand(CommandSender sender) {
-        return true;
-    }
-
-    @Override
     public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
         return null;
     }
 
     @Override
-    public String[] getHelpMessage() {
+    public String[] getHelpMessage(CommandSender sender) {
         return new String[] { this.name + " [player1 [player2 [...]]]" };
     }
 

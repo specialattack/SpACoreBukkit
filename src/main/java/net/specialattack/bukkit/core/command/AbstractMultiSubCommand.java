@@ -1,31 +1,22 @@
 package net.specialattack.bukkit.core.command;
 
 import java.util.*;
-import java.util.Map.Entry;
 import org.bukkit.ChatColor;
-import org.bukkit.command.*;
+import org.bukkit.command.CommandSender;
 
-/**
- * Main command class, sub commands can be registered here to decrease the
- * amount of commands.
- *
- * @author heldplayer
- */
-public abstract class AbstractMultiCommand implements CommandExecutor, TabCompleter, ISubCommandHolder {
+public abstract class AbstractMultiSubCommand extends AbstractSubCommand implements ISubCommandHolder {
 
     public final Map<String, AbstractSubCommand> commands;
     public final Map<String, AbstractSubCommand> aliases;
     public String lastAlias;
 
-    /**
-     * Constructor, adds default commands to the list.
-     */
-    public AbstractMultiCommand() {
+    public AbstractMultiSubCommand(ISubCommandHolder command, String name, String permission, String... aliases) {
+        super(command, name, permission, aliases);
         this.commands = new TreeMap<String, AbstractSubCommand>();
         this.aliases = new TreeMap<String, AbstractSubCommand>();
-    }
 
-    public abstract String getDefaultCommand();
+        this.lastAlias = name;
+    }
 
     @Override
     public void addSubCommand(String name, AbstractSubCommand command) {
@@ -48,17 +39,12 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
-        if (sender instanceof BlockCommandSender) {
-            // We don't work with command blocks
-            return false;
-        }
-
+    public void runCommand(CommandSender sender, String alias, String... args) {
         this.lastAlias = alias;
 
         try {
             if (args.length == 0) {
-                this.commands.get(this.getDefaultCommand()).runCommand(sender, "version");
+                sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
             } else {
                 AbstractSubCommand subCommand = this.commands.get(args[0]);
 
@@ -68,17 +54,17 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
                 if (subCommand == null) {
                     sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
-                    return true;
+                    return;
                 }
 
                 if (!subCommand.canUseCommand(sender)) {
                     sender.sendMessage(ChatColor.RED + "You cannot use this command.");
-                    return true;
+                    return;
                 }
 
                 if (!subCommand.hasPermission(sender)) {
                     sender.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
-                    return true;
+                    return;
                 }
 
                 String[] newArgs = new String[args.length - 1];
@@ -92,17 +78,16 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
             sender.sendMessage(e.getClass().getName() + ": " + e.getMessage());
             e.printStackTrace();
         }
-        return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
         if (args.length == 1) {
             List<String> possibles = new ArrayList<String>();
 
-            Set<Entry<String, AbstractSubCommand>> commandSet = this.commands.entrySet();
+            Set<Map.Entry<String, AbstractSubCommand>> commandSet = this.commands.entrySet();
 
-            for (Entry<String, AbstractSubCommand> entry : commandSet) {
+            for (Map.Entry<String, AbstractSubCommand> entry : commandSet) {
                 AbstractSubCommand subCommand = entry.getValue();
 
                 if (!subCommand.canUseCommand(sender)) {
@@ -169,4 +154,26 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
         }
     }
 
+    @Override
+    public String[] getHelpMessage(CommandSender sender) {
+        List<String> result = new ArrayList<String>();
+
+        for (Map.Entry<String, AbstractSubCommand> entry : this.commands.entrySet()) {
+            AbstractSubCommand subCommand = entry.getValue();
+
+            if (!subCommand.canUseCommand(sender)) {
+                continue;
+            }
+            if (!subCommand.hasPermission(sender)) {
+                continue;
+            }
+
+            String[] usages = subCommand.getHelpMessage(sender);
+
+            for (String usage : usages) {
+                result.add(this.lastAlias + " " + usage);
+            }
+        }
+        return result.toArray(new String[result.size()]);
+    }
 }
