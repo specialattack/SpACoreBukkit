@@ -51,7 +51,12 @@ public class PlayerStorage {
 
         player.setHealth(compound.getShort("health"));
         player.setFoodLevel(compound.getInteger("foodlevel"));
-        player.setGameMode(GameMode.getByValue(compound.getInteger("playerGameType")));
+        
+        if (compound.hasKey("playerGameType")){
+        	player.setGameMode(GameMode.getByValue(compound.getInteger("playerGameType")));
+        }else{
+        	player.setGameMode(GameMode.valueOf(compound.getString("playerGameTypeString")));
+        }
         player.setLevel(compound.getInteger("XpLevel"));
         player.setTotalExperience(compound.getInteger("XpTotal"));
         player.setExhaustion(compound.getFloat("foodExhaustionLevel"));
@@ -147,7 +152,7 @@ public class PlayerStorage {
 
         compound.setShort("health", (short) player.getHealth());
         compound.setInteger("foodlevel", player.getFoodLevel());
-        compound.setInteger("playerGameType", player.getGameMode().getValue());
+        compound.setString("playerGameTypeString", player.getGameMode().toString());
         compound.setInteger("XpLevel", player.getLevel());
         compound.setInteger("XpTotal", player.getTotalExperience());
         compound.setFloat("foodExhaustionLevel", player.getExhaustion());
