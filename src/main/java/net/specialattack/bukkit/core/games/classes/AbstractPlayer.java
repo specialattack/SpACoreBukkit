@@ -13,7 +13,8 @@ import org.bukkit.inventory.ItemStack;
  * @author mbl111
  */
 public abstract class AbstractPlayer {
-
+	
+	
     public final String name;
     public boolean errored = false; // Use me to determine if the player is still playing, if this is true the player shouldn't be messed with
 
@@ -29,11 +30,11 @@ public abstract class AbstractPlayer {
 
     public abstract List<ItemStack> getLoadout();
 
-    public void loadoutPlayer() {
+    public void loadoutPlayer(String stash) {
         Player player = this.tryGetPlayer();
 
         try {
-            PlayerStorage.store(player);
+            PlayerStorage.store(player, stash);
             this.doLoadout();
         } catch (Exception e) {
             this.errored = true;

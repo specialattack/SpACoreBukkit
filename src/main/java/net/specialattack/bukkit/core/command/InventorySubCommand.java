@@ -19,82 +19,104 @@ import org.bukkit.entity.Player;
  */
 public class InventorySubCommand extends AbstractSubCommand {
 
-    private final List<String> possibles;
+	private final List<String> possibles;
 
-    public InventorySubCommand(ISubCommandHolder command, String name, String permissions, String... aliases) {
-        super(command, name, permissions, aliases);
-        this.possibles = new ArrayList<String>();
-        this.possibles.add("load");
-        this.possibles.add("save");
-    }
+	public InventorySubCommand(ISubCommandHolder command, String name, String permissions, String... aliases) {
+		super(command, name, permissions, aliases);
+		this.possibles = new ArrayList<String>();
+		this.possibles.add("load");
+		this.possibles.add("save");
+	}
 
-    @Override
-    public void runCommand(CommandSender sender, String alias, String... args) {
-        Player player = (Player) sender;
+	@Override
+	public void runCommand(CommandSender sender, String alias, String... args) {
+		Player player = (Player) sender;
 
-        if (args.length == 1) {
-            try {
-                if (args[0].equalsIgnoreCase("save")) {
-                    PlayerStorage.store(player);
-                } else if (args[0].equalsIgnoreCase("load")) {
-                    PlayerStorage.apply(player);
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
-                    sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [username]");
-                }
-            } catch (FileNotFoundException e) {
-                sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
-            } catch (IOException e) {
-                sender.sendMessage(ChatColor.RED + "Error while proccessing command: " + e.getMessage());
-                SpACore.log(Level.WARNING, "Error while proccessing command", e);
-            }
-        } else if (args.length == 2) {
-            try {
-                player = Bukkit.getPlayer(args[1]);
-                if (player == null) {
-                    sender.sendMessage(ChatColor.RED + "Player not online.");
-                    return;
-                }
+		if (args.length == 1) {
+			try {
+				if (args[0].equalsIgnoreCase("save")) {
+					PlayerStorage.store(player, PlayerStorage.DEFAULT_STASH);
+				} else if (args[0].equalsIgnoreCase("load")) {
+					PlayerStorage.apply(player, PlayerStorage.DEFAULT_STASH);
+				} else {
+					sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
+					sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [stash] [username]");
+				}
+			} catch (FileNotFoundException e) {
+				sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
+			} catch (IOException e) {
+				sender.sendMessage(ChatColor.RED + "Error while proccessing command: " + e.getMessage());
+				SpACore.log(Level.WARNING, "Error while proccessing command", e);
+			}
+		} else if (args.length == 2) {
+			// Store myself in a stash
+			try {
+				String stash = args[1];
+				
+				if (args[0].equalsIgnoreCase("save")) {
+					PlayerStorage.store(player, stash);
+				} else if (args[0].equalsIgnoreCase("load")) {
+					PlayerStorage.apply(player, stash);
+				} else {
+					sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
+					sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [stash] [username]");
+				}
+			} catch (FileNotFoundException e) {
+				sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
+			} catch (IOException e) {
+				sender.sendMessage(ChatColor.RED + "Error while proccessing command: " + e.getMessage());
+				SpACore.log(Level.WARNING, "Error while proccessing command", e);
+			}
 
-                if (args[0].equalsIgnoreCase("save")) {
-                    PlayerStorage.store(player);
-                } else if (args[0].equalsIgnoreCase("load")) {
-                    PlayerStorage.apply(player);
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
-                    sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [username]");
-                }
-            } catch (FileNotFoundException e) {
-                sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
-            } catch (IOException e) {
-                sender.sendMessage(ChatColor.RED + "Error while proccessing command: " + e.getMessage());
-                SpACore.log(Level.WARNING, "Error while proccessing command", e);
-            }
-        } else {
-            sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
-            sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [username]");
-        }
-    }
+		} else if (args.length == 3) {
+			try {
+				player = Bukkit.getPlayer(args[1]);
+				if (player == null) {
+					sender.sendMessage(ChatColor.RED + "Player not online.");
+					return;
+				}
+				
+				String stash = args[1];
 
-    @Override
-    public boolean canUseCommand(CommandSender sender) {
-        return sender instanceof Player;
-    }
+				if (args[0].equalsIgnoreCase("save")) {
+					PlayerStorage.store(player, stash);
+				} else if (args[0].equalsIgnoreCase("load")) {
+					PlayerStorage.apply(player, stash);
+				} else {
+					sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
+					sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [stash] [username]");
+				}
+			} catch (FileNotFoundException e) {
+				sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
+			} catch (IOException e) {
+				sender.sendMessage(ChatColor.RED + "Error while proccessing command: " + e.getMessage());
+				SpACore.log(Level.WARNING, "Error while proccessing command", e);
+			}
+		} else {
+			sender.sendMessage(ChatColor.RED + "Invalid syntax. Correct syntax:");
+			sender.sendMessage(ChatColor.GRAY + "/" + alias + " <save|load> [stash] [username]");
+		}
+	}
 
-    @Override
-    public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
-        if (args.length == 2) {
-            return null;
-        } else if (args.length > 2) {
-            return emptyTabResult;
-        }
+	@Override
+	public boolean canUseCommand(CommandSender sender) {
+		return sender instanceof Player;
+	}
 
-        return this.possibles;
-    }
+	@Override
+	public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
+		if (args.length == 2) {
+			return null;
+		} else if (args.length > 2) {
+			return emptyTabResult;
+		}
 
-    @Override
-    public String[] getHelpMessage(CommandSender sender) {
-        return new String[] { this.name + " load/save [player]" };
-    }
+		return this.possibles;
+	}
+
+	@Override
+	public String[] getHelpMessage(CommandSender sender) {
+		return new String[] { this.name + " load/save [player]" };
+	}
 
 }
