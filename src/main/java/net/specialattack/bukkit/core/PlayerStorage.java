@@ -20,31 +20,32 @@ import org.bukkit.util.Vector;
  *
  * @author heldplayer
  */
-//@SuppressWarnings("deprecation")
+// @SuppressWarnings("deprecation")
 public class PlayerStorage {
 
 	public static final String DEFAULT_STASH = "default";
-	
+
 	/**
 	 * Function to restore a player to a previous state.
 	 *
 	 * @param player
 	 *            The player to be restored.
-	 *            
+	 * 
 	 * @param stash
-	 * 			  The stash to store player data in. Different stashes allow for many 
-	 * 			  different player states to be saved at once and accessed seperately.
+	 *            The stash to store player data in. Different stashes allow for
+	 *            many different player states to be saved at once and accessed
+	 *            seperately.
 	 *
 	 * @throws IOException
 	 *             Thrown if something goes wrong, why would it do that though?
 	 */
 	public static void apply(Player player, String stash) throws IOException {
-		File backupFolder = new File(SpACore.instance.getDataFolder(), "players");
+		File backupFolder = new File(SpACore.instance.getDataFolder(), "players" + File.pathSeparator + stash);
 
-		File playerFile = new File(backupFolder, stash + File.pathSeparator + player.getName() + ".dat");
+		File playerFile = new File(backupFolder, player.getName() + ".dat");
 
 		if (!playerFile.exists()) {
-			playerFile = new File(backupFolder, stash + File.pathSeparator + player.getName() + ".dat_old");
+			playerFile = new File(backupFolder, player.getName() + ".dat_old");
 
 			if (!playerFile.exists()) {
 				SpACore.log(Level.WARNING, "Player '" + player.getName() + "' has no backup file and no old backup file. This is a bug");
@@ -59,7 +60,7 @@ public class PlayerStorage {
 		Util.clearEverything(player);
 
 		if (compound.hasKey("health")) {
-			player.setHealth( (short) compound.getShort("health"));
+			player.setHealth((short) compound.getShort("health"));
 		} else {
 			player.setHealth(compound.getDouble("healthDouble"));
 		}
@@ -147,12 +148,12 @@ public class PlayerStorage {
 	 *             Shouldn't ever be thrown.
 	 */
 	public static void store(Player player, String stash) throws IOException {
-		File backupFolder = new File(SpACore.instance.getDataFolder(), "players");
+		File backupFolder = new File(SpACore.instance.getDataFolder(), "players" + File.pathSeparator + stash);
 
-		File playerFile = new File(backupFolder, stash + File.pathSeparator + player.getName() + ".dat");
+		File playerFile = new File(backupFolder, player.getName() + ".dat");
 
 		if (playerFile.exists()) {
-			File backupFile = new File(backupFolder, stash + File.pathSeparator + player.getName() + ".dat_old");
+			File backupFile = new File(backupFolder, player.getName() + ".dat_old");
 
 			if (backupFile.exists()) {
 				backupFile.delete();
@@ -160,7 +161,7 @@ public class PlayerStorage {
 
 			playerFile.renameTo(backupFile);
 
-			playerFile = new File(backupFolder, stash + File.pathSeparator + player.getName() + ".dat");
+			playerFile = new File(backupFolder, player.getName() + ".dat");
 
 			playerFile.createNewFile();
 		} else {
