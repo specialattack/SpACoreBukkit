@@ -1,11 +1,14 @@
 package net.specialattack.bukkit.core;
 
 import com.mojang.NBT.*;
+
 import java.io.*;
 import java.util.Map;
 import java.util.logging.Level;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -70,8 +73,15 @@ public class PlayerStorage {
         for (int i = 0; i < inventory.tagCount(); i++) {
             NBTTagCompound stackComp = (NBTTagCompound) inventory.tagAt(i);
 
-            ItemStack stack = new ItemStack(stackComp.getShort("id"), stackComp.getByte("Count"), stackComp.getShort("Damage"));
-
+            ItemStack stack;
+            
+            if (stackComp.hasKey("id")){
+            	stack = new ItemStack(stackComp.getShort("id"), stackComp.getByte("Count"), stackComp.getShort("Damage"));            	
+            }else{
+            	stack = new ItemStack(Material.valueOf(stackComp.getString("type")), stackComp.getByte("Count"), stackComp.getShort("Damage"));
+            }
+            
+            
             NBTTagCompound tag = stackComp.getCompoundTag("tag");
 
             NBTTagList ench = tag.getTagList("ench");
@@ -79,7 +89,12 @@ public class PlayerStorage {
             for (int num = 0; num < ench.tagCount(); num++) {
                 NBTTagCompound enchComp = (NBTTagCompound) ench.tagAt(num);
 
-                stack.addEnchantment(Enchantment.getById(enchComp.getShort("id")), enchComp.getShort("lvl"));
+                if (enchComp.hasKey("id")){
+                	stack.addEnchantment(Enchantment.getById(enchComp.getShort("id")), enchComp.getShort("lvl"));
+                }else{
+                	stack.addEnchantment(Enchantment.getByName(enchComp.getString("name")), enchComp.getShort("lvl"));
+                }
+                
             }
 
             contents[stackComp.getByte("Slot")] = stack;
@@ -169,7 +184,7 @@ public class PlayerStorage {
                 stackComp.setByte("Count", (byte) stack.getAmount());
                 stackComp.setByte("Slot", (byte) slot);
                 stackComp.setShort("Damage", stack.getDurability());
-                stackComp.setShort("id", (short) stack.getTypeId());
+                stackComp.setString("type", stack.getType().toString());
 
                 Map<Enchantment, Integer> enchants = stack.getEnchantments();
 
@@ -180,7 +195,7 @@ public class PlayerStorage {
                     for (Enchantment enchantment : enchants.keySet()) {
                         NBTTagCompound enchComp = new NBTTagCompound();
 
-                        enchComp.setShort("id", (short) enchantment.getId());
+                        enchComp.setString("name", enchantment.getName());
                         enchComp.setShort("lvl", enchants.get(enchantment).shortValue());
 
                         ench.appendTag(enchComp);
