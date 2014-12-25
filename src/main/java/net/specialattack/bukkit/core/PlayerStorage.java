@@ -25,6 +25,7 @@ import com.mojang.NBT.NBTTagCompound;
 import com.mojang.NBT.NBTTagDouble;
 import com.mojang.NBT.NBTTagFloat;
 import com.mojang.NBT.NBTTagList;
+import com.mojang.NBT.NBTTagLong;
 import com.mojang.NBT.NBTTagString;
 
 /**
@@ -310,7 +311,7 @@ public class PlayerStorage {
 		NBTTagCompound custom = new NBTTagCompound();
 		custom.setString("lastKnownName", player.getName());
 		custom.setLong("saveTime", System.currentTimeMillis());
-		compound.setTag("SpACore", compound);
+		compound.setTag("SpACore", custom);
 		
 		CompressedStreamTools.writeCompressed(compound, FOS);
 
