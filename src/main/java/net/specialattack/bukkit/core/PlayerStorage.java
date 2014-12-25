@@ -1,15 +1,11 @@
 package net.specialattack.bukkit.core;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.mojang.NBT.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,14 +16,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import com.mojang.NBT.CompressedStreamTools;
-import com.mojang.NBT.NBTTagCompound;
-import com.mojang.NBT.NBTTagDouble;
-import com.mojang.NBT.NBTTagFloat;
-import com.mojang.NBT.NBTTagList;
-import com.mojang.NBT.NBTTagLong;
-import com.mojang.NBT.NBTTagString;
-
 /**
  * Utility class for storing and restoring player states.
  *
@@ -36,288 +24,287 @@ import com.mojang.NBT.NBTTagString;
 // @SuppressWarnings("deprecation")
 public class PlayerStorage {
 
-	public static final String DEFAULT_STASH = "default";
+    public static final String DEFAULT_STASH = "default";
 
-	/**
-	 * Function to restore a player to a previous state.
-	 *
-	 * @param player
-	 *            The player to be restored.
-	 * 
-	 * @param stash
-	 *            The stash to store player data in. Different stashes allow for
-	 *            many different player states to be saved at once and accessed
-	 *            seperately.
-	 *
-	 * @throws IOException
-	 *             Thrown if something goes wrong, why would it do that though?
-	 */
-	public static void apply(Player player, String stash) throws IOException {
-		File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
+    /**
+     * Function to restore a player to a previous state.
+     *
+     * @param player
+     *         The player to be restored.
+     * @param stash
+     *         The stash to store player data in. Different stashes allow for
+     *         many different player states to be saved at once and accessed
+     *         seperately.
+     *
+     * @throws IOException
+     *         Thrown if something goes wrong, why would it do that though?
+     */
+    @SuppressWarnings("deprecation")
+    public static void apply(Player player, String stash) throws IOException {
+        File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
 
-		File playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
+        File playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
 
-		if (!playerFile.exists()) {
-			playerFile = new File(backupFolder, player.getUniqueId() + ".dat_old");
+        if (!playerFile.exists()) {
+            playerFile = new File(backupFolder, player.getUniqueId() + ".dat_old");
 
-			if (!playerFile.exists()) {
-				SpACore.log(Level.WARNING, "Player '" + player.getName() + "' has no backup file and no old backup file. This is a bug");
-				return;
-			}
-		}
+            if (!playerFile.exists()) {
+                SpACore.log(Level.WARNING, "Player '" + player.getName() + "' has no backup file and no old backup file. This is a bug");
+                return;
+            }
+        }
 
-		FileInputStream FIS = new FileInputStream(playerFile);
+        FileInputStream FIS = new FileInputStream(playerFile);
 
-		NBTTagCompound compound = CompressedStreamTools.readCompressed(FIS);
+        NBTTagCompound compound = CompressedStreamTools.readCompressed(FIS);
 
-		Util.clearEverything(player);
+        Util.clearEverything(player);
 
-		if (compound.hasKey("health")) {
-			player.setHealth((short) compound.getShort("health"));
-		} else {
-			player.setHealth(compound.getDouble("healthDouble"));
-		}
-		player.setFoodLevel(compound.getInteger("foodlevel"));
+        if (compound.hasKey("health")) {
+            player.setHealth((short) compound.getShort("health"));
+        } else {
+            player.setHealth(compound.getDouble("healthDouble"));
+        }
+        player.setFoodLevel(compound.getInteger("foodlevel"));
 
-		if (compound.hasKey("playerGameType")) {
-			player.setGameMode(GameMode.getByValue(compound.getInteger("playerGameType")));
-		} else {
-			player.setGameMode(GameMode.valueOf(compound.getString("playerGameTypeString")));
-		}
-		player.setLevel(compound.getInteger("XpLevel"));
-		player.setTotalExperience(compound.getInteger("XpTotal"));
-		player.setExhaustion(compound.getFloat("foodExhaustionLevel"));
-		player.setSaturation(compound.getFloat("foodSaturationLevel"));
-		player.setExp(compound.getFloat("XpP"));
+        if (compound.hasKey("playerGameType")) {
+            player.setGameMode(GameMode.getByValue(compound.getInteger("playerGameType")));
+        } else {
+            player.setGameMode(GameMode.valueOf(compound.getString("playerGameTypeString")));
+        }
+        player.setLevel(compound.getInteger("XpLevel"));
+        player.setTotalExperience(compound.getInteger("XpTotal"));
+        player.setExhaustion(compound.getFloat("foodExhaustionLevel"));
+        player.setSaturation(compound.getFloat("foodSaturationLevel"));
+        player.setExp(compound.getFloat("XpP"));
 
-		PlayerInventory inv = player.getInventory();
-		ItemStack[] contents = new ItemStack[inv.getSize()];
+        PlayerInventory inv = player.getInventory();
+        ItemStack[] contents = new ItemStack[inv.getSize()];
 
-		NBTTagList inventory = compound.getTagList("Inventory");
-		for (int i = 0; i < inventory.tagCount(); i++) {
-			NBTTagCompound stackComp = (NBTTagCompound) inventory.tagAt(i);
+        NBTTagList inventory = compound.getTagList("Inventory");
+        for (int i = 0; i < inventory.tagCount(); i++) {
+            NBTTagCompound stackComp = (NBTTagCompound) inventory.tagAt(i);
 
-			ItemStack stack;
+            ItemStack stack;
 
-			if (stackComp.hasKey("id")) {
-				stack = new ItemStack(stackComp.getShort("id"), stackComp.getByte("Count"), stackComp.getShort("Damage"));
-			} else {
-				stack = new ItemStack(Material.valueOf(stackComp.getString("type")), stackComp.getByte("Count"), stackComp.getShort("Damage"));
-			}
+            if (stackComp.hasKey("id")) {
+                stack = new ItemStack(stackComp.getShort("id"), stackComp.getByte("Count"), stackComp.getShort("Damage"));
+            } else {
+                stack = new ItemStack(Material.valueOf(stackComp.getString("type")), stackComp.getByte("Count"), stackComp.getShort("Damage"));
+            }
 
-			NBTTagCompound tag = stackComp.getCompoundTag("tag");
+            NBTTagCompound tag = stackComp.getCompoundTag("tag");
 
-			NBTTagCompound display = tag.getCompoundTag("display");
-			
-			if (display != null){
-				
-				ItemMeta meta = stack.getItemMeta();
-				
-				if (display.hasKey("Name")){
-					meta.setDisplayName(display.getString("Name"));
-				}
-				
-				if (display.hasKey("Lore")){
-					NBTTagList lore = display.getTagList("Lore");
-					List<String> loreList = new ArrayList<String>();
-					for (int j = 0; j < lore.tagCount(); j++){
-						loreList.add(lore.tagAt(j).toString());
-					}
-					meta.setLore(loreList);
-				}
-				
-				stack.setItemMeta(meta);
-				
-			}
-			
-			NBTTagList ench = tag.getTagList("ench");
+            NBTTagCompound display = tag.getCompoundTag("display");
 
-			for (int num = 0; num < ench.tagCount(); num++) {
-				NBTTagCompound enchComp = (NBTTagCompound) ench.tagAt(num);
+            if (display != null) {
 
-				if (enchComp.hasKey("id")) {
-					stack.addEnchantment(Enchantment.getById(enchComp.getShort("id")), enchComp.getShort("lvl"));
-				} else {
-					stack.addEnchantment(Enchantment.getByName(enchComp.getString("name")), enchComp.getShort("lvl"));
-				}
+                ItemMeta meta = stack.getItemMeta();
 
-			}
+                if (display.hasKey("Name")) {
+                    meta.setDisplayName(display.getString("Name"));
+                }
 
-			contents[stackComp.getByte("Slot")] = stack;
-		}
-		inv.setContents(contents);
+                if (display.hasKey("Lore")) {
+                    NBTTagList lore = display.getTagList("Lore");
+                    List<String> loreList = new ArrayList<String>();
+                    for (int j = 0; j < lore.tagCount(); j++) {
+                        loreList.add(lore.tagAt(j).toString());
+                    }
+                    meta.setLore(loreList);
+                }
 
-		NBTTagList motion = compound.getTagList("Motion");
-		player.setVelocity(new Vector(((NBTTagDouble) motion.tagAt(0)).data, ((NBTTagDouble) motion.tagAt(1)).data, ((NBTTagDouble) motion.tagAt(2)).data));
+                stack.setItemMeta(meta);
 
-		NBTTagList pos = compound.getTagList("Pos");
-		Location loc = new Location(SpACore.instance.getServer().getWorld(compound.getString("world")), ((NBTTagDouble) pos.tagAt(0)).data, ((NBTTagDouble) pos.tagAt(1)).data,
-				((NBTTagDouble) pos.tagAt(2)).data);
-		NBTTagList rotation = compound.getTagList("Rotation");
-		loc.setYaw(((NBTTagFloat) rotation.tagAt(0)).data);
-		loc.setPitch(((NBTTagFloat) rotation.tagAt(1)).data);
-		player.teleport(loc);
+            }
 
-		File backupFile = new File(backupFolder, player.getName() + ".dat_old");
+            NBTTagList ench = tag.getTagList("ench");
 
-		if (backupFile.exists() && !backupFile.equals(playerFile)) {
-			backupFile.delete();
-		}
+            for (int num = 0; num < ench.tagCount(); num++) {
+                NBTTagCompound enchComp = (NBTTagCompound) ench.tagAt(num);
 
-		playerFile.renameTo(backupFile);
+                if (enchComp.hasKey("id")) {
+                    stack.addEnchantment(Enchantment.getById(enchComp.getShort("id")), enchComp.getShort("lvl"));
+                } else {
+                    stack.addEnchantment(Enchantment.getByName(enchComp.getString("name")), enchComp.getShort("lvl"));
+                }
 
-		FIS.close();
-	}
+            }
 
-	/**
-	 * Function to save a player state. Can only store up to 2 states (latest
-	 * one is used when calling
-	 * {@link net.specialattack.bukkit.core.PlayerStorage#apply(org.bukkit.entity.Player)}
-	 * )
-	 *
-	 * @param player
-	 *            The player to save.
-	 *
-	 * @throws IOException
-	 *             Thrown if something goes wrong, why would it do that though?
-	 * @throws FileNotFoundException
-	 *             Shouldn't ever be thrown.
-	 */
-	public static void store(Player player, String stash) throws IOException {
-		File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
+            contents[stackComp.getByte("Slot")] = stack;
+        }
+        inv.setContents(contents);
 
-		File playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
+        NBTTagList motion = compound.getTagList("Motion");
+        player.setVelocity(new Vector(((NBTTagDouble) motion.tagAt(0)).data, ((NBTTagDouble) motion.tagAt(1)).data, ((NBTTagDouble) motion.tagAt(2)).data));
 
-		if (playerFile.exists()) {
-			File backupFile = new File(backupFolder, player.getUniqueId() + ".dat_old");
+        NBTTagList pos = compound.getTagList("Pos");
+        Location loc = new Location(SpACore.instance.getServer().getWorld(compound.getString("world")), ((NBTTagDouble) pos.tagAt(0)).data, ((NBTTagDouble) pos.tagAt(1)).data, ((NBTTagDouble) pos.tagAt(2)).data);
+        NBTTagList rotation = compound.getTagList("Rotation");
+        loc.setYaw(((NBTTagFloat) rotation.tagAt(0)).data);
+        loc.setPitch(((NBTTagFloat) rotation.tagAt(1)).data);
+        player.teleport(loc);
 
-			if (backupFile.exists()) {
-				backupFile.delete();
-			}
+        File backupFile = new File(backupFolder, player.getName() + ".dat_old");
 
-			playerFile.renameTo(backupFile);
+        if (backupFile.exists() && !backupFile.equals(playerFile)) {
+            backupFile.delete();
+        }
 
-			playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
+        playerFile.renameTo(backupFile);
 
-			playerFile.createNewFile();
-		} else {
-			backupFolder.mkdirs();
+        FIS.close();
+    }
 
-			playerFile.createNewFile();
-		}
+    /**
+     * Function to save a player state. Can only store up to 2 states (latest
+     * one is used when calling
+     * {@link net.specialattack.bukkit.core.PlayerStorage#apply(org.bukkit.entity.Player, String)}
+     * )
+     *
+     * @param player
+     *         The player to save.
+     *
+     * @throws IOException
+     *         Thrown if something goes wrong, why would it do that though?
+     * @throws FileNotFoundException
+     *         Shouldn't ever be thrown.
+     */
+    public static void store(Player player, String stash) throws IOException {
+        File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
 
-		FileOutputStream FOS = new FileOutputStream(playerFile);
+        File playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
 
-		Location loc = player.getLocation();
-		Vector velocity = player.getVelocity();
-		PlayerInventory inv = player.getInventory();
+        if (playerFile.exists()) {
+            File backupFile = new File(backupFolder, player.getUniqueId() + ".dat_old");
 
-		NBTTagCompound compound = new NBTTagCompound();
+            if (backupFile.exists()) {
+                backupFile.delete();
+            }
 
-		compound.setDouble("healthDouble", player.getHealth());
-		compound.setInteger("foodlevel", player.getFoodLevel());
-		compound.setString("playerGameTypeString", player.getGameMode().toString());
-		compound.setInteger("XpLevel", player.getLevel());
-		compound.setInteger("XpTotal", player.getTotalExperience());
-		compound.setFloat("foodExhaustionLevel", player.getExhaustion());
-		compound.setFloat("foodSaturationLevel", player.getSaturation());
-		compound.setFloat("XpP", player.getExp());
+            playerFile.renameTo(backupFile);
 
-		NBTTagList inventory = new NBTTagList();
-		for (int slot = 0; slot < inv.getSize(); slot++) {
-			ItemStack stack = inv.getItem(slot);
+            playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
 
-			if ((stack != null) && (stack.getType() != Material.AIR) && (stack.getAmount() != 0)) {
-				NBTTagCompound stackComp = new NBTTagCompound();
+            playerFile.createNewFile();
+        } else {
+            backupFolder.mkdirs();
 
-				stackComp.setByte("Count", (byte) stack.getAmount());
-				stackComp.setByte("Slot", (byte) slot);
-				stackComp.setShort("Damage", stack.getDurability());
-				stackComp.setString("type", stack.getType().toString());
+            playerFile.createNewFile();
+        }
 
-				NBTTagCompound tag = new NBTTagCompound();
+        FileOutputStream FOS = new FileOutputStream(playerFile);
 
-				ItemMeta metaData = stack.getItemMeta();
+        Location loc = player.getLocation();
+        Vector velocity = player.getVelocity();
+        PlayerInventory inv = player.getInventory();
 
-				if (metaData != null) {
-					String displayName = metaData.getDisplayName();
-					List<String> lore = metaData.getLore();
+        NBTTagCompound compound = new NBTTagCompound();
 
-					NBTTagCompound displayComp = new NBTTagCompound();
-					boolean hasDisplay = false;
+        compound.setDouble("healthDouble", player.getHealth());
+        compound.setInteger("foodlevel", player.getFoodLevel());
+        compound.setString("playerGameTypeString", player.getGameMode().toString());
+        compound.setInteger("XpLevel", player.getLevel());
+        compound.setInteger("XpTotal", player.getTotalExperience());
+        compound.setFloat("foodExhaustionLevel", player.getExhaustion());
+        compound.setFloat("foodSaturationLevel", player.getSaturation());
+        compound.setFloat("XpP", player.getExp());
 
-					if (displayName != null){
-						hasDisplay = true;
-						displayComp.setString("Name", displayName);
-					}
-					
-					if (lore != null && lore.size() > 0){
-						NBTTagList loreList = new NBTTagList();
-						
-						for (String line : lore){
-							loreList.appendTag(new NBTTagString("", line));
-						}
-						
-						
-						displayComp.setTag("Lore", loreList);
-						hasDisplay = true;
-					}
-					
-					if (hasDisplay){
-						tag.setCompoundTag("display", displayComp);
-					}
+        NBTTagList inventory = new NBTTagList();
+        for (int slot = 0; slot < inv.getSize(); slot++) {
+            ItemStack stack = inv.getItem(slot);
 
-					Map<Enchantment, Integer> enchants = metaData.getEnchants();
+            if ((stack != null) && (stack.getType() != Material.AIR) && (stack.getAmount() != 0)) {
+                NBTTagCompound stackComp = new NBTTagCompound();
 
-					if (enchants.size() > 0) {
-						NBTTagList ench = new NBTTagList();
+                stackComp.setByte("Count", (byte) stack.getAmount());
+                stackComp.setByte("Slot", (byte) slot);
+                stackComp.setShort("Damage", stack.getDurability());
+                stackComp.setString("type", stack.getType().toString());
 
-						for (Enchantment enchantment : enchants.keySet()) {
-							NBTTagCompound enchComp = new NBTTagCompound();
+                NBTTagCompound tag = new NBTTagCompound();
 
-							enchComp.setString("name", enchantment.getName());
-							enchComp.setShort("lvl", enchants.get(enchantment).shortValue());
+                ItemMeta metaData = stack.getItemMeta();
 
-							ench.appendTag(enchComp);
-						}
-						tag.setTag("ench", ench);
-					}
-				}
+                if (metaData != null) {
+                    String displayName = metaData.getDisplayName();
+                    List<String> lore = metaData.getLore();
 
-				stackComp.setCompoundTag("tag", tag);
-				inventory.appendTag(stackComp);
-			}
-		}
-		compound.setTag("Inventory", inventory);
+                    NBTTagCompound displayComp = new NBTTagCompound();
+                    boolean hasDisplay = false;
 
-		NBTTagList motion = new NBTTagList();
-		motion.appendTag(new NBTTagDouble("x", velocity.getX()));
-		motion.appendTag(new NBTTagDouble("y", velocity.getY()));
-		motion.appendTag(new NBTTagDouble("z", velocity.getZ()));
-		compound.setTag("Motion", motion);
+                    if (displayName != null) {
+                        hasDisplay = true;
+                        displayComp.setString("Name", displayName);
+                    }
 
-		NBTTagList pos = new NBTTagList();
-		pos.appendTag(new NBTTagDouble("x", loc.getX()));
-		pos.appendTag(new NBTTagDouble("y", loc.getY()));
-		pos.appendTag(new NBTTagDouble("z", loc.getZ()));
-		compound.setTag("Pos", pos);
-		compound.setString("world", loc.getWorld().getName());
+                    if (lore != null && lore.size() > 0) {
+                        NBTTagList loreList = new NBTTagList();
 
-		NBTTagList rotation = new NBTTagList();
-		rotation.appendTag(new NBTTagFloat("yaw", loc.getYaw()));
-		rotation.appendTag(new NBTTagFloat("pitch", loc.getPitch()));
-		compound.setTag("Rotation", rotation);
+                        for (String line : lore) {
+                            loreList.appendTag(new NBTTagString("", line));
+                        }
 
-		NBTTagCompound custom = new NBTTagCompound();
-		custom.setString("lastKnownName", player.getName());
-		custom.setLong("saveTime", System.currentTimeMillis());
-		compound.setTag("SpACore", custom);
-		
-		CompressedStreamTools.writeCompressed(compound, FOS);
 
-		Util.clearEverything(player);
+                        displayComp.setTag("Lore", loreList);
+                        hasDisplay = true;
+                    }
 
-		FOS.close();
-	}
+                    if (hasDisplay) {
+                        tag.setCompoundTag("display", displayComp);
+                    }
+
+                    Map<Enchantment, Integer> enchants = metaData.getEnchants();
+
+                    if (enchants.size() > 0) {
+                        NBTTagList ench = new NBTTagList();
+
+                        for (Enchantment enchantment : enchants.keySet()) {
+                            NBTTagCompound enchComp = new NBTTagCompound();
+
+                            enchComp.setString("name", enchantment.getName());
+                            enchComp.setShort("lvl", enchants.get(enchantment).shortValue());
+
+                            ench.appendTag(enchComp);
+                        }
+                        tag.setTag("ench", ench);
+                    }
+                }
+
+                stackComp.setCompoundTag("tag", tag);
+                inventory.appendTag(stackComp);
+            }
+        }
+        compound.setTag("Inventory", inventory);
+
+        NBTTagList motion = new NBTTagList();
+        motion.appendTag(new NBTTagDouble("x", velocity.getX()));
+        motion.appendTag(new NBTTagDouble("y", velocity.getY()));
+        motion.appendTag(new NBTTagDouble("z", velocity.getZ()));
+        compound.setTag("Motion", motion);
+
+        NBTTagList pos = new NBTTagList();
+        pos.appendTag(new NBTTagDouble("x", loc.getX()));
+        pos.appendTag(new NBTTagDouble("y", loc.getY()));
+        pos.appendTag(new NBTTagDouble("z", loc.getZ()));
+        compound.setTag("Pos", pos);
+        compound.setString("world", loc.getWorld().getName());
+
+        NBTTagList rotation = new NBTTagList();
+        rotation.appendTag(new NBTTagFloat("yaw", loc.getYaw()));
+        rotation.appendTag(new NBTTagFloat("pitch", loc.getPitch()));
+        compound.setTag("Rotation", rotation);
+
+        NBTTagCompound custom = new NBTTagCompound();
+        custom.setString("lastKnownName", player.getName());
+        custom.setLong("saveTime", System.currentTimeMillis());
+        compound.setTag("SpACore", custom);
+
+        CompressedStreamTools.writeCompressed(compound, FOS);
+
+        Util.clearEverything(player);
+
+        FOS.close();
+    }
 
 }
