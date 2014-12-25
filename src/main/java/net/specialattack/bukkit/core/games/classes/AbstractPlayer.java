@@ -26,22 +26,4 @@ public abstract class AbstractPlayer {
         return Bukkit.getPlayer(this.name);
     }
 
-    public abstract void addToLoadout(ItemStack equiptment);
-
-    public abstract List<ItemStack> getLoadout();
-
-    public void loadoutPlayer(String stash) {
-        Player player = this.tryGetPlayer();
-
-        try {
-            PlayerStorage.store(player, stash);
-            this.doLoadout();
-        } catch (Exception e) {
-            this.errored = true;
-            player.sendMessage(ChatColor.RED + "An error occoured, please contact mbl111 or heldplayer");
-            SpACore.log(Level.SEVERE, "Error occoured while trying to save player inventory", e);
-        }
-    }
-
-    protected abstract void doLoadout();
 }
