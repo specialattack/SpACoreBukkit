@@ -36,6 +36,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 			try {
 				if (args[0].equalsIgnoreCase("save")) {
 					PlayerStorage.store(player, PlayerStorage.DEFAULT_STASH);
+					sender.sendMessage(ChatColor.GREEN + "Player " + player.getName() + " saved to stash " + PlayerStorage.DEFAULT_STASH);
 				} else if (args[0].equalsIgnoreCase("load")) {
 					PlayerStorage.apply(player, PlayerStorage.DEFAULT_STASH);
 				} else {
@@ -55,6 +56,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 				
 				if (args[0].equalsIgnoreCase("save")) {
 					PlayerStorage.store(player, stash);
+					sender.sendMessage(ChatColor.GREEN + "Player " + player.getName() + " saved to stash " + stash);
 				} else if (args[0].equalsIgnoreCase("load")) {
 					PlayerStorage.apply(player, stash);
 				} else {
@@ -80,6 +82,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 
 				if (args[0].equalsIgnoreCase("save")) {
 					PlayerStorage.store(player, stash);
+					sender.sendMessage(ChatColor.GREEN + "Player " + player.getName() + " saved to stash " + stash);
 				} else if (args[0].equalsIgnoreCase("load")) {
 					PlayerStorage.apply(player, stash);
 				} else {

@@ -1,8 +1,12 @@
 package net.specialattack.bukkit.core;
 
-import com.mojang.NBT.*;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -13,7 +17,15 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
+
+import com.mojang.NBT.CompressedStreamTools;
+import com.mojang.NBT.NBTTagCompound;
+import com.mojang.NBT.NBTTagDouble;
+import com.mojang.NBT.NBTTagFloat;
+import com.mojang.NBT.NBTTagList;
+import com.mojang.NBT.NBTTagString;
 
 /**
  * Utility class for storing and restoring player states.
@@ -40,7 +52,7 @@ public class PlayerStorage {
 	 *             Thrown if something goes wrong, why would it do that though?
 	 */
 	public static void apply(Player player, String stash) throws IOException {
-		File backupFolder = new File(SpACore.instance.getDataFolder(), "players" + File.pathSeparator + stash);
+		File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
 
 		File playerFile = new File(backupFolder, player.getName() + ".dat");
 
@@ -94,6 +106,29 @@ public class PlayerStorage {
 
 			NBTTagCompound tag = stackComp.getCompoundTag("tag");
 
+			NBTTagCompound display = tag.getCompoundTag("display");
+			
+			if (display != null){
+				
+				ItemMeta meta = stack.getItemMeta();
+				
+				if (display.hasKey("Name")){
+					meta.setDisplayName(display.getString("Name"));
+				}
+				
+				if (display.hasKey("Lore")){
+					NBTTagList lore = display.getTagList("Lore");
+					List<String> loreList = new ArrayList<String>();
+					for (int j = 0; j < lore.tagCount(); j++){
+						loreList.add(lore.tagAt(j).toString());
+					}
+					meta.setLore(loreList);
+				}
+				
+				stack.setItemMeta(meta);
+				
+			}
+			
 			NBTTagList ench = tag.getTagList("ench");
 
 			for (int num = 0; num < ench.tagCount(); num++) {
@@ -148,7 +183,7 @@ public class PlayerStorage {
 	 *             Shouldn't ever be thrown.
 	 */
 	public static void store(Player player, String stash) throws IOException {
-		File backupFolder = new File(SpACore.instance.getDataFolder(), "players" + File.pathSeparator + stash);
+		File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
 
 		File playerFile = new File(backupFolder, player.getName() + ".dat");
 
@@ -201,20 +236,52 @@ public class PlayerStorage {
 
 				NBTTagCompound tag = new NBTTagCompound();
 
-				Map<Enchantment, Integer> enchants = stack.getEnchantments();
+				ItemMeta metaData = stack.getItemMeta();
 
-				if (enchants.size() > 0) {
-					NBTTagList ench = new NBTTagList();
+				if (metaData != null) {
+					String displayName = metaData.getDisplayName();
+					List<String> lore = metaData.getLore();
 
-					for (Enchantment enchantment : enchants.keySet()) {
-						NBTTagCompound enchComp = new NBTTagCompound();
+					NBTTagCompound displayComp = new NBTTagCompound();
+					boolean hasDisplay = false;
 
-						enchComp.setString("name", enchantment.getName());
-						enchComp.setShort("lvl", enchants.get(enchantment).shortValue());
-
-						ench.appendTag(enchComp);
+					if (displayName != null){
+						hasDisplay = true;
+						displayComp.setString("Name", displayName);
 					}
-					tag.setTag("ench", ench);
+					
+					if (lore != null && lore.size() > 0){
+						NBTTagList loreList = new NBTTagList();
+						
+						for (String line : lore){
+							NBTTagString loreLine = new NBTTagString("", line);
+							loreList.appendTag(loreLine);
+						}
+						
+						
+						displayComp.setTag("Lore", loreList);
+						hasDisplay = true;
+					}
+					
+					if (hasDisplay){
+						tag.setCompoundTag("display", displayComp);
+					}
+
+					Map<Enchantment, Integer> enchants = metaData.getEnchants();
+
+					if (enchants.size() > 0) {
+						NBTTagList ench = new NBTTagList();
+
+						for (Enchantment enchantment : enchants.keySet()) {
+							NBTTagCompound enchComp = new NBTTagCompound();
+
+							enchComp.setString("name", enchantment.getName());
+							enchComp.setShort("lvl", enchants.get(enchantment).shortValue());
+
+							ench.appendTag(enchComp);
+						}
+						tag.setTag("ench", ench);
+					}
 				}
 
 				stackComp.setCompoundTag("tag", tag);
