@@ -21,7 +21,7 @@ import org.bukkit.util.Vector;
  *
  * @author heldplayer
  */
-// @SuppressWarnings("deprecation")
+@SuppressWarnings("deprecation")
 public class PlayerStorage {
 
     public static final String DEFAULT_STASH = "default";
@@ -61,7 +61,7 @@ public class PlayerStorage {
         Util.clearEverything(player);
 
         if (compound.hasKey("health")) {
-            player.setHealth((short) compound.getShort("health"));
+            player.setHealth(compound.getShort("health"));
         } else {
             player.setHealth(compound.getDouble("healthDouble"));
         }

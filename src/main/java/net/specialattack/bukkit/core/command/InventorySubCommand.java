@@ -109,9 +109,9 @@ public class InventorySubCommand extends AbstractSubCommand {
 
     @Override
     public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
-        if (args.length == 2) {
+        if (args.length == 3) {
             return null;
-        } else if (args.length > 2) {
+        } else if (args.length >= 2) {
             return emptyTabResult;
         }
 
