@@ -54,10 +54,10 @@ public class PlayerStorage {
 	public static void apply(Player player, String stash) throws IOException {
 		File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
 
-		File playerFile = new File(backupFolder, player.getName() + ".dat");
+		File playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
 
 		if (!playerFile.exists()) {
-			playerFile = new File(backupFolder, player.getName() + ".dat_old");
+			playerFile = new File(backupFolder, player.getUniqueId() + ".dat_old");
 
 			if (!playerFile.exists()) {
 				SpACore.log(Level.WARNING, "Player '" + player.getName() + "' has no backup file and no old backup file. This is a bug");
@@ -185,10 +185,10 @@ public class PlayerStorage {
 	public static void store(Player player, String stash) throws IOException {
 		File backupFolder = new File(SpACore.instance.getDataFolder(), "players/" + stash);
 
-		File playerFile = new File(backupFolder, player.getName() + ".dat");
+		File playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
 
 		if (playerFile.exists()) {
-			File backupFile = new File(backupFolder, player.getName() + ".dat_old");
+			File backupFile = new File(backupFolder, player.getUniqueId() + ".dat_old");
 
 			if (backupFile.exists()) {
 				backupFile.delete();
@@ -196,7 +196,7 @@ public class PlayerStorage {
 
 			playerFile.renameTo(backupFile);
 
-			playerFile = new File(backupFolder, player.getName() + ".dat");
+			playerFile = new File(backupFolder, player.getUniqueId() + ".dat");
 
 			playerFile.createNewFile();
 		} else {
@@ -254,8 +254,7 @@ public class PlayerStorage {
 						NBTTagList loreList = new NBTTagList();
 						
 						for (String line : lore){
-							NBTTagString loreLine = new NBTTagString("", line);
-							loreList.appendTag(loreLine);
+							loreList.appendTag(new NBTTagString("", line));
 						}
 						
 						
@@ -308,6 +307,11 @@ public class PlayerStorage {
 		rotation.appendTag(new NBTTagFloat("pitch", loc.getPitch()));
 		compound.setTag("Rotation", rotation);
 
+		NBTTagCompound custom = new NBTTagCompound();
+		custom.setString("lastKnownName", player.getName());
+		custom.setLong("saveTime", System.currentTimeMillis());
+		compound.setTag("SpACore", compound);
+		
 		CompressedStreamTools.writeCompressed(compound, FOS);
 
 		Util.clearEverything(player);
