@@ -6,8 +6,6 @@ import org.bukkit.util.Vector;
 
 /**
  * Utility class for a bunch of random things.
- *
- * @author heldplayer
  */
 public class Util {
 

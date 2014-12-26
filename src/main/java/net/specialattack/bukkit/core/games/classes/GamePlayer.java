@@ -9,13 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * Author: Matt
- * Date: 25 Dec 2014
- * Time: 4:32:01 pm
- * (C) mbl111 2014
- */
-
 public abstract class GamePlayer extends AbstractPlayer implements EquipmentHolder {
 
     private List<ItemStack> mainLoadout = new ArrayList<ItemStack>();

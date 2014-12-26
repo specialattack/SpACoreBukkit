@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 /**
  * Sub Command class for SpACoreCommand
  *
- * @author Mitchel
  * @see SpACoreCommand
  */
 public abstract class AbstractSubCommand {

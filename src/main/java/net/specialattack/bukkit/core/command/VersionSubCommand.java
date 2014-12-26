@@ -8,8 +8,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 /**
  * Command that displays version info about SpACore etc...
- *
- * @author heldplayer
  */
 public class VersionSubCommand extends AbstractSubCommand {
 

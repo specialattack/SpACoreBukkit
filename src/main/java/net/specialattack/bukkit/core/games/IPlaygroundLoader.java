@@ -6,7 +6,6 @@ import net.specialattack.bukkit.core.block.Cuboid;
 /**
  * Interface for loading playgrounds.
  *
- * @author heldplayer
  * @see SpACore#registerPlaygroundType(String, IPlaygroundLoader)
  */
 public interface IPlaygroundLoader {

@@ -18,8 +18,6 @@ import org.bukkit.util.Vector;
 
 /**
  * Utility class for storing and restoring player states.
- *
- * @author heldplayer
  */
 @SuppressWarnings("deprecation")
 public class PlayerStorage {

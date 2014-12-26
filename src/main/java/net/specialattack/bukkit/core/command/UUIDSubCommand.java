@@ -10,8 +10,6 @@ import org.bukkit.entity.Player;
 
 /**
  * Command that finds the UUID of a player
- *
- * @author heldplayer
  */
 public class UUIDSubCommand extends AbstractSubCommand {
 

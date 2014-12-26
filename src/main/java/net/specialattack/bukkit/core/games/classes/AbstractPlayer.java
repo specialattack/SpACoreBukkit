@@ -3,9 +3,6 @@ package net.specialattack.bukkit.core.games.classes;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/**
- * @author mbl111
- */
 public abstract class AbstractPlayer {
 
     public final String name;

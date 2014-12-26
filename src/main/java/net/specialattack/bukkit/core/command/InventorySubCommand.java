@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 
 /**
  * Command that displays version info about SpACore etc...
- *
- * @author heldplayer, mbl111
  */
 public class InventorySubCommand extends AbstractSubCommand {
 
