@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 /**
  * Command that displays version info about SpACore etc...
  *
- * @author heldplayer
+ * @author heldplayer, mbl111
  */
 public class InventorySubCommand extends AbstractSubCommand {
 
@@ -28,6 +28,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 		this.possibles.add("save");
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void runCommand(CommandSender sender, String alias, String... args) {
 		Player player = (Player) sender;
@@ -53,7 +54,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 			// Store myself in a stash
 			try {
 				String stash = args[1];
-				
+
 				if (args[0].equalsIgnoreCase("save")) {
 					PlayerStorage.store(player, stash);
 					sender.sendMessage(ChatColor.GREEN + "Player " + player.getName() + " saved to stash " + stash);
@@ -72,12 +73,12 @@ public class InventorySubCommand extends AbstractSubCommand {
 
 		} else if (args.length == 3) {
 			try {
-				player = Bukkit.getPlayer(args[2]);
+				player = Bukkit.getPlayer(args[1]);
 				if (player == null) {
 					sender.sendMessage(ChatColor.RED + "Player not online.");
 					return;
 				}
-				
+
 				String stash = args[1];
 
 				if (args[0].equalsIgnoreCase("save")) {
@@ -108,9 +109,9 @@ public class InventorySubCommand extends AbstractSubCommand {
 
 	@Override
 	public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
-		if (args.length == 2) {
+		if (args.length == 3) {
 			return null;
-		} else if (args.length > 2) {
+		} else if (args.length >= 2) {
 			return emptyTabResult;
 		}
 
