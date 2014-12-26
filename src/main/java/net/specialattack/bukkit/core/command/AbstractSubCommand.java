@@ -57,10 +57,6 @@ public abstract class AbstractSubCommand {
         return sender.hasPermission(this.permission);
     }
 
-    public boolean hasPermission(CommandSender sender, String permission) {
-        return sender.hasPermission(this.permission + "." + permission);
-    }
-
     /**
      * Method that runs the sub command.
      *
