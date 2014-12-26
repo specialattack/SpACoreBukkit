@@ -72,7 +72,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 
 		} else if (args.length == 3) {
 			try {
-				player = Bukkit.getPlayer(args[1]);
+				player = Bukkit.getPlayer(args[2]);
 				if (player == null) {
 					sender.sendMessage(ChatColor.RED + "Player not online.");
 					return;
