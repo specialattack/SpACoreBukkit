@@ -1,6 +1,7 @@
 package net.specialattack.bukkit.core.command;
 
 import java.util.*;
+import net.specialattack.bukkit.core.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -39,49 +40,48 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
     }
 
     @Override
-    public void runCommand(CommandSender sender, String alias, String... args) {
+    public void parseParameters(CommandSender sender, String alias, String... args) {
         this.lastAlias = alias;
 
-        try {
-            if (args.length == 0) {
-                sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
-            } else {
-                AbstractSubCommand subCommand = this.commands.get(args[0]);
+        if (args.length == 0) {
+            sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
+        } else {
+            AbstractSubCommand subCommand = this.commands.get(args[0]);
 
-                if (subCommand == null) {
-                    subCommand = this.aliases.get(args[0]);
-                }
-
-                if (subCommand == null) {
-                    sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
-                    return;
-                }
-
-                if (!subCommand.canUseCommand(sender)) {
-                    sender.sendMessage(ChatColor.RED + "You cannot use this command.");
-                    return;
-                }
-
-                if (!subCommand.hasPermission(sender)) {
-                    sender.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
-                    return;
-                }
-
-                String[] newArgs = new String[args.length - 1];
-
-                System.arraycopy(args, 1, newArgs, 0, args.length - 1);
-
-                subCommand.runCommand(sender, args[0], newArgs);
+            if (subCommand == null) {
+                subCommand = this.aliases.get(args[0]);
             }
-        } catch (Throwable e) {
-            sender.sendMessage(ChatColor.RED + "An error occoured while performing command");
-            sender.sendMessage(e.getClass().getName() + ": " + e.getMessage());
-            e.printStackTrace();
+
+            if (subCommand == null) {
+                sender.sendMessage(ChatColor.RED + "Unkown command, please type /" + alias + " help for a list of commands.");
+                return;
+            }
+
+            if (!subCommand.canUseCommand(sender)) {
+                sender.sendMessage(ChatColor.RED + "You cannot use this command.");
+                return;
+            }
+
+            if (!subCommand.hasPermission(sender)) {
+                sender.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
+                return;
+            }
+
+            String[] newArgs = new String[args.length - 1];
+
+            System.arraycopy(args, 1, newArgs, 0, args.length - 1);
+
+            subCommand.parseParameters(sender, args[0], newArgs);
         }
     }
 
     @Override
-    public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
+    public final void runCommand(CommandSender sender) {
+        // We don't do anything with this
+    }
+
+    @Override
+    public List<String> getTabCompleteResults(CommandSender sender, String[] args) {
         if (args.length == 1) {
             List<String> possibles = new ArrayList<String>();
 
@@ -121,22 +121,22 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
             }
 
             if (subCommand == null) {
-                return null;
+                return Util.TAB_RESULT_EMPTY;
             }
 
             if (!subCommand.canUseCommand(sender)) {
-                return null;
+                return Util.TAB_RESULT_EMPTY;
             }
 
             if (!subCommand.hasPermission(sender)) {
-                return null;
+                return Util.TAB_RESULT_EMPTY;
             }
 
             String[] newArgs = new String[args.length - 1];
 
             System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
-            List<String> possibles = subCommand.getTabCompleteResults(sender, alias, newArgs);
+            List<String> possibles = subCommand.getTabCompleteResults(sender, newArgs);
 
             ArrayList<String> result = new ArrayList<String>();
 
@@ -156,9 +156,11 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
 
     @Override
     public String[] getHelpMessage(CommandSender sender) {
+        Set<Map.Entry<String, AbstractSubCommand>> commandSet = this.commands.entrySet();
+
         List<String> result = new ArrayList<String>();
 
-        for (Map.Entry<String, AbstractSubCommand> entry : this.commands.entrySet()) {
+        for (Map.Entry<String, AbstractSubCommand> entry : commandSet) {
             AbstractSubCommand subCommand = entry.getValue();
 
             if (!subCommand.canUseCommand(sender)) {
@@ -171,9 +173,10 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
             String[] usages = subCommand.getHelpMessage(sender);
 
             for (String usage : usages) {
-                result.add(this.lastAlias + " " + usage);
+                result.add(entry.getKey() + " " + usage);
             }
         }
+
         return result.toArray(new String[result.size()]);
     }
 }

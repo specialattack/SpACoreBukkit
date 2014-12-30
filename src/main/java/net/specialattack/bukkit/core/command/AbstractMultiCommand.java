@@ -2,6 +2,8 @@ package net.specialattack.bukkit.core.command;
 
 import java.util.*;
 import java.util.Map.Entry;
+import net.specialattack.bukkit.core.util.ChatFormat;
+import net.specialattack.bukkit.core.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 
@@ -56,7 +58,7 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
         try {
             if (args.length == 0) {
-                this.commands.get(this.getDefaultCommand()).runCommand(sender, "version");
+                this.commands.get(this.getDefaultCommand()).runCommand(sender);
             } else {
                 AbstractSubCommand subCommand = this.commands.get(args[0]);
 
@@ -83,9 +85,12 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
                 System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
-                subCommand.runCommand(sender, args[0], newArgs);
+                subCommand.parseParameters(sender, args[0], newArgs);
             }
-        } catch (Throwable e) {
+        } catch (CommandException e) {
+            sender.sendMessage(ChatColor.DARK_RED + "An error occoured while performing command");
+            sender.sendMessage(ChatFormat.format(e.message, ChatColor.RED, e.params));
+        } catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "An error occoured while performing command");
             sender.sendMessage(e.getClass().getName() + ": " + e.getMessage());
             e.printStackTrace();
@@ -134,22 +139,22 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
             }
 
             if (subCommand == null) {
-                return null;
+                return Util.TAB_RESULT_EMPTY;
             }
 
             if (!subCommand.canUseCommand(sender)) {
-                return null;
+                return Util.TAB_RESULT_EMPTY;
             }
 
             if (!subCommand.hasPermission(sender)) {
-                return null;
+                return Util.TAB_RESULT_EMPTY;
             }
 
             String[] newArgs = new String[args.length - 1];
 
             System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
-            List<String> possibles = subCommand.getTabCompleteResults(sender, alias, newArgs);
+            List<String> possibles = subCommand.getTabCompleteResults(sender, newArgs);
 
             ArrayList<String> result = new ArrayList<String>();
 

@@ -1,8 +1,7 @@
 package net.specialattack.bukkit.core.command;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import net.specialattack.bukkit.core.command.easy.AbstractEasyCommand;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -10,10 +9,7 @@ import org.bukkit.command.CommandSender;
  *
  * @see SpACoreCommand
  */
-public abstract class AbstractSubCommand {
-
-    public static final List<String> emptyTabResult = Collections.emptyList();
-    public static final List<String> trueFalseResult = Collections.unmodifiableList(Arrays.asList("true", "false"));
+public abstract class AbstractSubCommand extends AbstractEasyCommand {
 
     private String permission;
     protected final String name;
@@ -24,8 +20,7 @@ public abstract class AbstractSubCommand {
      * Constructor of the base sub command.
      *
      * @param name
-     *         The name of the sub command, by which is should always be
-     *         accessible.
+     *         The name of the sub command, by which is should always beaccessible.
      * @param permission
      *         The permission required to use this sub command.
      * @param aliases
@@ -45,10 +40,10 @@ public abstract class AbstractSubCommand {
     }
 
     /**
-     * Method to check if a CommandSender has permission to use this sub command
+     * Method to check if a CommandSender has permission to use this sub command.
      *
      * @param sender
-     *         The CommandSender to check
+     *         The CommandSender to check.
      *
      * @return True if the CommandSender has permission, false otherwise.
      */
@@ -57,33 +52,15 @@ public abstract class AbstractSubCommand {
     }
 
     /**
-     * Method that runs the sub command.
-     *
-     * @param sender
-     *         The sender of the command.
-     * @param alias
-     *         The used alias for the command.
-     * @param args
-     *         The arguments.
-     */
-    public abstract void runCommand(CommandSender sender, String alias, String... args);
-
-    /**
-     * Method to determine if the sub command can be used by specified
-     * CommandSender
+     * Method to determine if the sub command can be used by the given CommandSender.
      *
      * @param sender
      *         The sender who should be checked.
      *
-     * @return True if the CommandSender can use this sub command. False
-     * otherwise.
+     * @return True if the CommandSender can use this sub command. False otherwise.
      */
     public boolean canUseCommand(CommandSender sender) {
         return true;
     }
-
-    public abstract List<String> getTabCompleteResults(CommandSender sender, String alias, String... args);
-
-    public abstract String[] getHelpMessage(CommandSender sender);
 
 }

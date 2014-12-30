@@ -127,107 +127,135 @@ public final class Util {
     }
 
     /**
-     * Matches entities or players using as many methods as possible
+     * Matches entities or players using as many methods as possible.
      *
      * @param input
-     *         The input string to parse to select players
+     *         The input string to parse to select players.
      * @param origin
-     *         The origin for finding players, used when the input is a selector
+     *         The origin for finding players, used when the input is a selector.
      * @param forceType
-     *         The type to force the entities to be, or null to not force a type
+     *         The type to force the entities to be, or null to not force a type.
      *
-     * @return A set of all entities that were matched by the input
+     * @return A set of all entities that were matched by the input.
      *
      * @throws java.lang.IllegalArgumentException
-     *         When the input is invalid
+     *         When the input is invalid.
      */
-    public static Set<Entity> matchEntities(String input, Location origin, EntityType forceType) {
-        Set<Entity> result = new HashSet<Entity>();
+    public static List<Entity> matchEntities(String input, Location origin, EntityType forceType) {
+        List<Entity> result = new ArrayList<Entity>() {
+            @SuppressWarnings("Contract")
+            @Override
+            public boolean add(Entity entity) {
+                return !this.contains(entity) && super.add(entity);
+            }
+        };
 
-        if (input.charAt(0) == '@') { // Try to use @a @e @p or @r
-            PlayerSelector selector = new PlayerSelector();
-            if (origin != null) {
-                selector.setLocation(origin);
-            }
-            switch (input.charAt(1)) {
-                case 'p':
-                case 'P':
-                case 'r':
-                case 'R':
-                    selector.setCount(1);
-                case 'a':
-                case 'A':
-                    selector.setType(EntityType.PLAYER);
-                    break;
-                case 'e':
-                case 'E':
-                    selector.setType(null);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown selector type");
-            }
-            if (input.charAt(2) != '[' || input.charAt(input.length() - 1) != ']') {
-                throw new IllegalArgumentException("Selector isn't properly enclosed with braces");
-            }
-            String[] parameters = input.substring(3, input.length() - 1).split(",");
-            for (String parameter : parameters) {
-                String[] split = parameter.split("=", 2);
-                if (split.length != 2) {
-                    throw new IllegalArgumentException("Parameter '" + parameter + "' is not formed as 'key=value'");
+        String[] splitInput = input.split(" ");
+
+        for (String current : splitInput) {
+            if (current.charAt(0) == '@') { // Try to use @a @e @p or @r
+                EntitySelector selector = new EntitySelector();
+                if (origin != null) {
+                    selector.setLocation(origin);
+                }
+                switch (current.charAt(1)) {
+                    case 'r':
+                    case 'R':
+                        selector.selectRandom = true;
+                    case 'p':
+                    case 'P':
+                        selector.setCount(1);
+                    case 'a':
+                    case 'A':
+                        selector.setType(EntityType.PLAYER, false);
+                        break;
+                    case 'e':
+                    case 'E':
+                        selector.setType(null, false);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown selector type");
+                }
+                if (current.length() > 2) {
+                    if (current.charAt(2) != '[' || current.charAt(current.length() - 1) != ']') {
+                        throw new IllegalArgumentException("Selector isn't properly enclosed with braces");
+                    }
+                    String[] parameters = current.substring(3, current.length() - 1).split(",");
+                    for (String parameter : parameters) {
+                        String[] split = parameter.split("=", 2);
+                        if (split.length != 2) {
+                            throw new IllegalArgumentException("Parameter '" + parameter + "' is not formed as 'key=value'");
+                        }
+
+                        try {
+                            if (split[0].equalsIgnoreCase("x")) {
+                                selector.setX(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("y")) {
+                                selector.setY(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("z")) {
+                                selector.setZ(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("r")) {
+                                selector.setRadiusMax(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("rm")) {
+                                selector.setRadiusMin(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("m")) {
+                                selector.setGamemode(Integer.parseInt(split[1]));
+                            } else if (split[0].equalsIgnoreCase("c")) {
+                                selector.setCount(Integer.parseInt(split[1]));
+                            } else if (split[0].equalsIgnoreCase("l")) {
+                                selector.setLevelMax(Integer.parseInt(split[1]));
+                            } else if (split[0].equalsIgnoreCase("lm")) {
+                                selector.setLevelMin(Integer.parseInt(split[1]));
+                            } else if (split[0].equalsIgnoreCase("team")) {
+                                if (split[1].length() > 0 && split[1].charAt(0) == '!') {
+                                    selector.setTeam(split[1].substring(1), true);
+                                } else {
+                                    selector.setTeam(split[1], false);
+                                }
+                            } else if (split[0].equalsIgnoreCase("name")) {
+                                if (split[1].length() > 0 && split[1].charAt(0) == '!') {
+                                    selector.setName(split[1].substring(1), true);
+                                } else {
+                                    selector.setName(split[1], false);
+                                }
+                            } else if (split[0].equalsIgnoreCase("dx")) {
+                                selector.setDx(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("dy")) {
+                                selector.setDy(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("dz")) {
+                                selector.setDz(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("rx")) {
+                                selector.setRotationXMax(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("rxm")) {
+                                selector.setRotationXMin(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("ry")) {
+                                selector.setRotationYMax(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("rym")) {
+                                selector.setRotationYMin(Double.parseDouble(split[1]));
+                            } else if (split[0].equalsIgnoreCase("type")) {
+                                if (split[1].length() > 0 && split[1].charAt(0) == '!') {
+                                    String typeName = split[1].substring(1);
+                                    EntityType type = EntityType.fromName(typeName);
+                                    if (type == null && !split[1].isEmpty()) {
+                                        throw new IllegalArgumentException("'" + typeName + "' is not a valid entity type");
+                                    }
+                                    selector.setType(type, false);
+                                } else {
+                                    EntityType type = EntityType.fromName(split[1]);
+                                    if (type == null && !split[1].isEmpty()) {
+                                        throw new IllegalArgumentException("'" + split[1] + "' is not a valid entity type");
+                                    }
+                                    selector.setType(type, false);
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            throw new IllegalArgumentException("Malformed parameter for '" + parameter + "'", e);
+                        }
+                    }
                 }
 
-                try {
-                    if (split[0].equalsIgnoreCase("x")) {
-                        selector.setX(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("y")) {
-                        selector.setY(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("z")) {
-                        selector.setZ(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("r")) {
-                        selector.setRadiusMax(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("rm")) {
-                        selector.setRadiusMin(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("c")) {
-                        selector.setCount(Integer.parseInt(split[1]));
-                    } else if (split[0].equalsIgnoreCase("l")) {
-                        selector.setLevelMax(Integer.parseInt(split[1]));
-                    } else if (split[0].equalsIgnoreCase("lm")) {
-                        selector.setLevelMin(Integer.parseInt(split[1]));
-                    } else if (split[0].equalsIgnoreCase("team")) {
-                        if (split[1].charAt(0) == '!') {
-                            selector.setTeam(split[1].substring(1), true);
-                        } else {
-                            selector.setTeam(split[1], false);
-                        }
-                    } else if (split[0].equalsIgnoreCase("team")) {
-                        if (split[1].charAt(0) == '!') {
-                            selector.setTeam(split[1].substring(1), true);
-                        } else {
-                            selector.setTeam(split[1], false);
-                        }
-                    } else if (split[0].equalsIgnoreCase("dx")) {
-                        selector.setDx(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("dy")) {
-                        selector.setDy(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("dz")) {
-                        selector.setDz(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("rx")) {
-                        selector.setRotationXMax(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("rxm")) {
-                        selector.setRotationXMin(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("ry")) {
-                        selector.setRotationYMax(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("rym")) {
-                        selector.setRotationYMin(Double.parseDouble(split[1]));
-                    } else if (split[0].equalsIgnoreCase("type")) {
-                        EntityType type = EntityType.fromName(split[1]);
-                        if (type == null) {
-                            throw new IllegalArgumentException("'" + parameter + "' is not a valid entity type");
-                        }
-                        selector.setType(type);
-                    }
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Malformed parameter for '" + parameter + "'", e);
+                if (forceType != null) {
+                    selector.setType(forceType, false);
                 }
 
                 Set<Entity> entities = new HashSet<Entity>();
@@ -238,59 +266,58 @@ public final class Util {
                         entities.addAll(world.getEntities());
                     }
                 }
-
-                if (forceType != null) {
-                    selector.setType(forceType);
-                }
                 selector.filterEntities(entities, result);
-            }
-        } else {
-            String lowerInput = input.toLowerCase();
-            if (forceType == EntityType.PLAYER) {
-                try {
-                    Player player = Bukkit.getPlayer(UUID.fromString(input));
-                    if (player != null) {
-                        result.add(player);
-                        return result;
+            } else {
+                String lowerInput = current.toLowerCase();
+                if (forceType == EntityType.PLAYER) {
+                    if (current.length() > 8) {
+                        try {
+                            Player player = Bukkit.getPlayer(UUID.fromString(current));
+                            if (player != null) {
+                                result.add(player);
+                            }
+                            continue;
+                        } catch (IllegalArgumentException e) {
+                        }
                     }
-                } catch (IllegalArgumentException e) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         String lower = player.getName().toLowerCase();
                         if (lowerInput.equals(lower)) {
                             result.clear();
                             result.add(player);
-                            return result;
                         } else if (lowerInput.startsWith(lower)) {
                             result.add(player);
                         }
                     }
-                }
-            } else {
-                Set<Entity> entities = new HashSet<Entity>();
-                if (origin != null) {
-                    entities.addAll(origin.getWorld().getEntities());
                 } else {
-                    for (World world : Bukkit.getWorlds()) {
-                        entities.addAll(world.getEntities());
-                    }
-                }
-
-                try {
-                    UUID uuid = UUID.fromString(input);
-                    for (Entity entity : entities) {
-                        if ((forceType == null || entity.getType() == forceType) && entity.getUniqueId().equals(uuid)) {
-                            result.add(entity);
+                    Set<Entity> entities = new HashSet<Entity>();
+                    if (origin != null) {
+                        entities.addAll(origin.getWorld().getEntities());
+                    } else {
+                        for (World world : Bukkit.getWorlds()) {
+                            entities.addAll(world.getEntities());
                         }
                     }
-                } catch (IllegalArgumentException e) {
+
+                    UUID uuid = null;
+                    try {
+                        uuid = UUID.fromString(current);
+                    } catch (IllegalArgumentException e) {
+                    }
                     for (Entity entity : entities) {
-                        String lower = entity.getCustomName();
+                        String lower = entity instanceof Player ? ((Player) entity).getName() : entity.getCustomName();
                         if (forceType != null && entity.getType() != forceType && lower == null) {
                             continue;
                         }
-                        lower = lower.toLowerCase();
-                        if (lowerInput.equals(lower) || lower.startsWith(lowerInput)) {
+                        if (uuid != null && entity.getUniqueId().equals(uuid)) {
                             result.add(entity);
+                            continue;
+                        }
+                        if (lower != null) {
+                            lower = lower.toLowerCase();
+                            if (lowerInput.equals(lower) || lower.startsWith(lowerInput) || (current.length() > 8 && entity.getUniqueId().toString().startsWith(lowerInput))) {
+                                result.add(entity);
+                            }
                         }
                     }
                 }
@@ -300,8 +327,12 @@ public final class Util {
         return result;
     }
 
-    private static class PlayerSelector {
+    /**
+     * Helper class for selecting entities.
+     */
+    private static class EntitySelector {
 
+        private boolean selectRandom;
         private boolean inWorld;
         private double x, y, z;
         private boolean hasRadius;
@@ -321,9 +352,10 @@ public final class Util {
         private double rotationXMax = 90.0D, rotationXMin = -90.0D;
         private boolean hasRotationY;
         private double rotationYMax = -180.0D, rotationYMin = 180.0D;
+        private boolean inverseType;
         private EntityType type;
 
-        public Set<Entity> filterEntities(Set<Entity> input, Set<Entity> output) {
+        public Collection<Entity> filterEntities(Set<Entity> input, Collection<Entity> output) {
             if (output == null) {
                 output = new HashSet<Entity>();
             } else {
@@ -331,15 +363,20 @@ public final class Util {
             }
 
             for (Entity entity : input) {
-                if (this.type != null && this.type != entity.getType()) { // First filter type as that is probably fastest
-                    continue;
-                }
-                if (this.type == EntityType.PLAYER) {
-                    if (!(entity instanceof Player)) {
-                        continue;
+                if (this.type != null) {
+                    if (this.inverseType) { // First filter type as that is probably fastest
+                        if (this.type == entity.getType()) {
+                            continue;
+                        }
+                    } else {
+                        if (this.type != entity.getType()) {
+                            continue;
+                        }
                     }
+                }
+                if (entity instanceof Player) {
                     Player player = (Player) entity;
-                    if (this.gamemode >= 0 && player.getGameMode().ordinal() != this.gamemode) {
+                    if (this.gamemode >= 0 && player.getGameMode().getValue() != this.gamemode) {
                         continue;
                     }
 
@@ -355,18 +392,19 @@ public final class Util {
                     if (this.team != null) {
                         Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
                         Team team = scoreboard.getPlayerTeam(player);
+                        String name = team == null ? null : team.getName();
                         if (this.inverseTeam) {
-                            if (team == null && this.team.isEmpty()) {
+                            if (this.team.isEmpty() && (name == null || name.isEmpty())) { // team=!
                                 continue;
                             }
-                            if (team != null && this.team.equalsIgnoreCase(team.getName())) {
+                            if (this.team.equalsIgnoreCase(name)) { // team=!team
                                 continue;
                             }
                         } else {
-                            if (team == null && this.team.isEmpty()) {
+                            if (this.team.isEmpty() && name != null && !name.isEmpty()) { // team= FIXME
                                 continue;
                             }
-                            if (team != null && !this.team.equalsIgnoreCase(team.getName())) {
+                            if (!this.team.equalsIgnoreCase(name)) { // team=team
                                 continue;
                             }
                         }
@@ -374,19 +412,20 @@ public final class Util {
                 }
 
                 if (this.name != null) {
-                    String name = entity.getCustomName();
+                    String name = entity instanceof Player ? ((Player) entity).getName() : entity.getCustomName();
+                    System.out.println(entity.getType() + ": " + name);
                     if (this.inverseName) {
-                        if (name == null && this.team.isEmpty()) {
+                        if (this.name.isEmpty() && (name == null || name.isEmpty())) { // name=!
                             continue;
                         }
-                        if (name != null && this.team.equalsIgnoreCase(name)) {
+                        if (this.name.equalsIgnoreCase(name)) { // name=!name
                             continue;
                         }
                     } else {
-                        if (name == null && this.team.isEmpty()) {
+                        if (this.name.isEmpty() && name != null && !name.isEmpty()) { // name= FIXME
                             continue;
                         }
-                        if (name != null && !this.team.equalsIgnoreCase(name)) {
+                        if (!this.name.equalsIgnoreCase(name)) { // name=!name
                             continue;
                         }
                     }
@@ -413,10 +452,11 @@ public final class Util {
                     double dZ = this.z - location.getZ();
 
                     if (this.hasRadius) {
-                        if (this.radiusMin > 0 && dX * dX + dY * dY + dZ * dZ < this.radiusMin) {
+                        double dist = dX * dX + dY * dY + dZ * dZ;
+                        if (this.radiusMin > 0 && dist < this.radiusMin * this.radiusMin) {
                             continue;
                         }
-                        if (this.radiusMax > 0 && dX * dX + dY * dY + dZ * dZ > this.radiusMax) {
+                        if (this.radiusMax > 0 && dist > this.radiusMax * this.radiusMax) {
                             continue;
                         }
                     }
@@ -437,25 +477,37 @@ public final class Util {
             }
 
             if (this.count != Integer.MAX_VALUE) {
-                TreeSet<Entity> filter = new TreeSet<Entity>(new Comparator<Entity>() {
+                Collection<Entity> filter = new TreeSet<Entity>(new Comparator<Entity>() {
                     @Override
                     public int compare(Entity o1, Entity o2) {
                         Location loc1 = o1.getLocation();
                         Location loc2 = o2.getLocation();
-                        double dX1 = PlayerSelector.this.x - loc1.getX();
-                        double dY1 = PlayerSelector.this.y - loc1.getY();
-                        double dZ1 = PlayerSelector.this.z - loc1.getZ();
-                        double dX2 = PlayerSelector.this.x - loc2.getX();
-                        double dY2 = PlayerSelector.this.y - loc2.getY();
-                        double dZ2 = PlayerSelector.this.z - loc2.getZ();
+                        double dX1 = EntitySelector.this.x - loc1.getX();
+                        double dY1 = EntitySelector.this.y - loc1.getY();
+                        double dZ1 = EntitySelector.this.z - loc1.getZ();
+                        double dX2 = EntitySelector.this.x - loc2.getX();
+                        double dY2 = EntitySelector.this.y - loc2.getY();
+                        double dZ2 = EntitySelector.this.z - loc2.getZ();
                         double dist1 = dX1 * dX1 + dY1 * dY1 + dZ1 * dZ1;
                         double dist2 = dX2 * dX2 + dY2 * dY2 + dZ2 * dZ2;
-                        return (PlayerSelector.this.count > 0 ? 1 : 1) * Double.compare(dist1, dist2);
+                        if (dist1 == dist2) {
+                            return (EntitySelector.this.count > 0 ? 1 : 1) * Integer.compare(o1.getEntityId(), o2.getEntityId());
+                        }
+                        return (EntitySelector.this.count > 0 ? 1 : 1) * Double.compare(dist1, dist2);
                     }
                 });
 
                 filter.addAll(output);
                 output.clear();
+
+                if (this.selectRandom) {
+                    ArrayList<Entity> temp = new ArrayList<Entity>(filter.size());
+                    for (Entity ent : filter) {
+                        temp.add(ent);
+                    }
+                    filter = temp;
+                    Collections.shuffle(temp);
+                }
 
                 int i = 0;
                 for (Entity entity : filter) {
@@ -562,8 +614,9 @@ public final class Util {
             this.hasRotationY = true;
         }
 
-        public void setType(EntityType type) {
+        public void setType(EntityType type, boolean inverse) {
             this.type = type;
+            this.inverseType = inverse;
         }
     }
 
