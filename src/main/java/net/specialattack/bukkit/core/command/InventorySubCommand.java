@@ -120,7 +120,7 @@ public class InventorySubCommand extends AbstractSubCommand {
 
 	@Override
 	public String[] getHelpMessage(CommandSender sender) {
-		return new String[] { this.name + " load/save [player]" };
+		return new String[] { this.name + " load/save [stash] [player]" };
 	}
 
 }

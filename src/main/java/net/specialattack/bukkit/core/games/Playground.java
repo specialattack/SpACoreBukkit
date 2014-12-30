@@ -1,27 +1,28 @@
 package net.specialattack.bukkit.core.games;
 
+import java.util.UUID;
+
 import com.mojang.NBT.NBTTagCompound;
 import com.mojang.NBT.NBTTagInt;
 import com.mojang.NBT.NBTTagList;
+
 import net.specialattack.bukkit.core.SpACore;
 import net.specialattack.bukkit.core.block.Cuboid;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.event.Listener;
 
-public abstract class Playground {
+public abstract class Playground{
 
     protected Cuboid cuboid;
-    private final int id;
+    private UUID id;
     public boolean errored = false; // Use me to check if the playground has had any errors. If true then the playground should attempt to finish its current game and refuse to start a new one
     private NBTTagCompound backup;
 
     protected Playground(Cuboid cuboid) {
         this.cuboid = cuboid;
-        this.id = SpACore.getNextAvailablePlaygroundId();
-    }
-
-    protected Playground() {
-        this.id = SpACore.getNextAvailablePlaygroundId();
+        this.id = UUID.randomUUID();
     }
 
     protected abstract NBTTagCompound savePlaygroundAdditionalData();
@@ -30,18 +31,18 @@ public abstract class Playground {
 
     public abstract String getTypeName();
 
-    public int getId() {
+    public UUID getUniqueId() {
         return this.id;
     }
 
     public NBTTagCompound savePlayground() {
         if (this.errored) {
-            this.backup.setName(this.getId() + "-" + this.getTypeName());
+            this.backup.setName(this.getUniqueId().toString());
 
             return this.backup;
         }
 
-        NBTTagCompound compound = new NBTTagCompound(this.getId() + "-" + this.getTypeName());
+        NBTTagCompound compound = new NBTTagCompound(this.getUniqueId().toString());
 
         compound.setString("world", this.cuboid.getWorld().getName());
 

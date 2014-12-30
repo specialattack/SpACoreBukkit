@@ -1,13 +1,17 @@
 package net.specialattack.bukkit.core;
 
 import com.mojang.api.profiles.HttpProfileRepository;
+
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.specialattack.bukkit.core.block.Cuboid;
 import net.specialattack.bukkit.core.command.SpACoreCommand;
 import net.specialattack.bukkit.core.games.IPlaygroundLoader;
 import net.specialattack.bukkit.core.games.Playground;
+import net.specialattack.bukkit.core.games.PlaygroundPool;
+
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,7 +22,7 @@ public class SpACore extends JavaPlugin {
     private int lastId;
     private PluginDescriptionFile pdf;
     private Logger logger;
-    private HashMap<String, IPlaygroundLoader> loaderList;
+    private PlaygroundPool playgroundPool;
 
     public SpACore() {
         super();
@@ -26,7 +30,7 @@ public class SpACore extends JavaPlugin {
 
         instance = this;
 
-        this.loaderList = new HashMap<String, IPlaygroundLoader>();
+        playgroundPool = new PlaygroundPool();
 
         state = PluginState.Initialized;
     }
@@ -46,9 +50,8 @@ public class SpACore extends JavaPlugin {
 
         this.pdf = this.getDescription();
 
-        this.lastId = 0;
-        this.loaderList.clear();
-
+        playgroundPool.onEnable();
+        
         SpACoreCommand command = new SpACoreCommand();
 
         this.getCommand("spacore").setExecutor(command);
@@ -79,22 +82,6 @@ public class SpACore extends JavaPlugin {
 
     public static PluginState getState() {
         return state;
-    }
-
-    public static int getNextAvailablePlaygroundId() {
-        return instance.lastId++;
-    }
-
-    public static void registerPlaygroundType(String type, IPlaygroundLoader loader) {
-        if (state == PluginState.Enabled) {
-            instance.loaderList.put(type, loader);
-        } else {
-            throw new RuntimeException("SpACore is not ready to be enabled yet. A faulty plugin is causing this.");
-        }
-    }
-
-    public static Playground loadPlayground(String type, Cuboid cuboid) {
-        return instance.loaderList.get(type).createInstance(cuboid);
     }
 
     public static void log(String message) {
