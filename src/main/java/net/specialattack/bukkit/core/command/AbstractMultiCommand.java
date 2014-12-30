@@ -8,8 +8,6 @@ import org.bukkit.command.*;
 /**
  * Main command class, sub commands can be registered here to decrease the
  * amount of commands.
- *
- * @author heldplayer
  */
 public abstract class AbstractMultiCommand implements CommandExecutor, TabCompleter, ISubCommandHolder {
 

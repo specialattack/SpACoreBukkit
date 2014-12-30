@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 /**
  * Sub Command class for SpACoreCommand
  *
- * @author Mitchel
  * @see SpACoreCommand
  */
 public abstract class AbstractSubCommand {
@@ -55,10 +54,6 @@ public abstract class AbstractSubCommand {
      */
     public boolean hasPermission(CommandSender sender) {
         return sender.hasPermission(this.permission);
-    }
-
-    public boolean hasPermission(CommandSender sender, String permission) {
-        return sender.hasPermission(this.permission + "." + permission);
     }
 
     /**

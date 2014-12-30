@@ -2,9 +2,6 @@ package net.specialattack.bukkit.core.games.team;
 
 import org.bukkit.ChatColor;
 
-/**
- * @author mbl111
- */
 public enum TeamColors {
 
     BLACK(15, ChatColor.BLACK, 0x000000), //

@@ -5,8 +5,6 @@ import net.specialattack.bukkit.core.SpACore;
 /**
  * Main command class, sub commands can be registered here to decrease the
  * amount of commands.
- *
- * @author heldplayer
  */
 public class SpACoreCommand extends AbstractMultiCommand {
 

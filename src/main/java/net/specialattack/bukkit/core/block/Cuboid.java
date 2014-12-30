@@ -5,8 +5,6 @@ import org.bukkit.World;
 
 /**
  * Class to define a cubic area in the world.
- *
- * @author heldplayer
  */
 public final class Cuboid {
 

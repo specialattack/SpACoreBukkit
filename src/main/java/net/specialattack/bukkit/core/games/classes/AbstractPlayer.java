@@ -3,11 +3,7 @@ package net.specialattack.bukkit.core.games.classes;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/**
- * @author mbl111
- */
 public abstract class AbstractPlayer {
-
 
     public final String name;
     public boolean errored = false; // Use me to determine if the player is still playing, if this is true the player shouldn't be messed with
