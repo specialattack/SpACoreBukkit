@@ -2,16 +2,14 @@ package net.specialattack.bukkit.core.games;
 
 import java.util.UUID;
 
-import com.mojang.NBT.NBTTagCompound;
-import com.mojang.NBT.NBTTagInt;
-import com.mojang.NBT.NBTTagList;
-
-import net.specialattack.bukkit.core.SpACore;
 import net.specialattack.bukkit.core.block.Cuboid;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.event.Listener;
+
+import com.mojang.NBT.NBTTagCompound;
+import com.mojang.NBT.NBTTagInt;
+import com.mojang.NBT.NBTTagList;
 
 public abstract class Playground{
 
@@ -37,6 +35,10 @@ public abstract class Playground{
     public UUID getUniqueId() {
         return this.id;
     }
+    
+    public Cuboid getCuboid() {
+		return cuboid;
+	}
 
     public NBTTagCompound savePlayground() {
         if (this.errored) {
@@ -99,4 +101,19 @@ public abstract class Playground{
             this.loadPlaygroundAdditionalData(compound.getCompoundTag("additional"));
         }
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	
+    	if (obj == null) return false;
+    	if (!(obj instanceof Playground)) return false;
+    	
+    	return ((Playground)obj).getUniqueId().equals(this.getUniqueId());
+    }
+    
+    @Override
+    public int hashCode() {
+    	return (int) (this.getUniqueId().getMostSignificantBits() * this.getUniqueId().getLeastSignificantBits());
+    }
+    
 }
