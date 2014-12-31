@@ -23,9 +23,16 @@ public abstract class Playground{
         this.id = UUID.randomUUID();
     }
     
-    protected Playground(){
+    /**
+     * 
+     * This constructor should be called when the user wishes to load a playground.
+     * 
+     */
+    protected Playground(UUID id, NBTTagCompound compound){
+    	this.id = id;
+    	this.loadPlayground(id, compound);
     }
-
+    
     protected abstract NBTTagCompound savePlaygroundAdditionalData();
 
     protected abstract void loadPlaygroundAdditionalData(NBTTagCompound compound);
