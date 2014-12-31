@@ -19,7 +19,6 @@ public class SpACore extends JavaPlugin {
 
     public static SpACore instance;
     private static PluginState state = PluginState.Unloaded;
-    private int lastId;
     private PluginDescriptionFile pdf;
     private Logger logger;
     private PlaygroundPool playgroundPool;

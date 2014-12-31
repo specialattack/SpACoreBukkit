@@ -24,6 +24,9 @@ public abstract class Playground{
         this.cuboid = cuboid;
         this.id = UUID.randomUUID();
     }
+    
+    protected Playground(){
+    }
 
     protected abstract NBTTagCompound savePlaygroundAdditionalData();
 
@@ -67,7 +70,7 @@ public abstract class Playground{
         return compound;
     }
 
-    public void loadPlayground(NBTTagCompound compound) {
+    public void loadPlayground(UUID uuid, NBTTagCompound compound) {
         this.backup = compound;
 
         String worldName = compound.getString("world");
