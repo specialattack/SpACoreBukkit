@@ -2,7 +2,7 @@ package net.specialattack.bukkit.core.games.team;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.specialattack.bukkit.core.Util;
+import net.specialattack.bukkit.core.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

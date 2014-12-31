@@ -4,51 +4,42 @@ import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
 import java.util.List;
 import net.specialattack.bukkit.core.SpACore;
-import org.bukkit.ChatColor;
+import net.specialattack.bukkit.core.command.easy.EasyCollection;
+import net.specialattack.bukkit.core.command.easy.parameter.StringCollectionEasyParameter;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command that finds the UUID of a player
  */
 public class UUIDSubCommand extends AbstractSubCommand {
 
+    private final StringCollectionEasyParameter players;
+
     public UUIDSubCommand(ISubCommandHolder command, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
+        this.addParameter(this.players = new StringCollectionEasyParameter() {
+            @Override
+            public List<String> getTabComplete(CommandSender sender, String input) {
+                return null; // Tab completion is desired in this case
+            }
+        }.setName("name"));
+        this.finish();
     }
 
     @Override
-    public void runCommand(CommandSender sender, String alias, String... args) {
-        String[] names = args;
-        if (args.length == 0) {
-            if (sender instanceof Player) {
-                names = new String[] { sender.getName() };
-            } else {
-                sender.sendMessage(ChatColor.RED + "Please supply a player name as an argument");
-                return;
-            }
-        }
+    public void runCommand(CommandSender sender) {
+        EasyCollection<String> players = this.players.getValue();
 
         HttpProfileRepository repository = SpACore.getProfileRepository();
-        Profile[] profiles = repository.findProfilesByNames(names);
+        Profile[] profiles = repository.findProfilesByNames(players.values.toArray(new String[players.values.size()]));
 
         if (profiles.length == 0) {
-            sender.sendMessage("Found 0 results");
+            sender.sendMessage("Found no results");
         }
 
         for (Profile profile : profiles) {
             sender.sendMessage(String.format("'%s' = '%s'", profile.getUUID(), profile.getName()));
         }
-    }
-
-    @Override
-    public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
-        return null;
-    }
-
-    @Override
-    public String[] getHelpMessage(CommandSender sender) {
-        return new String[] { this.name + " [player1 [player2 [...]]]" };
     }
 
 }

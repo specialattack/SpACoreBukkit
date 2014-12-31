@@ -1,7 +1,6 @@
 package net.specialattack.bukkit.core.command;
 
-import java.util.List;
-import net.specialattack.bukkit.core.Util;
+import net.specialattack.bukkit.core.util.ChatFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -16,22 +15,22 @@ public class VersionSubCommand extends AbstractSubCommand {
     public VersionSubCommand(ISubCommandHolder command, PluginDescriptionFile description, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
         this.description = description;
+        this.finish();
     }
 
     @Override
-    public void runCommand(CommandSender sender, String alias, String... args) {
-        sender.sendMessage(ChatColor.GRAY + "========== " + ChatColor.GREEN + this.description.getFullName() + ChatColor.GRAY + " ==========");
-        sender.sendMessage(ChatColor.YELLOW + "Authors: " + ChatColor.GRAY + Util.join(this.description.getAuthors()));
-    }
+    public void runCommand(CommandSender sender) {
+        sender.sendMessage(ChatFormat.format("========== %s ==========", ChatColor.GRAY, ChatColor.GREEN, this.description.getFullName()));
+        String[] authors = this.description.getAuthors().toArray(new String[this.description.getAuthors().size()]);
+        String joined = "";
+        for (int i = 0; i < authors.length; i++) {
+            if (i != 0) {
+                joined += ", ";
+            }
 
-    @Override
-    public List<String> getTabCompleteResults(CommandSender sender, String alias, String... args) {
-        return emptyTabResult;
-    }
-
-    @Override
-    public String[] getHelpMessage(CommandSender sender) {
-        return new String[] { this.name };
+            joined += "%s";
+        }
+        sender.sendMessage(ChatFormat.format("Authors: " + joined, ChatColor.YELLOW, ChatColor.GRAY, (Object[]) authors));
     }
 
 }
