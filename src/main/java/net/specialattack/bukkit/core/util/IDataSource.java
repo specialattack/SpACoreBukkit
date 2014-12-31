@@ -1,6 +1,6 @@
-package net.specialattack.bukkit.core.command.easy.parameter;
+package net.specialattack.bukkit.core.util;
 
-public interface IEasySource<T> {
+public interface IDataSource<T> {
 
     /**
      * Returns the value the source contains.
