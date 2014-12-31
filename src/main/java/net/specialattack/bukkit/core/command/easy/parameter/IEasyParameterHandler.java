@@ -1,9 +1,10 @@
 package net.specialattack.bukkit.core.command.easy.parameter;
 
 import java.util.List;
+import net.specialattack.bukkit.core.util.IDataSource;
 import org.bukkit.command.CommandSender;
 
-public interface IEasyParameterHandler<T> extends IEasySource<T> {
+public interface IEasyParameterHandler<T> extends IDataSource<T> {
 
     /**
      * Parses the parameter.
