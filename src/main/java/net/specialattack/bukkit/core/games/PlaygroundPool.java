@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -13,8 +14,10 @@ import net.specialattack.bukkit.core.PluginState;
 import net.specialattack.bukkit.core.SpACore;
 import net.specialattack.bukkit.core.block.Cuboid;
 import net.specialattack.bukkit.core.event.PlaygroundCreateEvent;
+import net.specialattack.bukkit.core.games.exception.PlaygroundCreateException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.mojang.NBT.CompressedStreamTools;
@@ -54,18 +57,19 @@ public class PlaygroundPool {
 		}
 	}
 
-	public Playground createPlayground(String type, Cuboid cuboid, Player player) {
+	public Playground createPlayground(String type, Cuboid cuboid, Player player) throws PlaygroundCreateException {
+		if (this.collidesWithPlayground(cuboid)) throw new PlaygroundCreateException("Playground collides with existing playground.");
+
 		Playground playground = loaderList.get(type).createInstance(cuboid);
 
 		PlaygroundCreateEvent event = new PlaygroundCreateEvent(playground, player);
 		Bukkit.getServer().getPluginManager().callEvent(event);
+
+		if (event.isCancelled()) throw new PlaygroundCreateException("Creation Canceled: " + event.getCancelReason());
 		
-		if (!event.isCancelled()) {
 			playgrounds.put(playground.getUniqueId(), playground);
 			return playground;
-		}
-		
-		return null;
+
 	}
 
 	private void loadSavedPlaygrounds(String type, IPlaygroundLoader loader) throws FileNotFoundException, IOException {
@@ -95,6 +99,37 @@ public class PlaygroundPool {
 
 	}
 
+	public boolean collidesWithPlayground(Cuboid cuboid) {
+
+		Iterator<Playground> grounds = playgrounds.values().iterator();
+
+		while (grounds.hasNext()) {
+			Playground playground = grounds.next();
+
+			if (playground.getCuboid().collidesWith(cuboid)) {
+				return true;
+			}
+
+		}
+
+		return false;
+	}
+	
+	public Playground insidePlayground(Location location){
+		Iterator<Playground> grounds = playgrounds.values().iterator();
+
+		while (grounds.hasNext()) {
+			Playground playground = grounds.next();
+
+			if (playground.getCuboid().contains(location)) {
+				return playground;
+			}
+
+		}
+
+		return null;
+	}
+	
 	private class PlaygroundSaveFilter implements FilenameFilter {
 
 		private File currentDir;

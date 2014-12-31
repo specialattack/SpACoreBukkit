@@ -15,6 +15,7 @@ import org.bukkit.event.Cancellable;
 public class PlaygroundCreateEvent extends BasePlayerPlaygroundEvent implements Cancellable{
 
 	private boolean isCancelled = false;
+	private String cancelReason = "";
 	
 	public PlaygroundCreateEvent(Playground playground, Player player) {
 		super(playground, player);
@@ -28,6 +29,14 @@ public class PlaygroundCreateEvent extends BasePlayerPlaygroundEvent implements 
 	@Override
 	public void setCancelled(boolean cancel) {
 		isCancelled = cancel;
+	}
+	
+	public void setCancelReason(String reason){
+		this.cancelReason = reason;
+	}
+	
+	public String getCancelReason() {
+		return cancelReason;
 	}
 
 	
