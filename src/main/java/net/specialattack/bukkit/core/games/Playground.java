@@ -18,6 +18,8 @@ public abstract class Playground{
     public boolean errored = false; // Use me to check if the playground has had any errors. If true then the playground should attempt to finish its current game and refuse to start a new one
     private NBTTagCompound backup;
 
+  //First commit of 2015!
+    //Check 1+2
     protected Playground(Cuboid cuboid) {
         this.cuboid = cuboid;
         this.id = UUID.randomUUID();
