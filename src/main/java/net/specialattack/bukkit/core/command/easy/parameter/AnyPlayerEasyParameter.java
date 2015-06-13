@@ -21,7 +21,8 @@ public class AnyPlayerEasyParameter extends AbstractEasyParameter<String> {
         try {
             List<Entity> matched = Util.matchEntities(value, location, EntityType.PLAYER);
             if (matched.isEmpty()) {
-                return false;
+                this.setValue(value);
+                return true;
             }
             for (Entity entity : matched) {
                 if (entity instanceof Player) {

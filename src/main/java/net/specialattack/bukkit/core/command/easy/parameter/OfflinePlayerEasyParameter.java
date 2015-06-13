@@ -20,11 +20,15 @@ public class OfflinePlayerEasyParameter extends AbstractEasyParameter<OfflinePla
             result = Bukkit.getOfflinePlayer(uuid);
         } catch (IllegalArgumentException e) {
             for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-                if (player.getName().equals(value)) {
+                String name = player.getName();
+                if (name == null) {
+                    continue;
+                }
+                if (name.equals(value)) {
                     result = player;
                     break;
                 }
-                if (player.getName().startsWith(value) || player.getUniqueId().toString().startsWith(value)) {
+                if (name.startsWith(value) || player.getUniqueId().toString().startsWith(value)) {
                     result = player; // We continue in case somebody's full name matches
                 }
             }

@@ -1,11 +1,13 @@
 package net.specialattack.bukkit.core.command.easy.parameter;
 
+import com.mojang.api.profiles.Profile;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.specialattack.bukkit.core.SpACore;
 import net.specialattack.bukkit.core.command.easy.EasyCollection;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -28,7 +30,11 @@ public class OfflinePlayerCollectionEasyParameter extends AbstractEasyParameter.
         Set<OfflinePlayer> result = null;
         for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
             for (Pattern pattern : patterns) {
-                Matcher matcher = pattern.matcher(player.getName());
+                String name = player.getName();
+                if (name == null) {
+                    continue;
+                }
+                Matcher matcher = pattern.matcher(name);
                 if (matcher.find()) {
                     if (result == null) {
                         result = new HashSet<OfflinePlayer>();
