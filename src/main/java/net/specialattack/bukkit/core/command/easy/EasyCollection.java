@@ -1,9 +1,9 @@
 package net.specialattack.bukkit.core.command.easy;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import net.specialattack.bukkit.core.util.Func;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public final class EasyCollection<T> {
 
@@ -13,12 +13,11 @@ public final class EasyCollection<T> {
         this.values = values;
     }
 
-    public <R> EasyCollection<R> forEach(Func<T, R> function) {
-        List<R> result = new ArrayList<R>();
-        for (T value : this.values) {
-            result.add(function.go(value));
-        }
-        return new EasyCollection<R>(result);
+    public <R> EasyCollection<R> map(Function<T, R> function) {
+        return new EasyCollection<>(this.values.stream().map(function).collect(Collectors.toList()));
     }
 
+    public void forEach(Consumer<T> function) {
+        this.values.forEach(function);
+    }
 }

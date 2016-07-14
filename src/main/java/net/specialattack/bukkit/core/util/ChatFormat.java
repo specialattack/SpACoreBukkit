@@ -22,5 +22,4 @@ public final class ChatFormat {
 
         return mainColor + String.format(str, args);
     }
-
 }

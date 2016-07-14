@@ -13,7 +13,7 @@ public class EnumEasyParameter<T extends Enum<T>> extends AbstractEasyParameter<
     public EnumEasyParameter(T[] values) {
         this.setName("enum");
         this.values = values;
-        List<String> tab = new ArrayList<String>();
+        List<String> tab = new ArrayList<>();
         for (T value : values) {
             tab.add(value.name().toLowerCase());
         }
@@ -37,5 +37,4 @@ public class EnumEasyParameter<T extends Enum<T>> extends AbstractEasyParameter<
     public List<String> getTabComplete(CommandSender sender, String input) {
         return this.tab;
     }
-
 }

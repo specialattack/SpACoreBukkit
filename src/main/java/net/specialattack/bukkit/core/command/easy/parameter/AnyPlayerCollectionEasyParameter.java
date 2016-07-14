@@ -3,6 +3,7 @@ package net.specialattack.bukkit.core.command.easy.parameter;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import net.specialattack.bukkit.core.command.easy.EasyCollection;
 import net.specialattack.bukkit.core.util.Util;
 import org.bukkit.Location;
@@ -21,23 +22,19 @@ public class AnyPlayerCollectionEasyParameter extends AbstractEasyParameter.Mult
     public boolean parse(CommandSender sender, String value) {
         String[] split = value.split(" ");
         Location location = sender instanceof Entity ? ((Entity) sender).getLocation() : null;
-        Set<String> result = new TreeSet<String>();
+        Set<String> result = new TreeSet<>();
         for (String part : split) {
             try {
-                List<Entity> matched = Util.matchEntities(part, location, EntityType.PLAYER);
+                Set<Entity> matched = Util.matchEntities(part, location, EntityType.PLAYER);
                 if (!matched.isEmpty()) {
-                    for (Entity entity : matched) {
-                        if (entity != null && entity instanceof Player) {
-                            result.add(((Player) entity).getName());
-                        }
-                    }
+                    result.addAll(matched.stream().filter(entity -> entity != null && entity instanceof Player).map(CommandSender::getName).collect(Collectors.toList()));
                     continue;
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ignored) {
             }
             result.add(part);
         }
-        this.setValue(new EasyCollection<String>(result));
+        this.setValue(new EasyCollection<>(result));
         return true;
     }
 
@@ -45,5 +42,4 @@ public class AnyPlayerCollectionEasyParameter extends AbstractEasyParameter.Mult
     public List<String> getTabComplete(CommandSender sender, String input) {
         return null;
     }
-
 }

@@ -9,7 +9,6 @@ import net.specialattack.bukkit.core.command.easy.EasyCollection;
 import net.specialattack.bukkit.core.command.easy.parameter.PlayerCollectionEasyParameter;
 import net.specialattack.bukkit.core.command.easy.parameter.StringEasyParameter;
 import net.specialattack.bukkit.core.util.ChatFormat;
-import net.specialattack.bukkit.core.util.Function;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,20 +30,16 @@ public class InventoryLoadCommand extends AbstractSubCommand {
 
     @Override
     public void runCommand(final CommandSender sender) {
-        final String stash = this.stash.getValue();
-        EasyCollection<Player> players = this.players.getValue();
+        final String stash = this.stash.get();
+        EasyCollection<Player> players = this.players.get();
 
-        players.forEach(new Function<Player>() {
-            @Override
-            public void run(Player player) {
-                try {
-                    PlayerStorage.apply(player, stash);
-                    sender.sendMessage(ChatFormat.format("Player %s loaded from stash %s", ChatColor.GREEN, player.getName(), stash));
-                } catch (IOException e) {
-                    throw new CommandException("Failed saving player: %s", e, e.getMessage());
-                }
+        players.forEach(player -> {
+            try {
+                PlayerStorage.apply(player, stash);
+                sender.sendMessage(ChatFormat.format("Player %s loaded from stash %s", ChatColor.GREEN, player.getName(), stash));
+            } catch (IOException e) {
+                throw new CommandException("Failed saving player: %s", e, e.getMessage());
             }
         });
     }
-
 }

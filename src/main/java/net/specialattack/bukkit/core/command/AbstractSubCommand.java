@@ -1,6 +1,5 @@
 package net.specialattack.bukkit.core.command;
 
-import java.util.List;
 import net.specialattack.bukkit.core.command.easy.AbstractEasyCommand;
 import org.bukkit.command.CommandSender;
 
@@ -62,5 +61,4 @@ public abstract class AbstractSubCommand extends AbstractEasyCommand {
     public boolean canUseCommand(CommandSender sender) {
         return true;
     }
-
 }

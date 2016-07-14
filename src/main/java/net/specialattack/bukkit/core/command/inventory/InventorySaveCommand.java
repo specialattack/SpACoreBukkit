@@ -10,7 +10,6 @@ import net.specialattack.bukkit.core.command.easy.EasyCollection;
 import net.specialattack.bukkit.core.command.easy.parameter.PlayerCollectionEasyParameter;
 import net.specialattack.bukkit.core.command.easy.parameter.StringEasyParameter;
 import net.specialattack.bukkit.core.util.ChatFormat;
-import net.specialattack.bukkit.core.util.Function;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,22 +31,18 @@ public class InventorySaveCommand extends AbstractSubCommand {
 
     @Override
     public void runCommand(final CommandSender sender) {
-        final String stash = this.stash.getValue();
-        EasyCollection<Player> players = this.players.getValue();
+        final String stash = this.stash.get();
+        EasyCollection<Player> players = this.players.get();
 
-        players.forEach(new Function<Player>() {
-            @Override
-            public void run(Player player) {
-                try {
-                    PlayerStorage.store(player, stash);
-                    sender.sendMessage(ChatFormat.format("Player %s saved to stash %s", ChatColor.GREEN, player.getName(), stash));
-                } catch (FileNotFoundException e) {
-                    sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
-                } catch (IOException e) {
-                    throw new CommandException("Failed loading player: %s", e, e.getMessage());
-                }
+        players.forEach(player -> {
+            try {
+                PlayerStorage.store(player, stash);
+                sender.sendMessage(ChatFormat.format("Player %s saved to stash %s", ChatColor.GREEN, player.getName(), stash));
+            } catch (FileNotFoundException e) {
+                sender.sendMessage(ChatColor.RED + "Player has not been saved before.");
+            } catch (IOException e) {
+                throw new CommandException("Failed loading player: %s", e, e.getMessage());
             }
         });
     }
-
 }

@@ -1,7 +1,16 @@
 package net.specialattack.bukkit.core;
 
-import com.mojang.NBT.*;
-import java.io.*;
+import com.mojang.NBT.CompressedStreamTools;
+import com.mojang.NBT.NBTTagCompound;
+import com.mojang.NBT.NBTTagDouble;
+import com.mojang.NBT.NBTTagFloat;
+import com.mojang.NBT.NBTTagList;
+import com.mojang.NBT.NBTTagString;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +29,7 @@ import org.bukkit.util.Vector;
 /**
  * Utility class for storing and restoring player states.
  */
-@SuppressWarnings("deprecation")
+@Deprecated
 public class PlayerStorage {
 
     public static final String DEFAULT_STASH = "default";
@@ -305,5 +314,4 @@ public class PlayerStorage {
 
         FOS.close();
     }
-
 }

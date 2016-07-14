@@ -13,5 +13,4 @@ public class InventorySubCommand extends AbstractMultiSubCommand {
         new InventorySaveCommand(this, "save", "spacore.command.inventory.save");
         new InventoryLoadCommand(this, "load", "spacore.command.inventory.load");
     }
-
 }

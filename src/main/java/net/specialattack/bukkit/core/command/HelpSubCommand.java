@@ -35,5 +35,4 @@ public class HelpSubCommand extends AbstractSubCommand {
             sender.sendMessage(usages);
         }
     }
-
 }

@@ -29,5 +29,4 @@ public class BooleanEasyParameter extends AbstractEasyParameter<Boolean> {
     public List<String> getTabComplete(CommandSender sender, String input) {
         return Util.TAB_RESULT_TRUE_FALSE;
     }
-
 }

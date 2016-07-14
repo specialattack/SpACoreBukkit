@@ -41,5 +41,4 @@ public class IntegerEasyParameter extends AbstractEasyParameter<Integer> {
     public List<String> getTabComplete(CommandSender sender, String input) {
         return Util.TAB_RESULT_EMPTY;
     }
-
 }

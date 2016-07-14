@@ -1,17 +1,10 @@
 package net.specialattack.bukkit.core;
 
 import com.mojang.api.profiles.HttpProfileRepository;
-
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.specialattack.bukkit.core.block.Cuboid;
 import net.specialattack.bukkit.core.command.SpACoreCommand;
-import net.specialattack.bukkit.core.games.IPlaygroundLoader;
-import net.specialattack.bukkit.core.games.Playground;
 import net.specialattack.bukkit.core.games.PlaygroundPool;
-
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,7 +43,7 @@ public class SpACore extends JavaPlugin {
         this.pdf = this.getDescription();
 
         playgroundPool.onEnable();
-        
+
         SpACoreCommand command = new SpACoreCommand();
 
         this.getCommand("spacore").setExecutor(command);
@@ -82,10 +75,10 @@ public class SpACore extends JavaPlugin {
     public static PluginState getState() {
         return state;
     }
-    
+
     public PlaygroundPool getPlaygroundPool() {
-		return playgroundPool;
-	}
+        return playgroundPool;
+    }
 
     public static void log(String message) {
         instance.logger.log(Level.INFO, message);
@@ -98,5 +91,4 @@ public class SpACore extends JavaPlugin {
     public static void log(Level level, String message, Throwable throwable) {
         instance.logger.log(level, message, throwable);
     }
-
 }

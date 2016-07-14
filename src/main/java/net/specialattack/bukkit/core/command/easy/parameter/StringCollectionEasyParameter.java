@@ -14,7 +14,7 @@ public class StringCollectionEasyParameter extends AbstractEasyParameter.Multi<E
 
     @Override
     public boolean parse(CommandSender sender, String value) {
-        this.setValue(new EasyCollection<String>(Arrays.asList(value.split(" "))));
+        this.setValue(new EasyCollection<>(Arrays.asList(value.split(" "))));
         return true;
     }
 
@@ -22,5 +22,4 @@ public class StringCollectionEasyParameter extends AbstractEasyParameter.Multi<E
     public List<String> getTabComplete(CommandSender sender, String input) {
         return Util.TAB_RESULT_EMPTY;
     }
-
 }

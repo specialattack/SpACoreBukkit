@@ -5,7 +5,6 @@ import net.specialattack.bukkit.core.command.ISubCommandHolder;
 import net.specialattack.bukkit.core.command.easy.EasyCollection;
 import net.specialattack.bukkit.core.command.easy.parameter.EntityCollectionEasyParameter;
 import net.specialattack.bukkit.core.util.ChatFormat;
-import net.specialattack.bukkit.core.util.Function;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -26,31 +25,26 @@ public class TestSelectorCommand extends AbstractSubCommand {
     }
 
     @Override
-    public void runCommand(final CommandSender sender) {
-        final EasyCollection<Entity> entities = this.entities.getValue();
+    public void runCommand(CommandSender sender) {
+        final EasyCollection<Entity> entities = this.entities.get();
 
         sender.sendMessage(ChatFormat.format("Input selected %s entities", ChatColor.GREEN, entities.values.size()));
 
         this.counter = 0;
 
-        entities.forEach(new Function<Entity>() {
-            @Override
-            public void run(Entity entity) {
-                if (TestSelectorCommand.this.counter > 15) {
-                    return;
-                }
-                if (entity.getCustomName() != null) {
-                    sender.sendMessage(ChatFormat.format("%s: %s (%s)", ChatColor.GREEN, entity.getType(), entity.getCustomName(), entity.getUniqueId()));
-                } else if (entity instanceof Player) {
-                    sender.sendMessage(ChatFormat.format("%s: %s (%s)", ChatColor.GREEN, entity.getType(), ((Player) entity).getName(), entity.getUniqueId()));
-                } else {
-                    sender.sendMessage(ChatFormat.format("%s: %s", ChatColor.GREEN, entity.getType(), entity.getUniqueId()));
-                }
-
-                TestSelectorCommand.this.counter++;
+        entities.forEach(entity -> {
+            if (TestSelectorCommand.this.counter > 15) {
                 return;
             }
+            if (entity.getCustomName() != null) {
+                sender.sendMessage(ChatFormat.format("%s: %s (%s)", ChatColor.GREEN, entity.getType(), entity.getCustomName(), entity.getUniqueId()));
+            } else if (entity instanceof Player) {
+                sender.sendMessage(ChatFormat.format("%s: %s (%s)", ChatColor.GREEN, entity.getType(), entity.getName(), entity.getUniqueId()));
+            } else {
+                sender.sendMessage(ChatFormat.format("%s: %s", ChatColor.GREEN, entity.getType(), entity.getUniqueId()));
+            }
+
+            TestSelectorCommand.this.counter++;
         });
     }
-
 }

@@ -12,7 +12,7 @@ public abstract class AbstractEasyParameter<T> implements IEasyParameterHandler<
     }
 
     @Override
-    public T getValue() {
+    public T get() {
         return this.value;
     }
 
@@ -59,7 +59,5 @@ public abstract class AbstractEasyParameter<T> implements IEasyParameterHandler<
                 return "[" + name + "]";
             }
         }
-
     }
-
 }

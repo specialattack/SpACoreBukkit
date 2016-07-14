@@ -16,7 +16,7 @@ public abstract class AbstractEasyCommand {
     private String help;
 
     public AbstractEasyCommand() {
-        this.parameters = new ArrayList<IEasyParameterHandler<?>>();
+        this.parameters = new ArrayList<>();
     }
 
     /**
@@ -138,5 +138,4 @@ public abstract class AbstractEasyCommand {
     public String[] getHelpMessage(CommandSender sender) {
         return new String[] { this.help };
     }
-
 }

@@ -1,7 +1,7 @@
 package net.specialattack.bukkit.core.command.easy.parameter;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import net.specialattack.bukkit.core.command.CommandException;
 import net.specialattack.bukkit.core.command.easy.EasyCollection;
 import net.specialattack.bukkit.core.util.Util;
@@ -19,8 +19,8 @@ public class EntityCollectionEasyParameter extends AbstractEasyParameter.Multi<E
     public boolean parse(CommandSender sender, String value) {
         Location location = sender instanceof Entity ? ((Entity) sender).getLocation() : null;
         try {
-            List<Entity> matched = Util.matchEntities(value, location, null);
-            this.setValue(new EasyCollection<Entity>(matched));
+            Set<Entity> matched = Util.matchEntities(value, location, null);
+            this.setValue(new EasyCollection<>(matched));
             return true;
         } catch (IllegalArgumentException e) {
             this.setValue(null);
@@ -32,5 +32,4 @@ public class EntityCollectionEasyParameter extends AbstractEasyParameter.Multi<E
     public List<String> getTabComplete(CommandSender sender, String input) {
         return null;
     }
-
 }

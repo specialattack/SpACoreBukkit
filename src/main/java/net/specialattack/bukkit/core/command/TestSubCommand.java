@@ -11,5 +11,4 @@ public class TestSubCommand extends AbstractMultiSubCommand {
         super(command, name, permissions, aliases);
         new TestSelectorCommand(this, "selector", "spacore.command.test.selector", "sel", "select");
     }
-
 }

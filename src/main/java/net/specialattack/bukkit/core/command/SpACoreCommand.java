@@ -24,5 +24,4 @@ public class SpACoreCommand extends AbstractMultiCommand {
     public String getDefaultCommand() {
         return "version";
     }
-
 }

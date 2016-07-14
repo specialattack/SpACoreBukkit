@@ -1,6 +1,12 @@
 package net.specialattack.bukkit.core.command;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import net.specialattack.bukkit.core.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -13,8 +19,8 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
 
     public AbstractMultiSubCommand(ISubCommandHolder command, String name, String permission, String... aliases) {
         super(command, name, permission, aliases);
-        this.commands = new TreeMap<String, AbstractSubCommand>();
-        this.aliases = new TreeMap<String, AbstractSubCommand>();
+        this.commands = new TreeMap<>();
+        this.aliases = new TreeMap<>();
 
         this.lastAlias = name;
     }
@@ -83,7 +89,7 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
     @Override
     public List<String> getTabCompleteResults(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            List<String> possibles = new ArrayList<String>();
+            List<String> possibles = new ArrayList<>();
 
             Set<Map.Entry<String, AbstractSubCommand>> commandSet = this.commands.entrySet();
 
@@ -104,15 +110,9 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
                 }
             }
 
-            ArrayList<String> result = new ArrayList<String>();
+            String lower = args[args.length - 1].toLowerCase();
 
-            for (String possible : possibles) {
-                if (possible.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                    result.add(possible);
-                }
-            }
-
-            return result;
+            return possibles.stream().map(String::toLowerCase).filter(possible -> possible.startsWith(lower)).collect(Collectors.toList());
         } else {
             AbstractSubCommand subCommand = this.commands.get(args[0]);
 
@@ -138,19 +138,12 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
 
             List<String> possibles = subCommand.getTabCompleteResults(sender, newArgs);
 
-            ArrayList<String> result = new ArrayList<String>();
-
             if (possibles != null) {
-                for (String possible : possibles) {
-                    if (possible.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                        result.add(possible);
-                    }
-                }
+                String lower = args[args.length - 1].toLowerCase();
+                return possibles.stream().map(String::toLowerCase).filter(possible -> possible.startsWith(lower)).collect(Collectors.toList());
             } else {
                 return null;
             }
-
-            return result;
         }
     }
 
@@ -158,7 +151,7 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
     public String[] getHelpMessage(CommandSender sender) {
         Set<Map.Entry<String, AbstractSubCommand>> commandSet = this.commands.entrySet();
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         for (Map.Entry<String, AbstractSubCommand> entry : commandSet) {
             AbstractSubCommand subCommand = entry.getValue();

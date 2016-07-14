@@ -32,5 +32,4 @@ public class VersionSubCommand extends AbstractSubCommand {
         }
         sender.sendMessage(ChatFormat.format("Authors: " + joined, ChatColor.YELLOW, ChatColor.GRAY, (Object[]) authors));
     }
-
 }

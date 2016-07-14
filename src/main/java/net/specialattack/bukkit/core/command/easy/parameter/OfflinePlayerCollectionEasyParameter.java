@@ -1,13 +1,11 @@
 package net.specialattack.bukkit.core.command.easy.parameter;
 
-import com.mojang.api.profiles.Profile;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.specialattack.bukkit.core.SpACore;
 import net.specialattack.bukkit.core.command.easy.EasyCollection;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -37,7 +35,7 @@ public class OfflinePlayerCollectionEasyParameter extends AbstractEasyParameter.
                 Matcher matcher = pattern.matcher(name);
                 if (matcher.find()) {
                     if (result == null) {
-                        result = new HashSet<OfflinePlayer>();
+                        result = new HashSet<>();
                     }
                     result.add(player);
                 }
@@ -47,7 +45,7 @@ public class OfflinePlayerCollectionEasyParameter extends AbstractEasyParameter.
             this.setValue(null);
             return false;
         }
-        this.setValue(new EasyCollection<OfflinePlayer>(new ArrayList<OfflinePlayer>(result)));
+        this.setValue(new EasyCollection<>(new ArrayList<>(result)));
         return true;
     }
 
@@ -55,5 +53,4 @@ public class OfflinePlayerCollectionEasyParameter extends AbstractEasyParameter.
     public List<String> getTabComplete(CommandSender sender, String input) {
         return null;
     }
-
 }

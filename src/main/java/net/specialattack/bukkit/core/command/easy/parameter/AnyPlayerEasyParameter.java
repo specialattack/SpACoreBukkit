@@ -1,6 +1,7 @@
 package net.specialattack.bukkit.core.command.easy.parameter;
 
 import java.util.List;
+import java.util.Set;
 import net.specialattack.bukkit.core.util.Util;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -19,7 +20,7 @@ public class AnyPlayerEasyParameter extends AbstractEasyParameter<String> {
         Location location = sender instanceof Entity ? ((Entity) sender).getLocation() : null;
         Player result = null;
         try {
-            List<Entity> matched = Util.matchEntities(value, location, EntityType.PLAYER);
+            Set<Entity> matched = Util.matchEntities(value, location, EntityType.PLAYER);
             if (matched.isEmpty()) {
                 this.setValue(value);
                 return true;
@@ -30,7 +31,7 @@ public class AnyPlayerEasyParameter extends AbstractEasyParameter<String> {
                     break;
                 }
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
         if (result != null) {
             this.setValue(result.getName());
@@ -44,5 +45,4 @@ public class AnyPlayerEasyParameter extends AbstractEasyParameter<String> {
     public List<String> getTabComplete(CommandSender sender, String input) {
         return null;
     }
-
 }

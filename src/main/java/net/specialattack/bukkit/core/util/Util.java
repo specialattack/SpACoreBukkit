@@ -1,6 +1,15 @@
 package net.specialattack.bukkit.core.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -141,14 +150,8 @@ public final class Util {
      * @throws java.lang.IllegalArgumentException
      *         When the input is invalid.
      */
-    public static List<Entity> matchEntities(String input, Location origin, EntityType forceType) {
-        List<Entity> result = new ArrayList<Entity>() {
-            @SuppressWarnings("Contract")
-            @Override
-            public boolean add(Entity entity) {
-                return !this.contains(entity) && super.add(entity);
-            }
-        };
+    public static Set<Entity> matchEntities(String input, Location origin, EntityType forceType) {
+        Set<Entity> result = new LinkedHashSet<>();
 
         String[] splitInput = input.split(" ");
 
@@ -199,7 +202,7 @@ public final class Util {
                             } else if (split[0].equalsIgnoreCase("rm")) {
                                 selector.setRadiusMin(Double.parseDouble(split[1]));
                             } else if (split[0].equalsIgnoreCase("m")) {
-                                selector.setGamemode(Integer.parseInt(split[1]));
+                                selector.setGameMode(Integer.parseInt(split[1]));
                             } else if (split[0].equalsIgnoreCase("c")) {
                                 selector.setCount(Integer.parseInt(split[1]));
                             } else if (split[0].equalsIgnoreCase("l")) {
@@ -235,13 +238,13 @@ public final class Util {
                             } else if (split[0].equalsIgnoreCase("type")) {
                                 if (split[1].length() > 0 && split[1].charAt(0) == '!') {
                                     String typeName = split[1].substring(1);
-                                    EntityType type = EntityType.fromName(typeName);
+                                    @SuppressWarnings("deprecation") EntityType type = EntityType.fromName(typeName);
                                     if (type == null && !split[1].isEmpty()) {
                                         throw new IllegalArgumentException("'" + typeName + "' is not a valid entity type");
                                     }
                                     selector.setType(type, false);
                                 } else {
-                                    EntityType type = EntityType.fromName(split[1]);
+                                    @SuppressWarnings("deprecation") EntityType type = EntityType.fromName(split[1]);
                                     if (type == null && !split[1].isEmpty()) {
                                         throw new IllegalArgumentException("'" + split[1] + "' is not a valid entity type");
                                     }
@@ -258,7 +261,7 @@ public final class Util {
                     selector.setType(forceType, false);
                 }
 
-                Set<Entity> entities = new HashSet<Entity>();
+                Set<Entity> entities = new HashSet<>();
                 if (origin != null) {
                     entities.addAll(origin.getWorld().getEntities());
                 } else {
@@ -277,7 +280,7 @@ public final class Util {
                                 result.add(player);
                             }
                             continue;
-                        } catch (IllegalArgumentException e) {
+                        } catch (IllegalArgumentException ignored) {
                         }
                     }
                     for (Player player : Bukkit.getOnlinePlayers()) {
@@ -290,7 +293,7 @@ public final class Util {
                         }
                     }
                 } else {
-                    Set<Entity> entities = new HashSet<Entity>();
+                    Set<Entity> entities = new HashSet<>();
                     if (origin != null) {
                         entities.addAll(origin.getWorld().getEntities());
                     } else {
@@ -302,10 +305,10 @@ public final class Util {
                     UUID uuid = null;
                     try {
                         uuid = UUID.fromString(current);
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException ignored) {
                     }
                     for (Entity entity : entities) {
-                        String lower = entity instanceof Player ? ((Player) entity).getName() : entity.getCustomName();
+                        String lower = entity instanceof Player ? entity.getName() : entity.getCustomName();
                         if (forceType != null && entity.getType() != forceType && lower == null) {
                             continue;
                         }
@@ -337,7 +340,7 @@ public final class Util {
         private double x, y, z;
         private boolean hasRadius;
         private double radiusMax = -1, radiusMin = -1;
-        private int gamemode = -1;
+        private int gameMode = -1;
         private int count = Integer.MAX_VALUE;
         private boolean hasLevels;
         private int levelMax = -1, levelMin = -1;
@@ -357,7 +360,7 @@ public final class Util {
 
         public Collection<Entity> filterEntities(Set<Entity> input, Collection<Entity> output) {
             if (output == null) {
-                output = new HashSet<Entity>();
+                output = new HashSet<>();
             } else {
                 output.clear();
             }
@@ -376,7 +379,8 @@ public final class Util {
                 }
                 if (entity instanceof Player) {
                     Player player = (Player) entity;
-                    if (this.gamemode >= 0 && player.getGameMode().getValue() != this.gamemode) {
+                    //noinspection deprecation
+                    if (this.gameMode >= 0 && player.getGameMode().getValue() != this.gameMode) {
                         continue;
                     }
 
@@ -412,7 +416,7 @@ public final class Util {
                 }
 
                 if (this.name != null) {
-                    String name = entity instanceof Player ? ((Player) entity).getName() : entity.getCustomName();
+                    String name = entity instanceof Player ? entity.getName() : entity.getCustomName();
                     System.out.println(entity.getType() + ": " + name);
                     if (this.inverseName) {
                         if (this.name.isEmpty() && (name == null || name.isEmpty())) { // name=!
@@ -477,34 +481,29 @@ public final class Util {
             }
 
             if (this.count != Integer.MAX_VALUE) {
-                Collection<Entity> filter = new TreeSet<Entity>(new Comparator<Entity>() {
-                    @Override
-                    public int compare(Entity o1, Entity o2) {
-                        Location loc1 = o1.getLocation();
-                        Location loc2 = o2.getLocation();
-                        double dX1 = EntitySelector.this.x - loc1.getX();
-                        double dY1 = EntitySelector.this.y - loc1.getY();
-                        double dZ1 = EntitySelector.this.z - loc1.getZ();
-                        double dX2 = EntitySelector.this.x - loc2.getX();
-                        double dY2 = EntitySelector.this.y - loc2.getY();
-                        double dZ2 = EntitySelector.this.z - loc2.getZ();
-                        double dist1 = dX1 * dX1 + dY1 * dY1 + dZ1 * dZ1;
-                        double dist2 = dX2 * dX2 + dY2 * dY2 + dZ2 * dZ2;
-                        if (dist1 == dist2) {
-                            return (EntitySelector.this.count > 0 ? 1 : 1) * Integer.compare(o1.getEntityId(), o2.getEntityId());
-                        }
-                        return (EntitySelector.this.count > 0 ? 1 : 1) * Double.compare(dist1, dist2);
+                Collection<Entity> filter = new TreeSet<>((o1, o2) -> {
+                    Location loc1 = o1.getLocation();
+                    Location loc2 = o2.getLocation();
+                    double dX1 = EntitySelector.this.x - loc1.getX();
+                    double dY1 = EntitySelector.this.y - loc1.getY();
+                    double dZ1 = EntitySelector.this.z - loc1.getZ();
+                    double dX2 = EntitySelector.this.x - loc2.getX();
+                    double dY2 = EntitySelector.this.y - loc2.getY();
+                    double dZ2 = EntitySelector.this.z - loc2.getZ();
+                    double dist1 = dX1 * dX1 + dY1 * dY1 + dZ1 * dZ1;
+                    double dist2 = dX2 * dX2 + dY2 * dY2 + dZ2 * dZ2;
+                    if (dist1 == dist2) {
+                        return Integer.compare(o1.getEntityId(), o2.getEntityId());
                     }
+                    return Double.compare(dist1, dist2);
                 });
 
                 filter.addAll(output);
                 output.clear();
 
                 if (this.selectRandom) {
-                    ArrayList<Entity> temp = new ArrayList<Entity>(filter.size());
-                    for (Entity ent : filter) {
-                        temp.add(ent);
-                    }
+                    ArrayList<Entity> temp = new ArrayList<>(filter.size());
+                    temp.addAll(filter);
                     filter = temp;
                     Collections.shuffle(temp);
                 }
@@ -551,8 +550,8 @@ public final class Util {
             this.hasRadius = true;
         }
 
-        public void setGamemode(int gamemode) {
-            this.gamemode = gamemode;
+        public void setGameMode(int gameMode) {
+            this.gameMode = gameMode;
         }
 
         public void setCount(int count) {
@@ -619,5 +618,4 @@ public final class Util {
             this.inverseType = inverse;
         }
     }
-
 }

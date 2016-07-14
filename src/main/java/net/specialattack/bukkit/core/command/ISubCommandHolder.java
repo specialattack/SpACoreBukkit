@@ -11,5 +11,4 @@ public interface ISubCommandHolder {
     Map<String, AbstractSubCommand> getCommands();
 
     String getLastUsedAlias();
-
 }

@@ -16,7 +16,7 @@ public enum PluginState {
     Initializing,
     /**
      * The plugin has finished initializing. It has reached the end of its
-     * constructor. From thhis point on an instance of the plugin should exist.
+     * constructor. From this point on an instance of the plugin should exist.
      */
     Initialized,
     /**

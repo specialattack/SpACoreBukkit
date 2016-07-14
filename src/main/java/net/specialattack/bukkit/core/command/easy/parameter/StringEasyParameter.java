@@ -25,5 +25,4 @@ public class StringEasyParameter extends AbstractEasyParameter.Multi<String> {
     public String getHelpDisplay() {
         return "[" + this.getName() + "]";
     }
-
 }

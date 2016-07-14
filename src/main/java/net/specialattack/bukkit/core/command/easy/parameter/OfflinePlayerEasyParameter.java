@@ -42,5 +42,4 @@ public class OfflinePlayerEasyParameter extends AbstractEasyParameter<OfflinePla
     public List<String> getTabComplete(CommandSender sender, String input) {
         return null; // TODO: make tab complete look through all offline players possibly?
     }
-
 }

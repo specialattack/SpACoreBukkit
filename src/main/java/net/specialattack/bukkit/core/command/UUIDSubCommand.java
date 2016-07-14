@@ -28,7 +28,7 @@ public class UUIDSubCommand extends AbstractSubCommand {
 
     @Override
     public void runCommand(CommandSender sender) {
-        EasyCollection<String> players = this.players.getValue();
+        EasyCollection<String> players = this.players.get();
 
         HttpProfileRepository repository = SpACore.getProfileRepository();
         Profile[] profiles = repository.findProfilesByNames(players.values.toArray(new String[players.values.size()]));
@@ -41,5 +41,4 @@ public class UUIDSubCommand extends AbstractSubCommand {
             sender.sendMessage(String.format("'%s' = '%s'", profile.getUUID(), profile.getName()));
         }
     }
-
 }

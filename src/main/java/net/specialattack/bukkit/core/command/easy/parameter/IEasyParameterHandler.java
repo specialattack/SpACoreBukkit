@@ -1,10 +1,10 @@
 package net.specialattack.bukkit.core.command.easy.parameter;
 
 import java.util.List;
-import net.specialattack.bukkit.core.util.IDataSource;
+import java.util.function.Supplier;
 import org.bukkit.command.CommandSender;
 
-public interface IEasyParameterHandler<T> extends IDataSource<T> {
+public interface IEasyParameterHandler<T> extends Supplier<T> {
 
     /**
      * Parses the parameter.
@@ -23,7 +23,7 @@ public interface IEasyParameterHandler<T> extends IDataSource<T> {
      *
      * @return The last parsed value, or null if parsing failed.
      */
-    T getValue();
+    T get();
 
     /**
      * Gets the tab complete results based on the input.
@@ -59,5 +59,4 @@ public interface IEasyParameterHandler<T> extends IDataSource<T> {
      * @return The name of the parameter
      */
     String getName();
-
 }
