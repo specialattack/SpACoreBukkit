@@ -2,7 +2,7 @@ name: SpACoreBukkit
 version: 0.1.1-Dev
 description: Core features for plugins by the SpecialAttack team
 authors: [heldplayer, mbl111]
-main: net.specialattack.bukkit.core.SpACore
+main: net.specialattack.spacore.SpACore
 commands:
   spa:
     description: SpACore command
