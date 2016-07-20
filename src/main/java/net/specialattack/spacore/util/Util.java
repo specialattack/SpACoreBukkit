@@ -1,17 +1,14 @@
 package net.specialattack.spacore.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -19,7 +16,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.bukkit.util.Vector;
 
 /**
  * Utility class for a bunch of random things.
@@ -27,90 +23,6 @@ import org.bukkit.util.Vector;
 public final class Util {
 
     private Util() {
-    }
-
-    /**
-     * String sensitive version of {@link Util#isInArray(Object[], Object)}
-     *
-     * @param array
-     *         The array to check against.
-     * @param toCheck
-     *         The value to check for.
-     *
-     * @return True if <code>array</code> contains <code>toCheck</code>
-     *
-     * @see Util#isInArray(Object[], Object)
-     */
-    public static boolean isInArray(String[] array, String toCheck) {
-        for (String value : array) {
-            if (value.equalsIgnoreCase(toCheck)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Method for checking if an Object is in a specified Object array.
-     *
-     * @param array
-     *         The array to check against.
-     * @param toCheck
-     *         The value to check for.
-     *
-     * @return True if <code>array</code> contains <code>toCheck</code>
-     */
-    public static <E> boolean isInArray(E[] array, E toCheck) {
-        for (E value : array) {
-            if (value.equals(toCheck)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Joins an iterable of strings to a single string, combined with commas
-     *
-     * @param strings
-     *         The iterable to join
-     *
-     * @return A string that contains all the elements of the iterable combined using commas
-     */
-    public static String join(Iterable<String> strings) {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-        for (String str : strings) {
-            if (!first) {
-                result.append(", ");
-            } else {
-                first = false;
-            }
-            result.append(str);
-        }
-        return result.toString();
-    }
-
-    /**
-     * Joins an array of strings to a single string, combined with commas
-     *
-     * @param strings
-     *         The array to join
-     *
-     * @return A string that contains all the elements of the array combined using commas
-     */
-    public static String join(String... strings) {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-        for (String str : strings) {
-            if (!first) {
-                result.append(", ");
-            } else {
-                first = false;
-            }
-            result.append(str);
-        }
-        return result.toString();
     }
 
     /**

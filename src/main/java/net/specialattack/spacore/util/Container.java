@@ -7,7 +7,4 @@ public class Container<T> {
     public Container(T value) {
         this.value = value;
     }
-
-    public Container() {
-    }
 }
