@@ -3,7 +3,7 @@ package net.specialattack.spacore.api.command;
 import java.util.ArrayList;
 import java.util.List;
 import net.specialattack.spacore.api.command.parameter.IEasyParameterHandler;
-import net.specialattack.spacore.util.Util;
+import net.specialattack.spacore.util.ChatUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -115,7 +115,7 @@ public abstract class AbstractEasyCommand {
                 }
             }
             if (!parameter.parse(sender, param)) {
-                return Util.TAB_RESULT_EMPTY;
+                return ChatUtil.TAB_RESULT_EMPTY;
             }
         }
 
@@ -130,7 +130,7 @@ public abstract class AbstractEasyCommand {
         if (handler != null) {
             return handler.getTabComplete(sender, param);
         } else {
-            return Util.TAB_RESULT_EMPTY;
+            return ChatUtil.TAB_RESULT_EMPTY;
         }
     }
 

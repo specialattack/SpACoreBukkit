@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 /**
- * Command that displays version info about SpACore etc...
+ * Command that displays version info about a plugin.
  */
 public class VersionSubCommand extends AbstractSubCommand {
 

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import net.specialattack.spacore.util.Util;
+import net.specialattack.spacore.util.ChatUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -121,15 +121,15 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
             }
 
             if (subCommand == null) {
-                return Util.TAB_RESULT_EMPTY;
+                return ChatUtil.TAB_RESULT_EMPTY;
             }
 
             if (!subCommand.canUseCommand(sender)) {
-                return Util.TAB_RESULT_EMPTY;
+                return ChatUtil.TAB_RESULT_EMPTY;
             }
 
             if (!subCommand.hasPermission(sender)) {
-                return Util.TAB_RESULT_EMPTY;
+                return ChatUtil.TAB_RESULT_EMPTY;
             }
 
             String[] newArgs = new String[args.length - 1];

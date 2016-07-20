@@ -1,5 +1,6 @@
 package net.specialattack.spacore.command;
 
+import net.specialattack.spacore.Consts;
 import net.specialattack.spacore.SpACore;
 import net.specialattack.spacore.api.command.AbstractMultiCommand;
 
@@ -14,10 +15,10 @@ public class SpACoreCommand extends AbstractMultiCommand {
      */
     public SpACoreCommand(SpACore plugin) {
         super();
-        new VersionSubCommand(this, plugin.getDescription(), "version", "spacore.command.version", "about", "v");
-        new HelpSubCommand(this, "help", "spacore.command.help", "?");
-        new UUIDSubCommand(this, plugin, "uuid", "spacore.command.uuid", "id");
-        new TestSubCommand(this, "test", "spacore.command.test");
+        new VersionSubCommand(this, plugin.getDescription(), "version", Consts.PERM_COMMAND_SPA_VERSION, "about", "v");
+        new HelpSubCommand(this, "help", Consts.PERM_COMMAND_SPA_HELP, "?");
+        new UUIDSubCommand(this, "uuid", Consts.PERM_COMMAND_SPA_UUID, "id");
+        new TestSubCommand(this, "test", Consts.PERM_COMMAND_SPA_TEST);
     }
 
     @Override

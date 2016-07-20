@@ -1,5 +1,5 @@
-name: SpACoreBukkit
-version: 0.1.1-Dev
+name: SpACore
+version: 0.2-Dev
 description: Core features for plugins by the SpecialAttack team
 authors: [heldplayer, mbl111]
 main: net.specialattack.spacore.SpACore
@@ -15,19 +15,30 @@ permissions:
     default: op
     description: Gives full access to SpACore
   spacore.command.*:
+    description: Allows players to use all SpACore commands
+    children:
+      spacore.command.spa.*: true
+  spacore.command.spa.*:
     description: Allows players to use all /spacore subcommands
     children:
-      spacore.command.version: true
-      spacore.command.help: true
-      spacore.command.inventory: true
-      spacore.command.uuid: true
-  spacore.command.version:
+      spacore.command.spa.version: true
+      spacore.command.spa.help: true
+      spacore.command.spa.uuid: true
+      spacore.command.spa.test: true
+  spacore.command.spa.version:
     description: Allows players to use the /spacore version command
     default: true
-  spacore.command.help:
+  spacore.command.spa.help:
     description: Allows players to use the /spacore help command
     default: true
-  spacore.command.inventory:
-    description: Allows players to use the /spacore inventory command
-  spacore.command.uuid:
+  spacore.command.spa.uuid:
     description: Allows players to use the /spacore uuid command
+  spacore.command.spa.test.*:
+    description: Allows players to use all /spacore test subcommands
+    children:
+      spacore.command.spa.test: true
+      spacore.command.spa.test.selector: true
+  spacore.command.spa.test:
+    description: Allows players to use the /spacore test command
+  spacore.command.spa.test.selector:
+    description: Allows players to use the /spacore test selector command

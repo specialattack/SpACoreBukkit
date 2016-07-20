@@ -26,9 +26,6 @@ import org.bukkit.util.Vector;
  */
 public final class Util {
 
-    public static final List<String> TAB_RESULT_EMPTY = Collections.emptyList();
-    public static final List<String> TAB_RESULT_TRUE_FALSE = Collections.unmodifiableList(Arrays.asList("true", "false"));
-
     private Util() {
     }
 

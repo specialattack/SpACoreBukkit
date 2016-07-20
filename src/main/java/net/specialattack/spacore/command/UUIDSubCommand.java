@@ -14,12 +14,10 @@ import org.bukkit.command.CommandSender;
  */
 public class UUIDSubCommand extends AbstractSubCommand {
 
-    private final SpACore plugin;
     private final StringCollectionEasyParameter players;
 
-    public UUIDSubCommand(ISubCommandHolder command, SpACore plugin, String name, String permissions, String... aliases) {
+    public UUIDSubCommand(ISubCommandHolder command, String name, String permissions, String... aliases) {
         super(command, name, permissions, aliases);
-        this.plugin = plugin;
         this.addParameter(this.players = new StringCollectionEasyParameter() {
             @Override
             public List<String> getTabComplete(CommandSender sender, String input) {
@@ -33,7 +31,7 @@ public class UUIDSubCommand extends AbstractSubCommand {
     public void runCommand(CommandSender sender) {
         List<String> players = this.players.get();
 
-        HttpProfileRepository repository = this.plugin.getProfileRepository();
+        HttpProfileRepository repository = SpACore.getProfileRepository();
         Profile[] profiles = repository.findProfilesByNames(players.toArray(new String[players.size()]));
 
         if (profiles.length == 0) {

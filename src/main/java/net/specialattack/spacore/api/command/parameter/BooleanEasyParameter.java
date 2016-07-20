@@ -1,7 +1,7 @@
 package net.specialattack.spacore.api.command.parameter;
 
 import java.util.List;
-import net.specialattack.spacore.util.Util;
+import net.specialattack.spacore.util.ChatUtil;
 import org.bukkit.command.CommandSender;
 
 public class BooleanEasyParameter extends AbstractEasyParameter<Boolean> {
@@ -27,6 +27,6 @@ public class BooleanEasyParameter extends AbstractEasyParameter<Boolean> {
 
     @Override
     public List<String> getTabComplete(CommandSender sender, String input) {
-        return Util.TAB_RESULT_TRUE_FALSE;
+        return ChatUtil.TAB_RESULT_TRUE_FALSE;
     }
 }
