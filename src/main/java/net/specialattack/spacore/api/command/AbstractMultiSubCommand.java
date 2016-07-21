@@ -136,7 +136,12 @@ public abstract class AbstractMultiSubCommand extends AbstractSubCommand impleme
 
             System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
-            List<String> possibles = subCommand.getTabCompleteResults(sender, newArgs);
+            List<String> possibles;
+            try {
+                possibles = subCommand.getTabCompleteResults(sender, newArgs);
+            } catch (CommandException e) {
+                return ChatUtil.TAB_RESULT_EMPTY;
+            }
 
             if (possibles != null) {
                 String lower = args[args.length - 1].toLowerCase();

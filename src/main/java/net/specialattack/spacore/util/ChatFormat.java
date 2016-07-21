@@ -1,5 +1,8 @@
 package net.specialattack.spacore.util;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.Syntax;
 import org.bukkit.ChatColor;
 
 public final class ChatFormat {
@@ -7,17 +10,19 @@ public final class ChatFormat {
     private ChatFormat() {
     }
 
-    public static String format(String str, ChatColor color, Object... args) {
+    @Nonnull
+    public static String format(@Syntax("FormatString") @Nonnull String str, @Nonnull ChatColor color, @Nullable Object @Nonnull ... args) {
         for (int i = 0; i < args.length; i++) {
-            args[i] = ChatColor.WHITE + args[i].toString() + color;
+            args[i] = ChatColor.WHITE.toString() + args[i] + color;
         }
 
         return color + String.format(str, args);
     }
 
-    public static String format(String str, ChatColor mainColor, ChatColor paramColor, Object... args) {
+    @Nonnull
+    public static String format(@Syntax("FormatString") @Nonnull String str, @Nonnull ChatColor mainColor, @Nonnull ChatColor paramColor, @Nullable Object @Nonnull ... args) {
         for (int i = 0; i < args.length; i++) {
-            args[i] = paramColor + args[i].toString() + mainColor;
+            args[i] = paramColor.toString() + args[i] + mainColor;
         }
 
         return mainColor + String.format(str, args);

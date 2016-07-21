@@ -99,7 +99,9 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
             }
         } catch (CommandException e) {
             sender.sendMessage(ChatColor.DARK_RED + "An error occoured while performing command");
-            sender.sendMessage(ChatFormat.format(e.message, ChatColor.RED, e.params));
+            if (e.message != null && e.params != null) {
+                sender.sendMessage(ChatFormat.format(e.message, ChatColor.RED, e.params));
+            }
         } catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "An error occoured while performing command");
             sender.sendMessage(e.getClass().getName() + ": " + e.getMessage());
@@ -158,7 +160,12 @@ public abstract class AbstractMultiCommand implements CommandExecutor, TabComple
 
             System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
-            List<String> possibles = subCommand.getTabCompleteResults(sender, newArgs);
+            List<String> possibles;
+            try {
+                possibles = subCommand.getTabCompleteResults(sender, newArgs);
+            } catch (CommandException e) {
+                return ChatUtil.TAB_RESULT_EMPTY;
+            }
 
             if (possibles != null) {
                 String lower = args[args.length - 1].toLowerCase();
