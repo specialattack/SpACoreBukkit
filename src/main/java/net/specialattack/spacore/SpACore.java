@@ -38,7 +38,7 @@ public class SpACore extends JavaPlugin {
     }
 
     public static HttpProfileRepository getProfileRepository() {
-        SpACore instance = (SpACore) Bukkit.getPluginManager().getPlugin("spacore");
+        SpACore instance = (SpACore) Bukkit.getPluginManager().getPlugin("SpACore");
         if (instance.repository == null) {
             instance.repository = new HttpProfileRepository("minecraft");
         }
